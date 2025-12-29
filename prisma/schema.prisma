@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+  runtime  = "deno" 
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Person {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  firstName String
+  lastName  String
+  role      Role     @default(STUDENT)
+  
+  // Relations
+  enrollments      PersonsInCourses[]
+  scenesPerformed  PersonsAndScenes[]
+  coursesInstructed Course[]
+  
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  title        String
+  studentLimit Int?
+  instructorId Int
+  
+  // Relations
+  instructor Person             @relation(fields: [instructorId], references: [id])
+  students   PersonsInCourses[]
+  classes    Class[]
+  scenes     ScenesInClasses[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Class {
+  id            Int      @id @default(autoincrement())
+  courseId      Int
+  location      String
+  notes         String?
+  streamingLink String
+  startDate     DateTime
+  endDate       DateTime
+  
+  // Relations
+  course Course @relation(fields: [courseId], references: [id])
+}
+
+model Scene {
+  id       Int        @id @default(autoincrement())
+  duration Int        // In Minutes
+  title    String
+  type     SceneTypes 
+  notes    String?
+  
+  // Relations
+  performers PersonsAndScenes[]
+  classes    ScenesInClasses[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PersonsInCourses {
+  personId Int
+  courseId Int
+  hasPaid  Boolean @default(false)
+  
+  // Relations
+  person Person @relation(fields: [personId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@id([personId, courseId])
+}
+
+model PersonsAndScenes {
+  personId Int
+  sceneId  Int
+  
+  // Relations
+  person Person @relation(fields: [personId], references: [id])
+  scene  Scene  @relation(fields: [sceneId], references: [id])
+
+  @@id([personId, sceneId])
+}
+
+model ScenesInClasses {
+  courseId Int
+  sceneId  Int
+  
+  // Relations
+  course Course @relation(fields: [courseId], references: [id])
+  scene  Scene  @relation(fields: [sceneId], references: [id])
+  
+  @@id([courseId, sceneId])
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  MODERATOR
+  INSTRUCTOR
+}
+
+enum SceneTypes {
+  PLAY
+  FILM
+  MONOLOGUE
+  SONG
+  TELEVISION
+  OTHER
+}

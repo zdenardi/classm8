@@ -16,6 +16,7 @@ function App() {
       </SignedOut>
       <SignedIn>
         <UserButton />
+        <Home />
       </SignedIn>
     </header>
   );

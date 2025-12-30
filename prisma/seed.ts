@@ -11,6 +11,7 @@ const pool = new pg.Pool({
   password: "postgres",
   ssl: false,
 });
+
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

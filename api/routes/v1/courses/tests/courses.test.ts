@@ -1,10 +1,8 @@
 import { createApp } from "../../../../main.ts";
-import {
-  testDb,
-  cleanDatabase,
-  seedTestData,
-} from "../../../../util/test/utils.ts";
-import { assertEquals } from "@std/assert";
+import { testDb, seedTestData, cleanDatabase } from "@/test-utils";
+
+import type { Course } from "@/prisma";
+import { assertEquals, assertExists } from "@std/assert";
 
 Deno.test("GET /courses", async () => {
   await cleanDatabase();
@@ -15,11 +13,13 @@ Deno.test("GET /courses", async () => {
   });
   const response = await app.handle(request);
   // Assertions
+  assertExists(response);
   assertEquals(response.status, 200);
 
   const body = await response.json();
-  console.log(body);
-  // Assert on the actual response body structure
   assertEquals(Array.isArray(body), true);
+  const course: Course = body[0];
+  assertEquals(course.title, "Test Course");
+  assertEquals(course.studentLimit, 10);
   testDb.$disconnect();
 });

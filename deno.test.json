@@ -13,11 +13,13 @@
     "@prisma/client": "npm:@prisma/client@latest",
     "@prisma/client/runtime/client": "npm:@prisma/client@latest/runtime/client",
     "@prisma/adapter-pg": "npm:@prisma/adapter-pg@latest",
-    "pg": "npm:pg@latest"
+    "pg": "npm:pg@latest",
+    "@/prisma": "./prisma/generated/client.ts",
+    "@/db": "./api/db.ts",
+    "@/test-utils": "./api/util/test/utils.ts"
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {
     "lib": ["deno.ns"]
   }
 }
-

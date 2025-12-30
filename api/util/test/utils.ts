@@ -1,6 +1,5 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../../prisma/generated/client.ts";
-import pg from "pg";
 
 const connectionString =
   process.env.DATABASE_URL ||
@@ -9,13 +8,17 @@ const adapter = new PrismaPg({ connectionString });
 export const testDb = new PrismaClient({ adapter });
 
 export async function cleanDatabase() {
-  await testDb.scenesInClasses.deleteMany();
-  await testDb.personsAndScenes.deleteMany();
-  await testDb.personsInCourses.deleteMany();
-  await testDb.scene.deleteMany();
-  await testDb.class.deleteMany();
-  await testDb.course.deleteMany();
-  await testDb.person.deleteMany();
+  try {
+    await testDb.scenesInClasses.deleteMany();
+    await testDb.personsAndScenes.deleteMany();
+    await testDb.personsInCourses.deleteMany();
+    await testDb.scene.deleteMany();
+    await testDb.class.deleteMany();
+    await testDb.course.deleteMany();
+    await testDb.person.deleteMany();
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export async function seedTestData() {

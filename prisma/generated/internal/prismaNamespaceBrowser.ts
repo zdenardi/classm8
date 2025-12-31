@@ -145,7 +145,7 @@ export type PersonsAndScenesScalarFieldEnum = (typeof PersonsAndScenesScalarFiel
 
 
 export const ScenesInClassesScalarFieldEnum = {
-  courseId: 'courseId',
+  classId: 'classId',
   sceneId: 'sceneId'
 } as const
 

@@ -27,55 +27,71 @@ export type AggregateScenesInClasses = {
 }
 
 export type ScenesInClassesAvgAggregateOutputType = {
-  courseId: number | null
+  classId: number | null
   sceneId: number | null
+  order: number | null
 }
 
 export type ScenesInClassesSumAggregateOutputType = {
-  courseId: number | null
+  classId: number | null
   sceneId: number | null
+  order: number | null
 }
 
 export type ScenesInClassesMinAggregateOutputType = {
-  courseId: number | null
+  classId: number | null
   sceneId: number | null
+  approved: boolean | null
+  order: number | null
 }
 
 export type ScenesInClassesMaxAggregateOutputType = {
-  courseId: number | null
+  classId: number | null
   sceneId: number | null
+  approved: boolean | null
+  order: number | null
 }
 
 export type ScenesInClassesCountAggregateOutputType = {
-  courseId: number
+  classId: number
   sceneId: number
+  approved: number
+  order: number
   _all: number
 }
 
 
 export type ScenesInClassesAvgAggregateInputType = {
-  courseId?: true
+  classId?: true
   sceneId?: true
+  order?: true
 }
 
 export type ScenesInClassesSumAggregateInputType = {
-  courseId?: true
+  classId?: true
   sceneId?: true
+  order?: true
 }
 
 export type ScenesInClassesMinAggregateInputType = {
-  courseId?: true
+  classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
 }
 
 export type ScenesInClassesMaxAggregateInputType = {
-  courseId?: true
+  classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
 }
 
 export type ScenesInClassesCountAggregateInputType = {
-  courseId?: true
+  classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
   _all?: true
 }
 
@@ -166,8 +182,10 @@ export type ScenesInClassesGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 export type ScenesInClassesGroupByOutputType = {
-  courseId: number
+  classId: number
   sceneId: number
+  approved: boolean
+  order: number
   _count: ScenesInClassesCountAggregateOutputType | null
   _avg: ScenesInClassesAvgAggregateOutputType | null
   _sum: ScenesInClassesSumAggregateOutputType | null
@@ -194,33 +212,41 @@ export type ScenesInClassesWhereInput = {
   AND?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   OR?: Prisma.ScenesInClassesWhereInput[]
   NOT?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
-  courseId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
-  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntFilter<"ScenesInClasses"> | number
+  class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
 }
 
 export type ScenesInClassesOrderByWithRelationInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
-  course?: Prisma.CourseOrderByWithRelationInput
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  class?: Prisma.ClassOrderByWithRelationInput
   scene?: Prisma.SceneOrderByWithRelationInput
 }
 
 export type ScenesInClassesWhereUniqueInput = Prisma.AtLeast<{
-  courseId_sceneId?: Prisma.ScenesInClassesCourseIdSceneIdCompoundUniqueInput
+  order?: number
+  classId_sceneId?: Prisma.ScenesInClassesClassIdSceneIdCompoundUniqueInput
   AND?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   OR?: Prisma.ScenesInClassesWhereInput[]
   NOT?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
-  courseId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
-  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
-}, "courseId_sceneId">
+}, "classId_sceneId" | "order">
 
 export type ScenesInClassesOrderByWithAggregationInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   _count?: Prisma.ScenesInClassesCountOrderByAggregateInput
   _avg?: Prisma.ScenesInClassesAvgOrderByAggregateInput
   _max?: Prisma.ScenesInClassesMaxOrderByAggregateInput
@@ -232,42 +258,57 @@ export type ScenesInClassesScalarWhereWithAggregatesInput = {
   AND?: Prisma.ScenesInClassesScalarWhereWithAggregatesInput | Prisma.ScenesInClassesScalarWhereWithAggregatesInput[]
   OR?: Prisma.ScenesInClassesScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ScenesInClassesScalarWhereWithAggregatesInput | Prisma.ScenesInClassesScalarWhereWithAggregatesInput[]
-  courseId?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
+  classId?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolWithAggregatesFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
 }
 
 export type ScenesInClassesCreateInput = {
-  course: Prisma.CourseCreateNestedOneWithoutScenesInput
+  approved?: boolean
+  order: number
+  class: Prisma.ClassCreateNestedOneWithoutScenesInput
   scene: Prisma.SceneCreateNestedOneWithoutClassesInput
 }
 
 export type ScenesInClassesUncheckedCreateInput = {
-  courseId: number
+  classId: number
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateInput = {
-  course?: Prisma.CourseUpdateOneRequiredWithoutScenesNestedInput
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  class?: Prisma.ClassUpdateOneRequiredWithoutScenesNestedInput
   scene?: Prisma.SceneUpdateOneRequiredWithoutClassesNestedInput
 }
 
 export type ScenesInClassesUncheckedUpdateInput = {
-  courseId?: Prisma.IntFieldUpdateOperationsInput | number
+  classId?: Prisma.IntFieldUpdateOperationsInput | number
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesCreateManyInput = {
-  courseId: number
+  classId: number
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateManyMutationInput = {
-
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesUncheckedUpdateManyInput = {
-  courseId?: Prisma.IntFieldUpdateOperationsInput | number
+  classId?: Prisma.IntFieldUpdateOperationsInput | number
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesListRelationFilter = {
@@ -280,75 +321,83 @@ export type ScenesInClassesOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ScenesInClassesCourseIdSceneIdCompoundUniqueInput = {
-  courseId: number
+export type ScenesInClassesClassIdSceneIdCompoundUniqueInput = {
+  classId: number
   sceneId: number
 }
 
 export type ScenesInClassesCountOrderByAggregateInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesAvgOrderByAggregateInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesMaxOrderByAggregateInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesMinOrderByAggregateInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesSumOrderByAggregateInput = {
-  courseId?: Prisma.SortOrder
+  classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
-export type ScenesInClassesCreateNestedManyWithoutCourseInput = {
-  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput> | Prisma.ScenesInClassesCreateWithoutCourseInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput | Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput[]
-  createMany?: Prisma.ScenesInClassesCreateManyCourseInputEnvelope
+export type ScenesInClassesCreateNestedManyWithoutClassInput = {
+  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput> | Prisma.ScenesInClassesCreateWithoutClassInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutClassInput[]
+  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutClassInput | Prisma.ScenesInClassesCreateOrConnectWithoutClassInput[]
+  createMany?: Prisma.ScenesInClassesCreateManyClassInputEnvelope
   connect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
 }
 
-export type ScenesInClassesUncheckedCreateNestedManyWithoutCourseInput = {
-  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput> | Prisma.ScenesInClassesCreateWithoutCourseInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput | Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput[]
-  createMany?: Prisma.ScenesInClassesCreateManyCourseInputEnvelope
+export type ScenesInClassesUncheckedCreateNestedManyWithoutClassInput = {
+  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput> | Prisma.ScenesInClassesCreateWithoutClassInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutClassInput[]
+  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutClassInput | Prisma.ScenesInClassesCreateOrConnectWithoutClassInput[]
+  createMany?: Prisma.ScenesInClassesCreateManyClassInputEnvelope
   connect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
 }
 
-export type ScenesInClassesUpdateManyWithoutCourseNestedInput = {
-  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput> | Prisma.ScenesInClassesCreateWithoutCourseInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput | Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput[]
-  upsert?: Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutCourseInput | Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutCourseInput[]
-  createMany?: Prisma.ScenesInClassesCreateManyCourseInputEnvelope
+export type ScenesInClassesUpdateManyWithoutClassNestedInput = {
+  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput> | Prisma.ScenesInClassesCreateWithoutClassInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutClassInput[]
+  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutClassInput | Prisma.ScenesInClassesCreateOrConnectWithoutClassInput[]
+  upsert?: Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutClassInput | Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutClassInput[]
+  createMany?: Prisma.ScenesInClassesCreateManyClassInputEnvelope
   set?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   disconnect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   delete?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   connect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
-  update?: Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutCourseInput | Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutCourseInput[]
-  updateMany?: Prisma.ScenesInClassesUpdateManyWithWhereWithoutCourseInput | Prisma.ScenesInClassesUpdateManyWithWhereWithoutCourseInput[]
+  update?: Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutClassInput | Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutClassInput[]
+  updateMany?: Prisma.ScenesInClassesUpdateManyWithWhereWithoutClassInput | Prisma.ScenesInClassesUpdateManyWithWhereWithoutClassInput[]
   deleteMany?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
 }
 
-export type ScenesInClassesUncheckedUpdateManyWithoutCourseNestedInput = {
-  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput> | Prisma.ScenesInClassesCreateWithoutCourseInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput | Prisma.ScenesInClassesCreateOrConnectWithoutCourseInput[]
-  upsert?: Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutCourseInput | Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutCourseInput[]
-  createMany?: Prisma.ScenesInClassesCreateManyCourseInputEnvelope
+export type ScenesInClassesUncheckedUpdateManyWithoutClassNestedInput = {
+  create?: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput> | Prisma.ScenesInClassesCreateWithoutClassInput[] | Prisma.ScenesInClassesUncheckedCreateWithoutClassInput[]
+  connectOrCreate?: Prisma.ScenesInClassesCreateOrConnectWithoutClassInput | Prisma.ScenesInClassesCreateOrConnectWithoutClassInput[]
+  upsert?: Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutClassInput | Prisma.ScenesInClassesUpsertWithWhereUniqueWithoutClassInput[]
+  createMany?: Prisma.ScenesInClassesCreateManyClassInputEnvelope
   set?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   disconnect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   delete?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
   connect?: Prisma.ScenesInClassesWhereUniqueInput | Prisma.ScenesInClassesWhereUniqueInput[]
-  update?: Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutCourseInput | Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutCourseInput[]
-  updateMany?: Prisma.ScenesInClassesUpdateManyWithWhereWithoutCourseInput | Prisma.ScenesInClassesUpdateManyWithWhereWithoutCourseInput[]
+  update?: Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutClassInput | Prisma.ScenesInClassesUpdateWithWhereUniqueWithoutClassInput[]
+  updateMany?: Prisma.ScenesInClassesUpdateManyWithWhereWithoutClassInput | Prisma.ScenesInClassesUpdateManyWithWhereWithoutClassInput[]
   deleteMany?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
 }
 
@@ -394,54 +443,64 @@ export type ScenesInClassesUncheckedUpdateManyWithoutSceneNestedInput = {
   deleteMany?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
 }
 
-export type ScenesInClassesCreateWithoutCourseInput = {
+export type ScenesInClassesCreateWithoutClassInput = {
+  approved?: boolean
+  order: number
   scene: Prisma.SceneCreateNestedOneWithoutClassesInput
 }
 
-export type ScenesInClassesUncheckedCreateWithoutCourseInput = {
+export type ScenesInClassesUncheckedCreateWithoutClassInput = {
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
-export type ScenesInClassesCreateOrConnectWithoutCourseInput = {
+export type ScenesInClassesCreateOrConnectWithoutClassInput = {
   where: Prisma.ScenesInClassesWhereUniqueInput
-  create: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput>
+  create: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput>
 }
 
-export type ScenesInClassesCreateManyCourseInputEnvelope = {
-  data: Prisma.ScenesInClassesCreateManyCourseInput | Prisma.ScenesInClassesCreateManyCourseInput[]
+export type ScenesInClassesCreateManyClassInputEnvelope = {
+  data: Prisma.ScenesInClassesCreateManyClassInput | Prisma.ScenesInClassesCreateManyClassInput[]
   skipDuplicates?: boolean
 }
 
-export type ScenesInClassesUpsertWithWhereUniqueWithoutCourseInput = {
+export type ScenesInClassesUpsertWithWhereUniqueWithoutClassInput = {
   where: Prisma.ScenesInClassesWhereUniqueInput
-  update: Prisma.XOR<Prisma.ScenesInClassesUpdateWithoutCourseInput, Prisma.ScenesInClassesUncheckedUpdateWithoutCourseInput>
-  create: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutCourseInput, Prisma.ScenesInClassesUncheckedCreateWithoutCourseInput>
+  update: Prisma.XOR<Prisma.ScenesInClassesUpdateWithoutClassInput, Prisma.ScenesInClassesUncheckedUpdateWithoutClassInput>
+  create: Prisma.XOR<Prisma.ScenesInClassesCreateWithoutClassInput, Prisma.ScenesInClassesUncheckedCreateWithoutClassInput>
 }
 
-export type ScenesInClassesUpdateWithWhereUniqueWithoutCourseInput = {
+export type ScenesInClassesUpdateWithWhereUniqueWithoutClassInput = {
   where: Prisma.ScenesInClassesWhereUniqueInput
-  data: Prisma.XOR<Prisma.ScenesInClassesUpdateWithoutCourseInput, Prisma.ScenesInClassesUncheckedUpdateWithoutCourseInput>
+  data: Prisma.XOR<Prisma.ScenesInClassesUpdateWithoutClassInput, Prisma.ScenesInClassesUncheckedUpdateWithoutClassInput>
 }
 
-export type ScenesInClassesUpdateManyWithWhereWithoutCourseInput = {
+export type ScenesInClassesUpdateManyWithWhereWithoutClassInput = {
   where: Prisma.ScenesInClassesScalarWhereInput
-  data: Prisma.XOR<Prisma.ScenesInClassesUpdateManyMutationInput, Prisma.ScenesInClassesUncheckedUpdateManyWithoutCourseInput>
+  data: Prisma.XOR<Prisma.ScenesInClassesUpdateManyMutationInput, Prisma.ScenesInClassesUncheckedUpdateManyWithoutClassInput>
 }
 
 export type ScenesInClassesScalarWhereInput = {
   AND?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
   OR?: Prisma.ScenesInClassesScalarWhereInput[]
   NOT?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
-  courseId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntFilter<"ScenesInClasses"> | number
 }
 
 export type ScenesInClassesCreateWithoutSceneInput = {
-  course: Prisma.CourseCreateNestedOneWithoutScenesInput
+  approved?: boolean
+  order: number
+  class: Prisma.ClassCreateNestedOneWithoutScenesInput
 }
 
 export type ScenesInClassesUncheckedCreateWithoutSceneInput = {
-  courseId: number
+  classId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesCreateOrConnectWithoutSceneInput = {
@@ -470,89 +529,115 @@ export type ScenesInClassesUpdateManyWithWhereWithoutSceneInput = {
   data: Prisma.XOR<Prisma.ScenesInClassesUpdateManyMutationInput, Prisma.ScenesInClassesUncheckedUpdateManyWithoutSceneInput>
 }
 
-export type ScenesInClassesCreateManyCourseInput = {
+export type ScenesInClassesCreateManyClassInput = {
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
-export type ScenesInClassesUpdateWithoutCourseInput = {
+export type ScenesInClassesUpdateWithoutClassInput = {
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   scene?: Prisma.SceneUpdateOneRequiredWithoutClassesNestedInput
 }
 
-export type ScenesInClassesUncheckedUpdateWithoutCourseInput = {
+export type ScenesInClassesUncheckedUpdateWithoutClassInput = {
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type ScenesInClassesUncheckedUpdateManyWithoutCourseInput = {
+export type ScenesInClassesUncheckedUpdateManyWithoutClassInput = {
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesCreateManySceneInput = {
-  courseId: number
+  classId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateWithoutSceneInput = {
-  course?: Prisma.CourseUpdateOneRequiredWithoutScenesNestedInput
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  class?: Prisma.ClassUpdateOneRequiredWithoutScenesNestedInput
 }
 
 export type ScenesInClassesUncheckedUpdateWithoutSceneInput = {
-  courseId?: Prisma.IntFieldUpdateOperationsInput | number
+  classId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesUncheckedUpdateManyWithoutSceneInput = {
-  courseId?: Prisma.IntFieldUpdateOperationsInput | number
+  classId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
 
 export type ScenesInClassesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  courseId?: boolean
+  classId?: boolean
   sceneId?: boolean
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  approved?: boolean
+  order?: boolean
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
 
 export type ScenesInClassesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  courseId?: boolean
+  classId?: boolean
   sceneId?: boolean
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  approved?: boolean
+  order?: boolean
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
 
 export type ScenesInClassesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  courseId?: boolean
+  classId?: boolean
   sceneId?: boolean
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  approved?: boolean
+  order?: boolean
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
 
 export type ScenesInClassesSelectScalar = {
-  courseId?: boolean
+  classId?: boolean
   sceneId?: boolean
+  approved?: boolean
+  order?: boolean
 }
 
-export type ScenesInClassesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"courseId" | "sceneId", ExtArgs["result"]["scenesInClasses"]>
+export type ScenesInClassesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"classId" | "sceneId" | "approved" | "order", ExtArgs["result"]["scenesInClasses"]>
 export type ScenesInClassesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }
 export type ScenesInClassesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }
 export type ScenesInClassesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }
 
 export type $ScenesInClassesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ScenesInClasses"
   objects: {
-    course: Prisma.$CoursePayload<ExtArgs>
+    class: Prisma.$ClassPayload<ExtArgs>
     scene: Prisma.$ScenePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    courseId: number
+    classId: number
     sceneId: number
+    approved: boolean
+    order: number
   }, ExtArgs["result"]["scenesInClasses"]>
   composites: {}
 }
@@ -636,8 +721,8 @@ export interface ScenesInClassesDelegate<ExtArgs extends runtime.Types.Extension
    * // Get first 10 ScenesInClasses
    * const scenesInClasses = await prisma.scenesInClasses.findMany({ take: 10 })
    * 
-   * // Only select the `courseId`
-   * const scenesInClassesWithCourseIdOnly = await prisma.scenesInClasses.findMany({ select: { courseId: true } })
+   * // Only select the `classId`
+   * const scenesInClassesWithClassIdOnly = await prisma.scenesInClasses.findMany({ select: { classId: true } })
    * 
    */
   findMany<T extends ScenesInClassesFindManyArgs>(args?: Prisma.SelectSubset<T, ScenesInClassesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScenesInClassesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -681,9 +766,9 @@ export interface ScenesInClassesDelegate<ExtArgs extends runtime.Types.Extension
    *   ]
    * })
    * 
-   * // Create many ScenesInClasses and only return the `courseId`
-   * const scenesInClassesWithCourseIdOnly = await prisma.scenesInClasses.createManyAndReturn({
-   *   select: { courseId: true },
+   * // Create many ScenesInClasses and only return the `classId`
+   * const scenesInClassesWithClassIdOnly = await prisma.scenesInClasses.createManyAndReturn({
+   *   select: { classId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -772,9 +857,9 @@ export interface ScenesInClassesDelegate<ExtArgs extends runtime.Types.Extension
    *   ]
    * })
    * 
-   * // Update zero or more ScenesInClasses and only return the `courseId`
-   * const scenesInClassesWithCourseIdOnly = await prisma.scenesInClasses.updateManyAndReturn({
-   *   select: { courseId: true },
+   * // Update zero or more ScenesInClasses and only return the `classId`
+   * const scenesInClassesWithClassIdOnly = await prisma.scenesInClasses.updateManyAndReturn({
+   *   select: { classId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -947,7 +1032,7 @@ readonly fields: ScenesInClassesFieldRefs;
  */
 export interface Prisma__ScenesInClassesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  class<T extends Prisma.ClassDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassDefaultArgs<ExtArgs>>): Prisma.Prisma__ClassClient<runtime.Types.Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   scene<T extends Prisma.SceneDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SceneDefaultArgs<ExtArgs>>): Prisma.Prisma__SceneClient<runtime.Types.Result.GetResult<Prisma.$ScenePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -978,8 +1063,10 @@ export interface Prisma__ScenesInClassesClient<T, Null = never, ExtArgs extends 
  * Fields of the ScenesInClasses model
  */
 export interface ScenesInClassesFieldRefs {
-  readonly courseId: Prisma.FieldRef<"ScenesInClasses", 'Int'>
+  readonly classId: Prisma.FieldRef<"ScenesInClasses", 'Int'>
   readonly sceneId: Prisma.FieldRef<"ScenesInClasses", 'Int'>
+  readonly approved: Prisma.FieldRef<"ScenesInClasses", 'Boolean'>
+  readonly order: Prisma.FieldRef<"ScenesInClasses", 'Int'>
 }
     
 

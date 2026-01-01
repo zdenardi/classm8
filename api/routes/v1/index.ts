@@ -1,8 +1,13 @@
 import { Router } from "@oak/oak";
-import coursesRouter from "./courses/courses.ts";
+import courseRouter from "./courses/course.ts";
+import classRouter from "./class/class.ts";
 
 const router = new Router({ prefix: "/api/v1" });
-router.use(coursesRouter.routes());
-router.use(coursesRouter.allowedMethods());
+const ROUTERS = [courseRouter, classRouter];
+
+ROUTERS.forEach((r) => {
+  router.use(r.routes());
+  router.use(r.allowedMethods());
+});
 
 export default router;

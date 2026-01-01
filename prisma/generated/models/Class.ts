@@ -237,6 +237,7 @@ export type ClassWhereInput = {
   startDate?: Prisma.DateTimeFilter<"Class"> | Date | string
   endDate?: Prisma.DateTimeFilter<"Class"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  scenes?: Prisma.ScenesInClassesListRelationFilter
 }
 
 export type ClassOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type ClassOrderByWithRelationInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   course?: Prisma.CourseOrderByWithRelationInput
+  scenes?: Prisma.ScenesInClassesOrderByRelationAggregateInput
 }
 
 export type ClassWhereUniqueInput = Prisma.AtLeast<{
@@ -262,6 +264,7 @@ export type ClassWhereUniqueInput = Prisma.AtLeast<{
   startDate?: Prisma.DateTimeFilter<"Class"> | Date | string
   endDate?: Prisma.DateTimeFilter<"Class"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  scenes?: Prisma.ScenesInClassesListRelationFilter
 }, "id">
 
 export type ClassOrderByWithAggregationInput = {
@@ -299,6 +302,7 @@ export type ClassCreateInput = {
   startDate: Date | string
   endDate: Date | string
   course: Prisma.CourseCreateNestedOneWithoutClassesInput
+  scenes?: Prisma.ScenesInClassesCreateNestedManyWithoutClassInput
 }
 
 export type ClassUncheckedCreateInput = {
@@ -309,6 +313,7 @@ export type ClassUncheckedCreateInput = {
   streamingLink: string
   startDate: Date | string
   endDate: Date | string
+  scenes?: Prisma.ScenesInClassesUncheckedCreateNestedManyWithoutClassInput
 }
 
 export type ClassUpdateInput = {
@@ -318,6 +323,7 @@ export type ClassUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutClassesNestedInput
+  scenes?: Prisma.ScenesInClassesUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateInput = {
@@ -328,6 +334,7 @@ export type ClassUncheckedUpdateInput = {
   streamingLink?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scenes?: Prisma.ScenesInClassesUncheckedUpdateManyWithoutClassNestedInput
 }
 
 export type ClassCreateManyInput = {
@@ -408,6 +415,11 @@ export type ClassSumOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
 }
 
+export type ClassScalarRelationFilter = {
+  is?: Prisma.ClassWhereInput
+  isNot?: Prisma.ClassWhereInput
+}
+
 export type ClassCreateNestedManyWithoutCourseInput = {
   create?: Prisma.XOR<Prisma.ClassCreateWithoutCourseInput, Prisma.ClassUncheckedCreateWithoutCourseInput> | Prisma.ClassCreateWithoutCourseInput[] | Prisma.ClassUncheckedCreateWithoutCourseInput[]
   connectOrCreate?: Prisma.ClassCreateOrConnectWithoutCourseInput | Prisma.ClassCreateOrConnectWithoutCourseInput[]
@@ -454,12 +466,27 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type ClassCreateNestedOneWithoutScenesInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutScenesInput, Prisma.ClassUncheckedCreateWithoutScenesInput>
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutScenesInput
+  connect?: Prisma.ClassWhereUniqueInput
+}
+
+export type ClassUpdateOneRequiredWithoutScenesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutScenesInput, Prisma.ClassUncheckedCreateWithoutScenesInput>
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutScenesInput
+  upsert?: Prisma.ClassUpsertWithoutScenesInput
+  connect?: Prisma.ClassWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClassUpdateToOneWithWhereWithoutScenesInput, Prisma.ClassUpdateWithoutScenesInput>, Prisma.ClassUncheckedUpdateWithoutScenesInput>
+}
+
 export type ClassCreateWithoutCourseInput = {
   location: string
   notes?: string | null
   streamingLink: string
   startDate: Date | string
   endDate: Date | string
+  scenes?: Prisma.ScenesInClassesCreateNestedManyWithoutClassInput
 }
 
 export type ClassUncheckedCreateWithoutCourseInput = {
@@ -469,6 +496,7 @@ export type ClassUncheckedCreateWithoutCourseInput = {
   streamingLink: string
   startDate: Date | string
   endDate: Date | string
+  scenes?: Prisma.ScenesInClassesUncheckedCreateNestedManyWithoutClassInput
 }
 
 export type ClassCreateOrConnectWithoutCourseInput = {
@@ -510,6 +538,60 @@ export type ClassScalarWhereInput = {
   endDate?: Prisma.DateTimeFilter<"Class"> | Date | string
 }
 
+export type ClassCreateWithoutScenesInput = {
+  location: string
+  notes?: string | null
+  streamingLink: string
+  startDate: Date | string
+  endDate: Date | string
+  course: Prisma.CourseCreateNestedOneWithoutClassesInput
+}
+
+export type ClassUncheckedCreateWithoutScenesInput = {
+  id?: number
+  courseId: number
+  location: string
+  notes?: string | null
+  streamingLink: string
+  startDate: Date | string
+  endDate: Date | string
+}
+
+export type ClassCreateOrConnectWithoutScenesInput = {
+  where: Prisma.ClassWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClassCreateWithoutScenesInput, Prisma.ClassUncheckedCreateWithoutScenesInput>
+}
+
+export type ClassUpsertWithoutScenesInput = {
+  update: Prisma.XOR<Prisma.ClassUpdateWithoutScenesInput, Prisma.ClassUncheckedUpdateWithoutScenesInput>
+  create: Prisma.XOR<Prisma.ClassCreateWithoutScenesInput, Prisma.ClassUncheckedCreateWithoutScenesInput>
+  where?: Prisma.ClassWhereInput
+}
+
+export type ClassUpdateToOneWithWhereWithoutScenesInput = {
+  where?: Prisma.ClassWhereInput
+  data: Prisma.XOR<Prisma.ClassUpdateWithoutScenesInput, Prisma.ClassUncheckedUpdateWithoutScenesInput>
+}
+
+export type ClassUpdateWithoutScenesInput = {
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  course?: Prisma.CourseUpdateOneRequiredWithoutClassesNestedInput
+}
+
+export type ClassUncheckedUpdateWithoutScenesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  courseId?: Prisma.IntFieldUpdateOperationsInput | number
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streamingLink?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ClassCreateManyCourseInput = {
   id?: number
   location: string
@@ -525,6 +607,7 @@ export type ClassUpdateWithoutCourseInput = {
   streamingLink?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scenes?: Prisma.ScenesInClassesUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateWithoutCourseInput = {
@@ -534,6 +617,7 @@ export type ClassUncheckedUpdateWithoutCourseInput = {
   streamingLink?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scenes?: Prisma.ScenesInClassesUncheckedUpdateManyWithoutClassNestedInput
 }
 
 export type ClassUncheckedUpdateManyWithoutCourseInput = {
@@ -546,6 +630,35 @@ export type ClassUncheckedUpdateManyWithoutCourseInput = {
 }
 
 
+/**
+ * Count Type ClassCountOutputType
+ */
+
+export type ClassCountOutputType = {
+  scenes: number
+}
+
+export type ClassCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  scenes?: boolean | ClassCountOutputTypeCountScenesArgs
+}
+
+/**
+ * ClassCountOutputType without action
+ */
+export type ClassCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClassCountOutputType
+   */
+  select?: Prisma.ClassCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ClassCountOutputType without action
+ */
+export type ClassCountOutputTypeCountScenesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScenesInClassesWhereInput
+}
+
 
 export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -556,6 +669,8 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   startDate?: boolean
   endDate?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  scenes?: boolean | Prisma.Class$scenesArgs<ExtArgs>
+  _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
 
 export type ClassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -593,6 +708,8 @@ export type ClassSelectScalar = {
 export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "courseId" | "location" | "notes" | "streamingLink" | "startDate" | "endDate", ExtArgs["result"]["class"]>
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  scenes?: boolean | Prisma.Class$scenesArgs<ExtArgs>
+  _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClassIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -605,6 +722,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Class"
   objects: {
     course: Prisma.$CoursePayload<ExtArgs>
+    scenes: Prisma.$ScenesInClassesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1009,6 +1127,7 @@ readonly fields: ClassFieldRefs;
 export interface Prisma__ClassClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  scenes<T extends Prisma.Class$scenesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$scenesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScenesInClassesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1438,6 +1557,30 @@ export type ClassDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Classes to delete.
    */
   limit?: number
+}
+
+/**
+ * Class.scenes
+ */
+export type Class$scenesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScenesInClasses
+   */
+  select?: Prisma.ScenesInClassesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScenesInClasses
+   */
+  omit?: Prisma.ScenesInClassesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScenesInClassesInclude<ExtArgs> | null
+  where?: Prisma.ScenesInClassesWhereInput
+  orderBy?: Prisma.ScenesInClassesOrderByWithRelationInput | Prisma.ScenesInClassesOrderByWithRelationInput[]
+  cursor?: Prisma.ScenesInClassesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScenesInClassesScalarFieldEnum | Prisma.ScenesInClassesScalarFieldEnum[]
 }
 
 /**

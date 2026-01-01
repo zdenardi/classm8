@@ -82,7 +82,7 @@ export async function seedTestData() {
       endDate: new Date("2025-01-01T21:00:00"),
       streamingLink: "",
       scenes: {
-        create: { sceneId: scene.id },
+        create: { sceneId: scene.id, order: 1 },
       },
     },
   });

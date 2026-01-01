@@ -1037,7 +1037,9 @@ export type PersonsAndScenesScalarFieldEnum = (typeof PersonsAndScenesScalarFiel
 
 export const ScenesInClassesScalarFieldEnum = {
   classId: 'classId',
-  sceneId: 'sceneId'
+  sceneId: 'sceneId',
+  approved: 'approved',
+  order: 'order'
 } as const
 
 export type ScenesInClassesScalarFieldEnum = (typeof ScenesInClassesScalarFieldEnum)[keyof typeof ScenesInClassesScalarFieldEnum]

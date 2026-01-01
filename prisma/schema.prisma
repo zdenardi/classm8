@@ -50,7 +50,7 @@ startDate DateTime
 endDate DateTime
 
 // Relations
-course Course @relation(fields: [courseId], references: [id])
+course Course @relation(fields: [courseId], references: [id],onDelete: Cascade)
 scenes ScenesInClasses[]
 }
 
@@ -76,7 +76,7 @@ model PersonsInCourses {
 
   // Relations
   person Person @relation(fields: [personId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  course Course @relation(fields: [courseId], references: [id],onDelete: Cascade)
 
   @@id([personId, courseId])
 }
@@ -86,8 +86,8 @@ model PersonsAndScenes {
   sceneId  Int
 
   // Relations
-  person Person @relation(fields: [personId], references: [id])
-  scene  Scene  @relation(fields: [sceneId], references: [id])
+  person Person @relation(fields: [personId], references: [id],onDelete: Cascade)
+  scene  Scene  @relation(fields: [sceneId], references: [id],onDelete: Cascade)
 
   @@id([personId, sceneId])
 }
@@ -96,10 +96,11 @@ model ScenesInClasses {
   classId Int
   sceneId  Int
   approved Boolean @default(false)
+  order Int @unique
 
   // Relations
-  class Class @relation(fields: [classId], references: [id])
-  scene  Scene  @relation(fields: [sceneId], references: [id])
+  class Class @relation(fields: [classId], references: [id],onDelete: Cascade)
+  scene  Scene  @relation(fields: [sceneId], references: [id],onDelete: Cascade)
 
   @@id([classId, sceneId])
 }

@@ -29,26 +29,34 @@ export type AggregateScenesInClasses = {
 export type ScenesInClassesAvgAggregateOutputType = {
   classId: number | null
   sceneId: number | null
+  order: number | null
 }
 
 export type ScenesInClassesSumAggregateOutputType = {
   classId: number | null
   sceneId: number | null
+  order: number | null
 }
 
 export type ScenesInClassesMinAggregateOutputType = {
   classId: number | null
   sceneId: number | null
+  approved: boolean | null
+  order: number | null
 }
 
 export type ScenesInClassesMaxAggregateOutputType = {
   classId: number | null
   sceneId: number | null
+  approved: boolean | null
+  order: number | null
 }
 
 export type ScenesInClassesCountAggregateOutputType = {
   classId: number
   sceneId: number
+  approved: number
+  order: number
   _all: number
 }
 
@@ -56,26 +64,34 @@ export type ScenesInClassesCountAggregateOutputType = {
 export type ScenesInClassesAvgAggregateInputType = {
   classId?: true
   sceneId?: true
+  order?: true
 }
 
 export type ScenesInClassesSumAggregateInputType = {
   classId?: true
   sceneId?: true
+  order?: true
 }
 
 export type ScenesInClassesMinAggregateInputType = {
   classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
 }
 
 export type ScenesInClassesMaxAggregateInputType = {
   classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
 }
 
 export type ScenesInClassesCountAggregateInputType = {
   classId?: true
   sceneId?: true
+  approved?: true
+  order?: true
   _all?: true
 }
 
@@ -168,6 +184,8 @@ export type ScenesInClassesGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type ScenesInClassesGroupByOutputType = {
   classId: number
   sceneId: number
+  approved: boolean
+  order: number
   _count: ScenesInClassesCountAggregateOutputType | null
   _avg: ScenesInClassesAvgAggregateOutputType | null
   _sum: ScenesInClassesSumAggregateOutputType | null
@@ -196,6 +214,8 @@ export type ScenesInClassesWhereInput = {
   NOT?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntFilter<"ScenesInClasses"> | number
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
 }
@@ -203,24 +223,30 @@ export type ScenesInClassesWhereInput = {
 export type ScenesInClassesOrderByWithRelationInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   class?: Prisma.ClassOrderByWithRelationInput
   scene?: Prisma.SceneOrderByWithRelationInput
 }
 
 export type ScenesInClassesWhereUniqueInput = Prisma.AtLeast<{
+  order?: number
   classId_sceneId?: Prisma.ScenesInClassesClassIdSceneIdCompoundUniqueInput
   AND?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   OR?: Prisma.ScenesInClassesWhereInput[]
   NOT?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
-}, "classId_sceneId">
+}, "classId_sceneId" | "order">
 
 export type ScenesInClassesOrderByWithAggregationInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   _count?: Prisma.ScenesInClassesCountOrderByAggregateInput
   _avg?: Prisma.ScenesInClassesAvgOrderByAggregateInput
   _max?: Prisma.ScenesInClassesMaxOrderByAggregateInput
@@ -234,9 +260,13 @@ export type ScenesInClassesScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ScenesInClassesScalarWhereWithAggregatesInput | Prisma.ScenesInClassesScalarWhereWithAggregatesInput[]
   classId?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolWithAggregatesFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntWithAggregatesFilter<"ScenesInClasses"> | number
 }
 
 export type ScenesInClassesCreateInput = {
+  approved?: boolean
+  order: number
   class: Prisma.ClassCreateNestedOneWithoutScenesInput
   scene: Prisma.SceneCreateNestedOneWithoutClassesInput
 }
@@ -244,9 +274,13 @@ export type ScenesInClassesCreateInput = {
 export type ScenesInClassesUncheckedCreateInput = {
   classId: number
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateInput = {
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   class?: Prisma.ClassUpdateOneRequiredWithoutScenesNestedInput
   scene?: Prisma.SceneUpdateOneRequiredWithoutClassesNestedInput
 }
@@ -254,20 +288,27 @@ export type ScenesInClassesUpdateInput = {
 export type ScenesInClassesUncheckedUpdateInput = {
   classId?: Prisma.IntFieldUpdateOperationsInput | number
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesCreateManyInput = {
   classId: number
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateManyMutationInput = {
-
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesUncheckedUpdateManyInput = {
   classId?: Prisma.IntFieldUpdateOperationsInput | number
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesListRelationFilter = {
@@ -288,26 +329,34 @@ export type ScenesInClassesClassIdSceneIdCompoundUniqueInput = {
 export type ScenesInClassesCountOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesAvgOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesMaxOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesMinOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  approved?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesSumOrderByAggregateInput = {
   classId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
+  order?: Prisma.SortOrder
 }
 
 export type ScenesInClassesCreateNestedManyWithoutClassInput = {
@@ -395,11 +444,15 @@ export type ScenesInClassesUncheckedUpdateManyWithoutSceneNestedInput = {
 }
 
 export type ScenesInClassesCreateWithoutClassInput = {
+  approved?: boolean
+  order: number
   scene: Prisma.SceneCreateNestedOneWithoutClassesInput
 }
 
 export type ScenesInClassesUncheckedCreateWithoutClassInput = {
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesCreateOrConnectWithoutClassInput = {
@@ -434,14 +487,20 @@ export type ScenesInClassesScalarWhereInput = {
   NOT?: Prisma.ScenesInClassesScalarWhereInput | Prisma.ScenesInClassesScalarWhereInput[]
   classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
+  approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntFilter<"ScenesInClasses"> | number
 }
 
 export type ScenesInClassesCreateWithoutSceneInput = {
+  approved?: boolean
+  order: number
   class: Prisma.ClassCreateNestedOneWithoutScenesInput
 }
 
 export type ScenesInClassesUncheckedCreateWithoutSceneInput = {
   classId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesCreateOrConnectWithoutSceneInput = {
@@ -472,34 +531,50 @@ export type ScenesInClassesUpdateManyWithWhereWithoutSceneInput = {
 
 export type ScenesInClassesCreateManyClassInput = {
   sceneId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateWithoutClassInput = {
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   scene?: Prisma.SceneUpdateOneRequiredWithoutClassesNestedInput
 }
 
 export type ScenesInClassesUncheckedUpdateWithoutClassInput = {
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesUncheckedUpdateManyWithoutClassInput = {
   sceneId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesCreateManySceneInput = {
   classId: number
+  approved?: boolean
+  order: number
 }
 
 export type ScenesInClassesUpdateWithoutSceneInput = {
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   class?: Prisma.ClassUpdateOneRequiredWithoutScenesNestedInput
 }
 
 export type ScenesInClassesUncheckedUpdateWithoutSceneInput = {
   classId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ScenesInClassesUncheckedUpdateManyWithoutSceneInput = {
   classId?: Prisma.IntFieldUpdateOperationsInput | number
+  approved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -507,6 +582,8 @@ export type ScenesInClassesUncheckedUpdateManyWithoutSceneInput = {
 export type ScenesInClassesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   classId?: boolean
   sceneId?: boolean
+  approved?: boolean
+  order?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
@@ -514,6 +591,8 @@ export type ScenesInClassesSelect<ExtArgs extends runtime.Types.Extensions.Inter
 export type ScenesInClassesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   classId?: boolean
   sceneId?: boolean
+  approved?: boolean
+  order?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
@@ -521,6 +600,8 @@ export type ScenesInClassesSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type ScenesInClassesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   classId?: boolean
   sceneId?: boolean
+  approved?: boolean
+  order?: boolean
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scenesInClasses"]>
@@ -528,9 +609,11 @@ export type ScenesInClassesSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type ScenesInClassesSelectScalar = {
   classId?: boolean
   sceneId?: boolean
+  approved?: boolean
+  order?: boolean
 }
 
-export type ScenesInClassesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"classId" | "sceneId", ExtArgs["result"]["scenesInClasses"]>
+export type ScenesInClassesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"classId" | "sceneId" | "approved" | "order", ExtArgs["result"]["scenesInClasses"]>
 export type ScenesInClassesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
@@ -553,6 +636,8 @@ export type $ScenesInClassesPayload<ExtArgs extends runtime.Types.Extensions.Int
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     classId: number
     sceneId: number
+    approved: boolean
+    order: number
   }, ExtArgs["result"]["scenesInClasses"]>
   composites: {}
 }
@@ -980,6 +1065,8 @@ export interface Prisma__ScenesInClassesClient<T, Null = never, ExtArgs extends 
 export interface ScenesInClassesFieldRefs {
   readonly classId: Prisma.FieldRef<"ScenesInClasses", 'Int'>
   readonly sceneId: Prisma.FieldRef<"ScenesInClasses", 'Int'>
+  readonly approved: Prisma.FieldRef<"ScenesInClasses", 'Boolean'>
+  readonly order: Prisma.FieldRef<"ScenesInClasses", 'Int'>
 }
     
 

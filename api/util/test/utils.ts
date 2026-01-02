@@ -2,28 +2,26 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../../prisma/generated/client.ts";
 import process from "node:process";
 
-const connectionString =
-  process.env.DATABASE_URL ||
-  `postgresql://postgres:postgres@localhost:5433/classm8_test`;
+const connectionString = `postgresql://postgres:postgres@localhost:5433/classm8_test`;
 const adapter = new PrismaPg({ connectionString });
 export const testDb = new PrismaClient({ adapter });
 
 export async function cleanDatabase() {
   try {
     await testDb.scenesInClasses.deleteMany();
-    await testDb.personsAndScenes.deleteMany();
-    await testDb.personsInCourses.deleteMany();
+    await testDb.usersAndScenes.deleteMany();
+    await testDb.usersInCourses.deleteMany();
     await testDb.scene.deleteMany();
     await testDb.class.deleteMany();
     await testDb.course.deleteMany();
-    await testDb.person.deleteMany();
+    await testDb.user.deleteMany();
   } catch (e) {
     console.log(e);
   }
 }
 
 export async function seedTestData() {
-  const instructor = await testDb.person.create({
+  const instructor = await testDb.user.create({
     data: {
       email: "instructor@test.com",
       firstName: "John",
@@ -32,7 +30,7 @@ export async function seedTestData() {
     },
   });
 
-  const student1 = await testDb.person.create({
+  const student1 = await testDb.user.create({
     data: {
       email: "student1@email.com",
       firstName: "Student1",
@@ -41,7 +39,7 @@ export async function seedTestData() {
     },
   });
 
-  const student2 = await testDb.person.create({
+  const student2 = await testDb.user.create({
     data: {
       email: "student2@email.com",
       firstName: "Student2",
@@ -57,7 +55,7 @@ export async function seedTestData() {
       type: "PLAY",
       notes: "A fake play",
       performers: {
-        create: [{ personId: student1.id }, { personId: student2.id }],
+        create: [{ userId: student1.id }, { userId: student2.id }],
       },
     },
   });
@@ -68,7 +66,7 @@ export async function seedTestData() {
       studentLimit: 10,
       instructorId: instructor.id,
       students: {
-        create: [{ personId: student1.id }, { personId: student2.id }],
+        create: [{ userId: student1.id }, { userId: student2.id }],
       },
     },
   });

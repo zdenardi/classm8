@@ -1,7 +1,7 @@
 import { createApp } from "../../../../main.ts";
 import { cleanDatabase, seedTestData, testDb } from "@/test-utils";
 
-import type { Class, Course, Person, Scene } from "@/prisma";
+import type { Class, Course } from "@/prisma";
 import { assertEquals, assertExists } from "@std/assert";
 import { ClassWithCourseAndScenes } from "../../../../../types/class.ts";
 

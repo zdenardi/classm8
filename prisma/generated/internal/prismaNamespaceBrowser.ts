@@ -51,12 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Person: 'Person',
+  User: 'User',
   Course: 'Course',
   Class: 'Class',
   Scene: 'Scene',
-  PersonsInCourses: 'PersonsInCourses',
-  PersonsAndScenes: 'PersonsAndScenes',
+  UsersInCourses: 'UsersInCourses',
+  UsersAndScenes: 'UsersAndScenes',
   ScenesInClasses: 'ScenesInClasses'
 } as const
 
@@ -76,7 +76,7 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const PersonScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   firstName: 'firstName',
@@ -86,7 +86,7 @@ export const PersonScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type PersonScalarFieldEnum = (typeof PersonScalarFieldEnum)[keyof typeof PersonScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const CourseScalarFieldEnum = {
@@ -127,21 +127,21 @@ export const SceneScalarFieldEnum = {
 export type SceneScalarFieldEnum = (typeof SceneScalarFieldEnum)[keyof typeof SceneScalarFieldEnum]
 
 
-export const PersonsInCoursesScalarFieldEnum = {
-  personId: 'personId',
+export const UsersInCoursesScalarFieldEnum = {
+  userId: 'userId',
   courseId: 'courseId',
   hasPaid: 'hasPaid'
 } as const
 
-export type PersonsInCoursesScalarFieldEnum = (typeof PersonsInCoursesScalarFieldEnum)[keyof typeof PersonsInCoursesScalarFieldEnum]
+export type UsersInCoursesScalarFieldEnum = (typeof UsersInCoursesScalarFieldEnum)[keyof typeof UsersInCoursesScalarFieldEnum]
 
 
-export const PersonsAndScenesScalarFieldEnum = {
-  personId: 'personId',
+export const UsersAndScenesScalarFieldEnum = {
+  userId: 'userId',
   sceneId: 'sceneId'
 } as const
 
-export type PersonsAndScenesScalarFieldEnum = (typeof PersonsAndScenesScalarFieldEnum)[keyof typeof PersonsAndScenesScalarFieldEnum]
+export type UsersAndScenesScalarFieldEnum = (typeof UsersAndScenesScalarFieldEnum)[keyof typeof UsersAndScenesScalarFieldEnum]
 
 
 export const ScenesInClassesScalarFieldEnum = {

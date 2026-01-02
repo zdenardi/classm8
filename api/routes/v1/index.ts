@@ -1,5 +1,5 @@
 import { Router } from "@oak/oak";
-import courseRouter from "./courses/course.ts";
+import courseRouter from "./course/course.ts";
 import classRouter from "./class/class.ts";
 
 const router = new Router({ prefix: "/api/v1" });

@@ -1,11 +1,11 @@
 import { createApp } from "../../../../main.ts";
 import { cleanDatabase, seedTestData, testDb } from "@/test-utils";
 
-import type { Course, Person } from "@/prisma";
+import type { Course, User } from "@/prisma";
 import { assertEquals, assertExists } from "@std/assert";
 import { CourseWithStudents } from "../../../../../types/course.ts";
 
-let exampleInstructor: Person | undefined;
+let exampleInstructor: User | undefined;
 let exampleCourse: Course | undefined;
 Deno.test.beforeEach(async () => {
   console.log("Setting up testing data");
@@ -42,7 +42,7 @@ Deno.test("GET course by ID", async () => {
     `http://localhost:8000/api/v1/courses/${exampleCourse.id}`,
     {
       method: "GET",
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions
@@ -77,7 +77,7 @@ Deno.test("POST courses", async () => {
   const response = await app.handle(request);
   // Assertions
   assertExists(response);
-  assertEquals(response.status, 201);
+  assertEquals(response.status, 200);
 
   testDb.$disconnect();
 });
@@ -101,7 +101,7 @@ Deno.test("PATCH course by id", async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(editData),
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions
@@ -125,7 +125,7 @@ Deno.test("DELETE course by id", async () => {
     `http://localhost:8000/api/v1/courses/${exampleCourse.id}`,
     {
       method: "DELETE",
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions

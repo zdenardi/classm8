@@ -1,4 +1,9 @@
-import axios, { InternalAxiosRequestConfig, ResponseType } from "axios";
+import axios from "axios";
+import type {
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+  ResponseType,
+} from "axios";
 import { API_V1 } from "../constants/index.ts";
 import tokenGetter from "./auth.ts";
 import { ROUTES } from "./routes.ts";
@@ -15,6 +20,7 @@ const AXIOS_INSTANCES = {
 
 apiAxiosV1.interceptors.request.use(async (config) => {
   const token = await tokenGetter.getToken();
+  console.log(token);
   config.headers.Authorization = `Bearer ${token}`;
   if (!config.headers["Content-Type"] && config.method !== "get") {
     config.headers["Content-Type"] = "application/json";

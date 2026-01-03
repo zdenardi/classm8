@@ -4,7 +4,8 @@
     "build": "deno run -A npm:vite build",
     "server:start": "deno run -A --watch ./api/main.ts",
     "serve": "deno run build && deno run server:start",
-    "test": "deno test --allow-all --config deno.test.json"
+    "test": "deno test --allow-all --config deno.test.json",
+    "seed": "deno run -A --config deno.json ./prisma/seed.ts"
   },
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.6",

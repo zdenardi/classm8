@@ -2,39 +2,28 @@ import { PrismaClient } from "./generated/client.ts";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 import process from "node:process";
+import { cleanDatabase, seedTestData } from "@/test-utils";
 
-const pool = new pg.Pool({
-  host: "localhost",
-  port: 5432,
-  database: "template1",
-  user: "postgres",
-  password: "postgres",
-  ssl: false,
-});
+// Use environment variables or defaults
+const connectionString =
+  `postgresql://postgres:postgres@localhost:5433/classm8_test`;
+const adapter = new PrismaPg({ connectionString });
 
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const db = new PrismaClient({ adapter });
 
 async function main() {
-  const adminUser = await prisma.person.upsert({
-    where: { email: "test@email.com" },
-    update: {},
-    create: {
-      email: "test@gmail.com",
-      firstName: "Test",
-      lastName: "User",
-      role: "ADMIN",
-    },
-  });
-  console.log(adminUser);
+  console.log("Starting!");
+  await cleanDatabase(db);
+  await seedTestData(db);
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    console.log("Successful!");
   })
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
+  }).finally(async () => {
+    await db.$disconnect();
   });

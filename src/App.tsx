@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./App.css";
 import { Home } from "./pages/Home.tsx";
 import {
@@ -7,6 +8,15 @@ import {
   useAuth,
   UserButton,
 } from "@clerk/clerk-react";
+import tokenGetter from "./utils/auth.ts";
+
+const TokenGetter = () => {
+  const { getToken } = useAuth();
+  useEffect(() => {
+    tokenGetter.setTokenFunction(async () => getToken());
+  }, [getToken]);
+  return null;
+};
 
 function App() {
   return (
@@ -15,6 +25,7 @@ function App() {
         <SignInButton />
       </SignedOut>
       <SignedIn>
+        <TokenGetter />
         <UserButton />
         <Home />
       </SignedIn>

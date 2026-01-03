@@ -17,7 +17,7 @@
     "react": "npm:react@^19.2.3",
     "react-dom": "npm:react-dom@^19.2.3",
     "react-router-dom": "npm:react-router-dom@^7.11.0",
-    "vite": "npm:vite@^6.4.1",
+    "vite": "npm:vite@^5.4.11",
     "@prisma/client": "npm:@prisma/client@^7.2.0",
     "@prisma/client/runtime/client": "npm:@prisma/client@^7.2.0/runtime/client",
     "@prisma/adapter-pg": "npm:@prisma/adapter-pg@^7.2.0",

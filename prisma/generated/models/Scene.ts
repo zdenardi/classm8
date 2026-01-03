@@ -236,7 +236,7 @@ export type SceneWhereInput = {
   notes?: Prisma.StringNullableFilter<"Scene"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
-  performers?: Prisma.PersonsAndScenesListRelationFilter
+  performers?: Prisma.UsersAndScenesListRelationFilter
   classes?: Prisma.ScenesInClassesListRelationFilter
 }
 
@@ -248,7 +248,7 @@ export type SceneOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  performers?: Prisma.PersonsAndScenesOrderByRelationAggregateInput
+  performers?: Prisma.UsersAndScenesOrderByRelationAggregateInput
   classes?: Prisma.ScenesInClassesOrderByRelationAggregateInput
 }
 
@@ -263,7 +263,7 @@ export type SceneWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Scene"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
-  performers?: Prisma.PersonsAndScenesListRelationFilter
+  performers?: Prisma.UsersAndScenesListRelationFilter
   classes?: Prisma.ScenesInClassesListRelationFilter
 }, "id">
 
@@ -302,7 +302,7 @@ export type SceneCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.PersonsAndScenesCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesCreateNestedManyWithoutSceneInput
   classes?: Prisma.ScenesInClassesCreateNestedManyWithoutSceneInput
 }
 
@@ -314,7 +314,7 @@ export type SceneUncheckedCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.PersonsAndScenesUncheckedCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesUncheckedCreateNestedManyWithoutSceneInput
   classes?: Prisma.ScenesInClassesUncheckedCreateNestedManyWithoutSceneInput
 }
 
@@ -325,7 +325,7 @@ export type SceneUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.PersonsAndScenesUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUpdateManyWithoutSceneNestedInput
   classes?: Prisma.ScenesInClassesUpdateManyWithoutSceneNestedInput
 }
 
@@ -337,7 +337,7 @@ export type SceneUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.PersonsAndScenesUncheckedUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUncheckedUpdateManyWithoutSceneNestedInput
   classes?: Prisma.ScenesInClassesUncheckedUpdateManyWithoutSceneNestedInput
 }
 
@@ -512,7 +512,7 @@ export type SceneCreateWithoutClassesInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.PersonsAndScenesCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesCreateNestedManyWithoutSceneInput
 }
 
 export type SceneUncheckedCreateWithoutClassesInput = {
@@ -523,7 +523,7 @@ export type SceneUncheckedCreateWithoutClassesInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.PersonsAndScenesUncheckedCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesUncheckedCreateNestedManyWithoutSceneInput
 }
 
 export type SceneCreateOrConnectWithoutClassesInput = {
@@ -549,7 +549,7 @@ export type SceneUpdateWithoutClassesInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.PersonsAndScenesUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUpdateManyWithoutSceneNestedInput
 }
 
 export type SceneUncheckedUpdateWithoutClassesInput = {
@@ -560,7 +560,7 @@ export type SceneUncheckedUpdateWithoutClassesInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.PersonsAndScenesUncheckedUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUncheckedUpdateManyWithoutSceneNestedInput
 }
 
 
@@ -592,7 +592,7 @@ export type SceneCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
  * SceneCountOutputType without action
  */
 export type SceneCountOutputTypeCountPerformersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PersonsAndScenesWhereInput
+  where?: Prisma.UsersAndScenesWhereInput
 }
 
 /**
@@ -658,7 +658,7 @@ export type SceneIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ScenePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Scene"
   objects: {
-    performers: Prisma.$PersonsAndScenesPayload<ExtArgs>[]
+    performers: Prisma.$UsersAndScenesPayload<ExtArgs>[]
     classes: Prisma.$ScenesInClassesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1063,7 +1063,7 @@ readonly fields: SceneFieldRefs;
  */
 export interface Prisma__SceneClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  performers<T extends Prisma.Scene$performersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$performersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PersonsAndScenesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  performers<T extends Prisma.Scene$performersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$performersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsersAndScenesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classes<T extends Prisma.Scene$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$classesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScenesInClassesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1493,23 +1493,23 @@ export type SceneDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
  */
 export type Scene$performersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PersonsAndScenes
+   * Select specific fields to fetch from the UsersAndScenes
    */
-  select?: Prisma.PersonsAndScenesSelect<ExtArgs> | null
+  select?: Prisma.UsersAndScenesSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PersonsAndScenes
+   * Omit specific fields from the UsersAndScenes
    */
-  omit?: Prisma.PersonsAndScenesOmit<ExtArgs> | null
+  omit?: Prisma.UsersAndScenesOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PersonsAndScenesInclude<ExtArgs> | null
-  where?: Prisma.PersonsAndScenesWhereInput
-  orderBy?: Prisma.PersonsAndScenesOrderByWithRelationInput | Prisma.PersonsAndScenesOrderByWithRelationInput[]
-  cursor?: Prisma.PersonsAndScenesWhereUniqueInput
+  include?: Prisma.UsersAndScenesInclude<ExtArgs> | null
+  where?: Prisma.UsersAndScenesWhereInput
+  orderBy?: Prisma.UsersAndScenesOrderByWithRelationInput | Prisma.UsersAndScenesOrderByWithRelationInput[]
+  cursor?: Prisma.UsersAndScenesWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PersonsAndScenesScalarFieldEnum | Prisma.PersonsAndScenesScalarFieldEnum[]
+  distinct?: Prisma.UsersAndScenesScalarFieldEnum | Prisma.UsersAndScenesScalarFieldEnum[]
 }
 
 /**

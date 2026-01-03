@@ -1,7 +1,5 @@
+import { ClassesGrid } from "../features/class/ClassGrid.tsx";
+
 export const Home = () => {
-  return (
-    <>
-      <p>Home page!</p>
-    </>
-  );
+  return <ClassesGrid />;
 };

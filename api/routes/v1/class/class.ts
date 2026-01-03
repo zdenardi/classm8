@@ -1,9 +1,10 @@
 import { Router } from "@oak/oak";
 import { Class, PrismaClient } from "@/prisma";
+import { clerkAuth } from "../../../middleware/clerkAuth.ts";
 
 const classRouter = new Router();
 
-classRouter.get("/classes", async (context) => {
+classRouter.get("/classes", clerkAuth, async (context) => {
   const db = context.app.state.prisma;
   const classes = await db.class.findMany({
     include: {
@@ -43,8 +44,8 @@ classRouter.get("/classes/:id", async (context) => {
 
 classRouter.post("/classes", async (context) => {
   const db = context.app.state.prisma;
-  const data: Omit<Class, "id" | "createdAt" | "updatedAt"> =
-    await context.request.body.json();
+  const data: Omit<Class, "id" | "createdAt" | "updatedAt"> = await context
+    .request.body.json();
   const createdClass = await db.class.create({ data });
   context.response.body = createdClass;
 });

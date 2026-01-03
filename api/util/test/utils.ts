@@ -1,29 +1,27 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../../prisma/generated/client.ts";
-import process from "node:process";
 
 const connectionString =
-  process.env.DATABASE_URL ||
   `postgresql://postgres:postgres@localhost:5433/classm8_test`;
 const adapter = new PrismaPg({ connectionString });
 export const testDb = new PrismaClient({ adapter });
 
-export async function cleanDatabase() {
+export async function cleanDatabase(db: PrismaClient = testDb) {
   try {
-    await testDb.scenesInClasses.deleteMany();
-    await testDb.personsAndScenes.deleteMany();
-    await testDb.personsInCourses.deleteMany();
-    await testDb.scene.deleteMany();
-    await testDb.class.deleteMany();
-    await testDb.course.deleteMany();
-    await testDb.person.deleteMany();
+    await db.scenesInClasses.deleteMany();
+    await db.usersAndScenes.deleteMany();
+    await db.usersInCourses.deleteMany();
+    await db.scene.deleteMany();
+    await db.class.deleteMany();
+    await db.course.deleteMany();
+    await db.user.deleteMany();
   } catch (e) {
     console.log(e);
   }
 }
 
-export async function seedTestData() {
-  const instructor = await testDb.person.create({
+export async function seedTestData(db: PrismaClient = testDb) {
+  const instructor = await db.user.create({
     data: {
       email: "instructor@test.com",
       firstName: "John",
@@ -32,7 +30,7 @@ export async function seedTestData() {
     },
   });
 
-  const student1 = await testDb.person.create({
+  const student1 = await db.user.create({
     data: {
       email: "student1@email.com",
       firstName: "Student1",
@@ -41,7 +39,7 @@ export async function seedTestData() {
     },
   });
 
-  const student2 = await testDb.person.create({
+  const student2 = await db.user.create({
     data: {
       email: "student2@email.com",
       firstName: "Student2",
@@ -50,30 +48,30 @@ export async function seedTestData() {
     },
   });
 
-  const scene = await testDb.scene.create({
+  const scene = await db.scene.create({
     data: {
       duration: 10,
       title: "A Fake Scene",
       type: "PLAY",
       notes: "A fake play",
       performers: {
-        create: [{ personId: student1.id }, { personId: student2.id }],
+        create: [{ userId: student1.id }, { userId: student2.id }],
       },
     },
   });
 
-  const course = await testDb.course.create({
+  const course = await db.course.create({
     data: {
       title: "Test Course",
       studentLimit: 10,
       instructorId: instructor.id,
       students: {
-        create: [{ personId: student1.id }, { personId: student2.id }],
+        create: [{ userId: student1.id }, { userId: student2.id }],
       },
     },
   });
 
-  const actingClass = await testDb.class.create({
+  const actingClass = await db.class.create({
     data: {
       courseId: course.id,
       location: "Some place",

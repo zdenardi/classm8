@@ -9,7 +9,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Person {
+model User {
   id        Int    @id @default(autoincrement())
   email     String @unique
   firstName String
@@ -17,8 +17,8 @@ model Person {
   role      Role   @default(STUDENT)
 
   // Relations
-  enrollments       PersonsInCourses[]
-  scenesPerformed   PersonsAndScenes[]
+  enrollments       UsersInCourses[]
+  scenesPerformed   UsersAndScenes[]
   coursesInstructed Course[]
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
@@ -32,8 +32,8 @@ model Course {
   instructorId Int
 
   // Relations
-  instructor Person             @relation(fields: [instructorId], references: [id])
-  students   PersonsInCourses[]
+  instructor User             @relation(fields: [instructorId], references: [id])
+  students   UsersInCourses[]
   classes    Class[]
 
   createdAt DateTime @default(now())
@@ -41,17 +41,17 @@ model Course {
 }
 
 model Class {
-id Int @id @default(autoincrement())
-courseId Int
-location String
-notes String?
-streamingLink String
-startDate DateTime
-endDate DateTime
+  id            Int      @id @default(autoincrement())
+  courseId      Int
+  location      String
+  notes         String?
+  streamingLink String
+  startDate     DateTime
+  endDate       DateTime
 
-// Relations
-course Course @relation(fields: [courseId], references: [id],onDelete: Cascade)
-scenes ScenesInClasses[]
+  // Relations
+  course Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  scenes ScenesInClasses[]
 }
 
 model Scene {
@@ -62,45 +62,45 @@ model Scene {
   notes    String?
 
   // Relations
-  performers PersonsAndScenes[]
+  performers UsersAndScenes[]
   classes    ScenesInClasses[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model PersonsInCourses {
-  personId Int
+model UsersInCourses {
+  userId   Int
   courseId Int
   hasPaid  Boolean @default(false)
 
   // Relations
-  person Person @relation(fields: [personId], references: [id])
-  course Course @relation(fields: [courseId], references: [id],onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  @@id([personId, courseId])
+  @@id([userId, courseId])
 }
 
-model PersonsAndScenes {
-  personId Int
-  sceneId  Int
+model UsersAndScenes {
+  userId  Int
+  sceneId Int
 
   // Relations
-  person Person @relation(fields: [personId], references: [id],onDelete: Cascade)
-  scene  Scene  @relation(fields: [sceneId], references: [id],onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scene Scene @relation(fields: [sceneId], references: [id], onDelete: Cascade)
 
-  @@id([personId, sceneId])
+  @@id([userId, sceneId])
 }
 
 model ScenesInClasses {
-  classId Int
+  classId  Int
   sceneId  Int
   approved Boolean @default(false)
-  order Int @unique
+  order    Int     @unique
 
   // Relations
-  class Class @relation(fields: [classId], references: [id],onDelete: Cascade)
-  scene  Scene  @relation(fields: [sceneId], references: [id],onDelete: Cascade)
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+  scene Scene @relation(fields: [sceneId], references: [id], onDelete: Cascade)
 
   @@id([classId, sceneId])
 }

@@ -8,7 +8,7 @@ courseRouter.get("/courses", async (context) => {
   const courses = await db.course.findMany({
     include: {
       students: {
-        include: { person: true },
+        include: { user: true },
       },
     },
   });
@@ -24,7 +24,7 @@ courseRouter.get("/courses/:id", async (context) => {
     },
     include: {
       students: {
-        include: { person: true },
+        include: { user: true },
       },
     },
   });
@@ -59,7 +59,7 @@ courseRouter.patch("/courses/:id", async (context) => {
       instructor: true,
       students: {
         include: {
-          person: true,
+          user: true,
         },
       },
       classes: {

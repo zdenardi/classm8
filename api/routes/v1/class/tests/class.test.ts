@@ -1,7 +1,7 @@
 import { createApp } from "../../../../main.ts";
-import { cleanDatabase, seedTestData, testDb } from "@/test-utils";
+import { cleanDatabase, db, seedTestData } from "@/test-utils";
 
-import type { Class, Course, Person, Scene } from "@/prisma";
+import type { Class, Course } from "@/prisma";
 import { assertEquals, assertExists } from "@std/assert";
 import { ClassWithCourseAndScenes } from "../../../../../types/class.ts";
 
@@ -17,11 +17,11 @@ Deno.test.beforeEach(async () => {
 });
 
 Deno.test.afterEach(async () => {
-  await testDb.$disconnect;
+  await db.$disconnect;
 });
 
 Deno.test("GET classes", async () => {
-  const app = createApp(testDb);
+  const app = createApp(db);
   const request = new Request("http://localhost:8000/api/v1/classes", {
     method: "GET",
   });
@@ -36,16 +36,16 @@ Deno.test("GET classes", async () => {
   const actingClass: ClassWithCourseAndScenes = body[0];
   assertEquals(actingClass.id, exampleClass.id);
 
-  testDb.$disconnect();
+  db.$disconnect();
 });
 
 Deno.test("GET class by id", async () => {
-  const app = createApp(testDb);
+  const app = createApp(db);
   const request = new Request(
     `http://localhost:8000/api/v1/classes/${exampleClass?.id}`,
     {
       method: "GET",
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions
@@ -57,12 +57,12 @@ Deno.test("GET class by id", async () => {
   assertEquals(actingClass.id, exampleClass.id);
   console.log(actingClass);
 
-  testDb.$disconnect();
+  db.$disconnect();
 });
 
 Deno.test("POST classes", async () => {
   assertExists(exampleCourse);
-  const app = createApp(testDb);
+  const app = createApp(db);
   const createdClass = {
     courseId: exampleCourse.id,
     location: "Some place",
@@ -84,13 +84,13 @@ Deno.test("POST classes", async () => {
   assertExists(response);
   assertEquals(response.status, 200);
 
-  testDb.$disconnect();
+  db.$disconnect();
 });
 
 Deno.test("PATCH class by id", async () => {
   assertExists(exampleClass);
   assertExists(exampleCourse);
-  const app = createApp(testDb);
+  const app = createApp(db);
   const data = {
     id: exampleClass.id,
     courseId: exampleCourse.id,
@@ -108,7 +108,7 @@ Deno.test("PATCH class by id", async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions
@@ -119,23 +119,23 @@ Deno.test("PATCH class by id", async () => {
   assertEquals(actingClass.id, exampleClass.id);
   assertEquals(actingClass.streamingLink, data.streamingLink);
 
-  testDb.$disconnect();
+  db.$disconnect();
 });
 
 Deno.test("DELETE class by id", async () => {
   assertExists(exampleClass);
-  const app = createApp(testDb);
+  const app = createApp(db);
 
   const request = new Request(
     `http://localhost:8000/api/v1/classes/${exampleClass?.id}`,
     {
       method: "DELETE",
-    }
+    },
   );
   const response = await app.handle(request);
   // Assertions
   assertExists(response);
   assertEquals(response.status, 204);
 
-  testDb.$disconnect();
+  db.$disconnect();
 });

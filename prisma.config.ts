@@ -11,6 +11,6 @@ export default defineConfig({
     seed: "deno run -A prisma/seed.ts",
   },
   datasource: {
-    url: "postgresql://postgres:postgres@localhost:5432/classm8_test",
+    url: "postgresql://postgres:postgres@localhost:5432/classm8",
   },
 });

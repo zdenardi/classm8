@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Home } from "./pages/Home.tsx";
+import classNames from "classnames";
 import {
   SignedIn,
   SignedOut,
@@ -9,6 +10,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import tokenGetter from "./utils/auth.ts";
+import { GRID_CONTAINER } from "./constants/grid.ts";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -27,6 +29,7 @@ function App() {
       <SignedIn>
         <TokenGetter />
         <UserButton />
+
         <Home />
       </SignedIn>
     </header>

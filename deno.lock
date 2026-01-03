@@ -31,6 +31,7 @@
     "npm:autoprefixer@^10.4.23": "10.4.23_postcss@8.5.6",
     "npm:axios@^1.13.2": "1.13.2",
     "npm:axios@^1.7.9": "1.13.2",
+    "npm:classnames@^2.5.1": "2.5.1",
     "npm:dotenv@^17.2.3": "17.2.3",
     "npm:esbuild@~0.25.12": "0.25.12",
     "npm:eslint-plugin-react-hooks@^7.0.1": "7.0.1_eslint@9.39.2_zod@4.1.12",
@@ -1376,6 +1377,9 @@
       "dependencies": [
         "consola"
       ]
+    },
+    "classnames@2.5.1": {
+      "integrity": "sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow=="
     },
     "color-convert@2.0.1": {
       "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
@@ -3191,6 +3195,7 @@
         "npm:ag-grid-react@35",
         "npm:autoprefixer@^10.4.23",
         "npm:axios@^1.13.2",
+        "npm:classnames@^2.5.1",
         "npm:dotenv@^17.2.3",
         "npm:esbuild@~0.25.12",
         "npm:eslint-plugin-react-hooks@^7.0.1",

@@ -1,3 +1,4 @@
+import { ClassWithCourseAndScenes } from "../types/class.ts";
 import { getData } from "./service.ts";
 
 export const CLASSES_ROUTES = {
@@ -5,7 +6,7 @@ export const CLASSES_ROUTES = {
 };
 
 export const CLASS_API_CALLS = {
-  get: async () => {
+  get: async (): Promise<ClassWithCourseAndScenes[]> => {
     return await getData("classes");
   },
 };

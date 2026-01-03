@@ -35,5 +35,13 @@
     "lib": ["dom", "dom.iterable", "deno.ns"],
     "jsx": "react-jsx",
     "jsxImportSource": "react"
+  },
+  "fmt": {
+    "singleQuote": true,
+    "semiColons": true,
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "proseWrap": "always",
+    "useTabs": true
   }
 }

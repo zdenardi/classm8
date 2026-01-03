@@ -1,5 +1,5 @@
-import { Prisma } from "@/prisma";
+import { Prisma } from '@/prisma';
 
 export type CourseWithStudents = Prisma.CourseGetPayload<{
-  include: { students: true };
+	include: { students: true };
 }>;

@@ -14,6 +14,13 @@ export type Context = {
 	actingClassRef: ActorRefFrom<typeof actingClassMachine>;
 	token: string | undefined;
 	loading: boolean;
+	profile: {
+		id: number;
+		firstName: string;
+		lastName: string;
+		email: string;
+		role: 'STUDENT' | 'ADMIN' | 'MODERATOR' | 'INSTRUCTOR';
+	} | undefined;
 };
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -47,6 +54,7 @@ export const userState = setup({
 		}),
 		token: undefined,
 		loading: false,
+		profile: undefined,
 	}),
 	initial: '$_IDLE',
 	states: {

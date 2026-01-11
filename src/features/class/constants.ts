@@ -1,5 +1,5 @@
 import type { ColDef } from 'ag-grid-community';
-import { ClassWithCourseAndScenes } from '../../types/class.ts';
+import type { ClassWithCourseAndScenes } from '../../types/class.ts';
 
 export const ActingClassColumns: ColDef<ClassWithCourseAndScenes>[] = [
 	{

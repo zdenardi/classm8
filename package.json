@@ -17,6 +17,7 @@
 		"@prisma/client": "^7.2.0",
 		"@types/react": "^19.2.7",
 		"@vitejs/plugin-react": "^5.1.2",
+		"@xstate/react": "^6.0.0",
 		"ag-grid-community": "^35.0.0",
 		"ag-grid-react": "^35.0.0",
 		"axios": "^1.13.2",

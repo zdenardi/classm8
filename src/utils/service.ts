@@ -1,9 +1,5 @@
 import axios from 'axios';
-import type {
-	AxiosRequestConfig,
-	InternalAxiosRequestConfig,
-	ResponseType,
-} from 'axios';
+import type { InternalAxiosRequestConfig, ResponseType } from 'axios';
 import { API_V1 } from '../constants/index.ts';
 import tokenGetter from './auth.ts';
 import { ROUTES } from './routes.ts';
@@ -81,7 +77,7 @@ export const handleServiceCall = async ({
 export const getData = async <T>(
 	route: keyof typeof ROUTES,
 ): Promise<T> => {
-	return handleServiceCall({
+	return await handleServiceCall({
 		method: 'get',
 		route: route,
 	});

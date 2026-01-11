@@ -27,6 +27,7 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			firstName: 'John',
 			lastName: 'Doe',
 			role: 'INSTRUCTOR',
+			clerkId: 'instructorUser',
 		},
 	});
 
@@ -36,6 +37,7 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			firstName: 'Student1',
 			lastName: 'Uno',
 			role: 'STUDENT',
+			clerkId: 'student1',
 		},
 	});
 
@@ -45,6 +47,7 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			firstName: 'Student2',
 			lastName: 'Dos',
 			role: 'STUDENT',
+			clerkId: 'student2',
 		},
 	});
 

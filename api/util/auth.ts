@@ -1,7 +1,14 @@
 import { verifyToken } from '@clerk/backend';
-
-export async function verifyClerkSession(authHeader?: string) {
+export interface Session {
+	userId: string;
+	sessionId: string;
+	orgId: string | undefined;
+}
+export async function verifyClerkSession(
+	authHeader?: string,
+): Promise<Session | null> {
 	if (!authHeader?.startsWith('Bearer ')) {
+		console.warn('No token!');
 		return null;
 	}
 
@@ -11,6 +18,7 @@ export async function verifyClerkSession(authHeader?: string) {
 		const payload = await verifyToken(token, {
 			secretKey: Deno.env.get('CLERK_SECRET_KEY')!,
 		});
+		console.log(payload);
 
 		return {
 			userId: payload.sub,

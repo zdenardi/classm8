@@ -1,16 +1,17 @@
-import { ClassWithCourseAndScenes } from "../types/class.ts";
-import { getData } from "./service.ts";
+export const ROUTE_NAMES = {
+	class: 'classes',
+	auth: 'auth',
+} as const;
 
 export const CLASSES_ROUTES = {
-  get: "/classes",
+	get: '/classes',
 };
 
-export const CLASS_API_CALLS = {
-  get: async (): Promise<ClassWithCourseAndScenes[]> => {
-    return await getData("classes");
-  },
+export const AUTH_ROUTES = {
+	get: '/auth',
 };
 
 export const ROUTES = {
-  classes: CLASSES_ROUTES,
+	classes: CLASSES_ROUTES,
+	auth: AUTH_ROUTES,
 };

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Home } from "./pages/Home.tsx";
-import classNames from "classnames";
 import {
   SignedIn,
   SignedOut,
@@ -10,7 +9,9 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import tokenGetter from "./utils/auth.ts";
-import { GRID_CONTAINER } from "./constants/grid.ts";
+import { userState } from "./stateMachines/userState.machine.ts";
+import { createActorContext } from "@xstate/react";
+import { SignedInWrapper } from "./features/SignedInWrapper.tsx";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -19,19 +20,27 @@ const TokenGetter = () => {
   }, [getToken]);
   return null;
 };
+export const UserContext = createActorContext(userState, {
+  id: "userState",
+  systemId: "userState",
+});
 
 function App() {
   return (
     <header>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <TokenGetter />
-        <UserButton />
+      <UserContext.Provider>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
 
-        <Home />
-      </SignedIn>
+        <SignedIn>
+          <TokenGetter />
+          <UserButton />
+          <SignedInWrapper>
+            <Home />
+          </SignedInWrapper>
+        </SignedIn>
+      </UserContext.Provider>
     </header>
   );
 }

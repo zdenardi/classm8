@@ -1,5 +1,6 @@
 import { Router } from '@oak/oak';
 import { verifyClerkSession } from '../../../util/auth.ts';
+import { User } from '@clerk/backend';
 
 const authRouter = new Router();
 
@@ -36,6 +37,17 @@ authRouter.get('/auth', async (context) => {
 			context.response.status = 200;
 		}
 	}
+});
+
+//Registers new user
+
+authRouter.post('/auth', async (context) => {
+	const db = context.app.state.prisma;
+	const data: Omit<User, 'id' | 'createdAt' | 'updatedAt'> = await context
+		.request
+		.body.json();
+	const newUser = await db.user.create({ data });
+	context.response.body = newUser;
 });
 
 export default authRouter;

@@ -6,12 +6,17 @@ import {
 	setup,
 } from 'xstate';
 import { actingClassMachine } from '../features/class/class.machine.ts';
-import { ACTING_CLASS_STATE } from '../constants/xstateSustem.ts';
+import {
+	ACTING_CLASS_STATE,
+	REGISTRATION_STATE,
+} from '../constants/xstateSustem.ts';
 import { AUTH_API_CALLS } from './api.ts';
 import { User } from '../types/user.ts';
+import { registrationMachine } from '../features/registration/registration.machine.ts';
 
 export type Context = {
 	actingClassRef: ActorRefFrom<typeof actingClassMachine>;
+	registrationRef: ActorRefFrom<typeof registrationMachine>;
 	token: string | undefined;
 	loading: boolean;
 	profile: {
@@ -30,11 +35,13 @@ export type ON_USER_SIGNED_IN = {
 export type ON_CHECK_REGISTRATION = {
 	type: 'ON_CHECK_REGISTRATION';
 };
+export type RedirectResponse = {
+	redirect: string;
+	message: string;
+};
+
 export type ClassesResponseEvent = DoneActorEvent<
-	User | {
-		redirect?: string;
-		message?: string;
-	}
+	User | RedirectResponse
 >;
 
 export type Events = ON_LOAD | ON_USER_SIGNED_IN | ON_CHECK_REGISTRATION;
@@ -43,6 +50,7 @@ export const userState = setup({
 	types: { context: {} as Context, events: {} as Events },
 	actors: {
 		actingClassRef: actingClassMachine,
+		registrationRef: registrationMachine,
 		checkRegistration: fromPromise(AUTH_API_CALLS.get),
 	},
 }).createMachine({
@@ -50,6 +58,11 @@ export const userState = setup({
 		actingClassRef: spawn('actingClassRef', {
 			id: ACTING_CLASS_STATE,
 			systemId: ACTING_CLASS_STATE,
+			input: undefined,
+		}),
+		registrationRef: spawn('registrationRef', {
+			id: REGISTRATION_STATE,
+			systemId: REGISTRATION_STATE,
 			input: undefined,
 		}),
 		token: undefined,
@@ -84,15 +97,32 @@ export const userState = setup({
 				input: (inputProps) => inputProps,
 				onDone: [
 					{
-						guard: ({ event }) => event.output.statusCode,
-						actions: [() => {
-							console.log('redirect!');
-						}],
+						guard: ({ event }) => {
+							const data = event.output.data;
+							return data && typeof data === 'object' && 'redirect' in data;
+						},
+						actions: [
+							({ event, context }) => {
+								context.registrationRef.send({ type: 'ON_OPEN' });
+								const data = event.output.data as RedirectResponse;
+								console.log('Redirect needed:', data.redirect);
+								console.log('Message:', data.message);
+								// Handle redirect logic here
+							},
+						],
+						target: '$_IDLE',
 					},
 					{
 						target: '$_LOAD_APP',
+						actions: [() => console.log('Load!')],
 					},
 				],
+				onError: {
+					target: '$_IDLE',
+					actions: [
+						(e) => console.log(e),
+					],
+				},
 			},
 		},
 	},

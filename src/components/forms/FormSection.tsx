@@ -1,6 +1,6 @@
-import { Fieldset } from '@headlessui/react';
-import classNames from 'classnames';
-import { ReactNode } from 'react';
+import { Fieldset } from "@headlessui/react";
+import classNames from "classnames";
+import { ReactNode } from "react";
 
 interface FormSectionProps {
   componentsPerLine: number;
@@ -20,4 +20,3 @@ export const FormSection = (props: FormSectionProps) => {
     </Fieldset>
   );
 };
-Fir;

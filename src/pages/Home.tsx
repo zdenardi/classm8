@@ -1,5 +1,10 @@
-import { ClassesGrid } from '../features/class/ClassGrid.tsx';
+import { ClassesGrid } from "../features/class/ClassGrid.tsx";
 
 export const Home = () => {
-	return <ClassesGrid />;
+  return (
+    <div>
+      {/* <RegistrationModal /> */}
+      <ClassesGrid />
+    </div>
+  );
 };

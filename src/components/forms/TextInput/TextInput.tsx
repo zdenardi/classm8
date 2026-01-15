@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { FormFieldProps } from "../interfaces.tsx";
 import { createFormFieldStyles } from "../../../constants/styles.ts";
+import { FormLabel } from "../FormLabel.tsx";
 
 interface Props<
   TFieldValues extends FieldValues = FieldValues,

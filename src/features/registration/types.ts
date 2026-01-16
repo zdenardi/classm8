@@ -7,7 +7,7 @@ export interface Scope {
 }
 
 export interface Context {
-	openModal: boolean;
+	loading: boolean;
 	firstName: string;
 	lastName: string;
 	email: string;

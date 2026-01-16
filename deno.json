@@ -33,7 +33,6 @@
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {
-    "target": "esnext",
     "types": ["react", "react-dom", "@types/react"],
     "lib": ["dom", "dom.iterable", "deno.ns"],
     "jsx": "react-jsx",
@@ -49,6 +48,15 @@
   },
   "allowScripts": {
     "allow": [],
-    "deny": ["npm:@clerk/shared@3.41.1", "npm:@prisma/engines@7.2.0", "npm:esbuild@0.21.5", "npm:esbuild@0.25.12", "npm:esbuild@0.27.2", "npm:fsevents@2.3.2", "npm:fsevents@2.3.3", "npm:prisma@7.2.0"]
+    "deny": [
+      "npm:@clerk/shared@3.41.1",
+      "npm:@prisma/engines@7.2.0",
+      "npm:esbuild@0.21.5",
+      "npm:esbuild@0.25.12",
+      "npm:esbuild@0.27.2",
+      "npm:fsevents@2.3.2",
+      "npm:fsevents@2.3.3",
+      "npm:prisma@7.2.0"
+    ]
   }
 }

@@ -34,7 +34,7 @@ export const AUTH_API_CALLS = {
 		const event = input.event as SUBMIT_REGISTRATION;
 		return await postData(ROUTE_NAMES.auth, {
 			data: {
-				firstName: event.payload,
+				firstName: event.payload.firstName,
 				lastName: event.payload.lastName,
 				email: event.payload.email,
 			},

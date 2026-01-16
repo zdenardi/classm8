@@ -14,6 +14,7 @@ import { createActorContext } from "@xstate/react";
 import { SignedInWrapper } from "./features/SignedInWrapper.tsx";
 import { Route, Routes } from "react-router";
 import { RegistrationForm } from "./features/registration/RegistrationForm.tsx";
+import { XStateRedirectListener } from "./components/XStateRedirectListener.tsx";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -31,6 +32,7 @@ function App() {
   return (
     <header>
       <UserContext.Provider>
+        <XStateRedirectListener />
         <SignedOut>
           <SignInButton />
         </SignedOut>

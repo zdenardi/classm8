@@ -6,17 +6,13 @@ import {
 	setup,
 } from 'xstate';
 import { actingClassMachine } from '../features/class/class.machine.ts';
-import {
-	ACTING_CLASS_STATE,
-	REGISTRATION_STATE,
-} from '../constants/xstateSustem.ts';
+import { ACTING_CLASS_STATE } from '../constants/xstateSustem.ts';
 import { AUTH_API_CALLS } from './api.ts';
 import { User } from '../types/user.ts';
 import { registrationMachine } from '../features/registration/registration.machine.ts';
 
-export type Context = {
+export type UserContext = {
 	actingClassRef: ActorRefFrom<typeof actingClassMachine>;
-	registrationRef: ActorRefFrom<typeof registrationMachine>;
 	token: string | undefined;
 	loading: boolean;
 	profile: {
@@ -46,8 +42,15 @@ export type ClassesResponseEvent = DoneActorEvent<
 
 export type Events = ON_LOAD | ON_USER_SIGNED_IN | ON_CHECK_REGISTRATION;
 
+// Helper to emit redirect event
+export const emitRedirect = (path: string) => {
+	globalThis.dispatchEvent(
+		new CustomEvent('xstate-redirect', { detail: { path } }),
+	);
+};
+
 export const userState = setup({
-	types: { context: {} as Context, events: {} as Events },
+	types: { context: {} as UserContext, events: {} as Events },
 	actors: {
 		actingClassRef: actingClassMachine,
 		registrationRef: registrationMachine,
@@ -60,11 +63,7 @@ export const userState = setup({
 			systemId: ACTING_CLASS_STATE,
 			input: undefined,
 		}),
-		registrationRef: spawn('registrationRef', {
-			id: REGISTRATION_STATE,
-			systemId: REGISTRATION_STATE,
-			input: undefined,
-		}),
+		registrationRef: registrationMachine,
 		token: undefined,
 		loading: false,
 		profile: undefined,
@@ -101,16 +100,16 @@ export const userState = setup({
 							const data = event.output.data;
 							return data && typeof data === 'object' && 'redirect' in data;
 						},
+						target: '$_REGISTRATION',
 						actions: [
-							({ event, context }) => {
-								context.registrationRef.send({ type: 'ON_OPEN' });
+							({ event }) => {
 								const data = event.output.data as RedirectResponse;
 								console.log('Redirect needed:', data.redirect);
 								console.log('Message:', data.message);
-								// Handle redirect logic here
+								// Emit redirect event
+								emitRedirect('/register');
 							},
 						],
-						target: '$_IDLE',
 					},
 					{
 						target: '$_LOAD_APP',
@@ -122,6 +121,35 @@ export const userState = setup({
 					actions: [
 						(e) => console.log(e),
 					],
+				},
+			},
+		},
+		$_REGISTRATION: {
+			invoke: {
+				id: 'registrationMachine',
+				src: 'registrationRef',
+				input: ({ context }) => ({
+					// Pass any initial data to registration machine
+					firstName: context.profile?.firstName || '',
+					lastName: context.profile?.lastName || '',
+					email: context.profile?.email || '',
+				}),
+				onDone: {
+					target: '$_LOAD_APP',
+					actions: [
+						assign({
+							profile: ({ event }) => event.output,
+						}),
+						() => {
+							console.log('Registration Complete');
+							// Redirect back to home after successful registration
+							// emitRedirect('/');
+						},
+					],
+				},
+				onError: {
+					target: '$_IDLE',
+					actions: [(e) => console.log('Registration error:', e)],
 				},
 			},
 		},

@@ -39,8 +39,8 @@ export const ClassesGrid = () => {
 
   return (
     <div className={classNames("w-full", "border-2")}>
-      <div className="p-4 space-y-4 mx-auto w-96">
-        <h1 className="text-2xl font-semibold">Classes</h1>
+      <div className="p-4 space-y-4 mx-auto ">
+        <h1 className="text-2xl font-semibold text-left">Classes</h1>
         <div className="h-[600px] border border-gray-200 rounded-lg overflow-hidden w-full">
           <AgGridReact
             theme={theme}

@@ -4,6 +4,7 @@ import "./index.css";
 // Import AG Grid setup to register modules
 import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { BrowserRouter } from "react-router";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -17,8 +18,10 @@ const clerkConfig = {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ClerkProvider {...clerkConfig}>
-      <App />
-    </ClerkProvider>
+    <BrowserRouter>
+      <ClerkProvider {...clerkConfig}>
+        <App />
+      </ClerkProvider>
+    </BrowserRouter>
   </StrictMode>
 );

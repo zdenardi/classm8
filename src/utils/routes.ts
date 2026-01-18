@@ -9,6 +9,7 @@ export const CLASSES_ROUTES = {
 
 export const AUTH_ROUTES = {
 	get: '/auth',
+	post: '/auth',
 };
 
 export const ROUTES = {

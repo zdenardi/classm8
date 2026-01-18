@@ -12,6 +12,9 @@ import tokenGetter from "./utils/auth.ts";
 import { userState } from "./stateMachines/userState.machine.ts";
 import { createActorContext } from "@xstate/react";
 import { SignedInWrapper } from "./features/SignedInWrapper.tsx";
+import { Route, Routes } from "react-router";
+import { RegistrationForm } from "./features/registration/RegistrationForm.tsx";
+import { XStateRedirectListener } from "./components/XStateRedirectListener.tsx";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -29,6 +32,7 @@ function App() {
   return (
     <header>
       <UserContext.Provider>
+        <XStateRedirectListener />
         <SignedOut>
           <SignInButton />
         </SignedOut>
@@ -37,7 +41,10 @@ function App() {
           <TokenGetter />
           <UserButton />
           <SignedInWrapper>
-            <Home />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<RegistrationForm />} />
+            </Routes>
           </SignedInWrapper>
         </SignedIn>
       </UserContext.Provider>

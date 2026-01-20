@@ -76,10 +76,23 @@ export const handleServiceCall = async ({
 
 export const getData = async <T>(
 	route: keyof typeof ROUTES,
+	options?: Omit<ServiceCallParams, 'method' | 'route'>,
 ): Promise<T> => {
 	return await handleServiceCall({
 		method: 'get',
 		route: route,
+		...options,
+	});
+};
+
+export const getOneData = async <T>(
+	route: keyof typeof ROUTES,
+	options?: Omit<ServiceCallParams, 'method' | 'route'>,
+): Promise<T> => {
+	return await handleServiceCall({
+		method: 'get',
+		route: route,
+		...options,
 	});
 };
 
@@ -107,7 +120,7 @@ export const deleteData = async (
 	});
 };
 
-export const putData = async <T>(
+export const patchData = async <T>(
 	route: keyof typeof ROUTES,
 	options?: Omit<ServiceCallParams, 'method' | 'route'>,
 ) => {

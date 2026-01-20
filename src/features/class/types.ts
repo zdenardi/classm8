@@ -1,5 +1,5 @@
 import { type ActionArgs } from 'xstate';
-import { type ClassWithCourseAndScenes } from '../../types/class.ts';
+import { type IClassWithCourseAndScenes } from '../../types/class.ts';
 import { type Events } from './events.ts';
 
 export interface Scope {
@@ -9,7 +9,7 @@ export interface Scope {
 
 export interface Context {
 	loading: boolean;
-	data: ClassWithCourseAndScenes[];
+	data: IClassWithCourseAndScenes[];
 }
 
 export interface XStateInput {

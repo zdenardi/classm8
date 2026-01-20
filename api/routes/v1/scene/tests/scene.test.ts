@@ -1,41 +1,46 @@
 import { createApp } from '../../../../main.ts';
 import { cleanDatabase, seedTestData } from '@/test-utils';
-import { createClerkClient } from '@clerk/backend';
-import type { Class, Course } from '@/prisma';
+
+import type { Class, Course, Scene } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { ClassWithCourseAndScenes } from '../../../../../types/class.ts';
 import { db } from '@/db';
 
 let exampleClass: Class | undefined;
 let exampleCourse: Course | undefined;
+let exampleScene: Scene | undefined;
 
 Deno.test.beforeEach(async () => {
 	console.log('Setting up testing data');
 	await cleanDatabase();
-	const { actingClass, course } = await seedTestData();
+	const { actingClass, course, scene } = await seedTestData();
 	exampleClass = actingClass;
 	exampleCourse = course;
+	exampleScene = scene;
+	assertExists(exampleClass);
+	assertExists(exampleCourse);
+	assertExists(exampleScene);
 });
 
 Deno.test.afterEach(async () => {
-	await db.$disconnect();
+	await db.$disconnect;
 });
 
-Deno.test('GET classes', async () => {
+Deno.test('GET scenes', async () => {
 	const app = createApp(db);
-	const request = new Request('http://localhost:8000/api/v1/classes', {
+	const request = new Request('http://localhost:8000/api/v1/scenes', {
 		method: 'GET',
 	});
 	const response = await app.handle(request);
 	// Assertions
 	assertExists(response);
-	assertExists(exampleClass);
+	assertExists(exampleScene);
 	assertEquals(response.status, 200);
 
 	const body = await response.json();
 	assertEquals(Array.isArray(body), true);
-	const actingClass: ClassWithCourseAndScenes = body[0];
-	assertEquals(actingClass.id, exampleClass.id);
+	const scene: Scene = body[0];
+	assertEquals(scene.id, exampleScene.id);
 
 	db.$disconnect();
 });

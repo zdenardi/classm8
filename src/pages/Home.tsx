@@ -25,6 +25,8 @@ import {
   SidebarSection,
   SidebarSpacer,
 } from "../components/catalyst/sidebar.tsx";
+import { ScenesGrid } from "../features/scene/ScenesGrid.tsx";
+import { CoursesGrid } from "../features/course/CourseGrid.tsx";
 export const Home = () => {
   return (
     <SidebarLayout
@@ -101,6 +103,8 @@ export const Home = () => {
       }
     >
       <ClassesGrid />
+      <ScenesGrid />
+      <CoursesGrid />
     </SidebarLayout>
   );
 };

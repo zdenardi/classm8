@@ -2,7 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../../prisma/generated/client.ts';
 
 const connectionString =
-	`postgresql://postgres:postgres@localhost:5433/classm8_test`;
+	`postgresql://postgres:postgres@localhost:5432/classm8`;
 const adapter = new PrismaPg({ connectionString });
 export const testDb = new PrismaClient({ adapter });
 

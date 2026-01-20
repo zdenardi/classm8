@@ -6,13 +6,21 @@ import {
 	setup,
 } from 'xstate';
 import { actingClassMachine } from '../features/class/class.machine.ts';
-import { ACTING_CLASS_STATE } from '../constants/xstateSustem.ts';
+import {
+	ACTING_CLASS_STATE,
+	COURSES_STATE,
+	SCENES_STATE,
+} from '../constants/xstateSustem.ts';
 import { AUTH_API_CALLS } from './api.ts';
-import { User } from '../types/user.ts';
+import { IUser } from '../types/user.ts';
 import { registrationMachine } from '../features/registration/registration.machine.ts';
+import { scenesMachine } from '../features/scene/scene.machine.ts';
+import { coursesMachine } from '../features/course/course.machine.ts';
 
 export type UserContext = {
 	actingClassRef: ActorRefFrom<typeof actingClassMachine>;
+	sceneRef: ActorRefFrom<typeof scenesMachine>;
+	courseRef: ActorRefFrom<typeof coursesMachine>;
 	token: string | undefined;
 	loading: boolean;
 	profile: {
@@ -37,7 +45,7 @@ export type RedirectResponse = {
 };
 
 export type ClassesResponseEvent = DoneActorEvent<
-	User | RedirectResponse
+	IUser | RedirectResponse
 >;
 
 export type Events = ON_LOAD | ON_USER_SIGNED_IN | ON_CHECK_REGISTRATION;
@@ -53,6 +61,8 @@ export const userState = setup({
 	types: { context: {} as UserContext, events: {} as Events },
 	actors: {
 		actingClassRef: actingClassMachine,
+		sceneRef: scenesMachine,
+		courseRef: coursesMachine,
 		registrationRef: registrationMachine,
 		checkRegistration: fromPromise(AUTH_API_CALLS.get),
 	},
@@ -61,6 +71,16 @@ export const userState = setup({
 		actingClassRef: spawn('actingClassRef', {
 			id: ACTING_CLASS_STATE,
 			systemId: ACTING_CLASS_STATE,
+			input: undefined,
+		}),
+		sceneRef: spawn('sceneRef', {
+			id: SCENES_STATE,
+			systemId: SCENES_STATE,
+			input: undefined,
+		}),
+		courseRef: spawn('courseRef', {
+			id: COURSES_STATE,
+			systemId: COURSES_STATE,
 			input: undefined,
 		}),
 		registrationRef: registrationMachine,

@@ -1,9 +1,10 @@
 import { createApp } from '../../../../main.ts';
-import { cleanDatabase, db, seedTestData } from '@/test-utils';
+import { cleanDatabase, seedTestData } from '@/test-utils';
 
 import type { Course, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { CourseWithStudents } from '../../../../../types/course.ts';
+import { db } from '@/db';
 
 let exampleInstructor: User | undefined;
 let exampleCourse: Course | undefined;

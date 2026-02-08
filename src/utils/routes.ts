@@ -22,6 +22,15 @@ export const COURSES_ROUTES = {
 	delete: 'courses/:id',
 };
 
+export const USERS_ROUTES = {
+	get: 'users',
+	getOne: 'users/:id',
+	create: 'users',
+	patch: 'users/:id',
+	delete: 'users/:id',
+	getInstructors: '/users/instructors',
+};
+
 export const SCENES_ROUTES = {
 	get: 'scenes',
 	getOne: 'scenes/:id',
@@ -40,4 +49,5 @@ export const ROUTES = {
 	classes: CLASSES_ROUTES,
 	courses: COURSES_ROUTES,
 	scenes: SCENES_ROUTES,
+	users: USERS_ROUTES,
 };

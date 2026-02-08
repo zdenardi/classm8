@@ -1,5 +1,4 @@
 import { type DoneActorEvent } from 'xstate';
-import { IScene } from '../../types/scene.ts';
 import { IUser } from '../../types/user.ts';
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -11,11 +10,11 @@ export type ON_GET_ONE = {
 
 export type ON_SUBMIT = {
 	type: 'ON_SUBMIT';
-	values: Omit<IScene, 'id'>;
+	values: Omit<IUser, 'id'>;
 };
 export type ON_UPDATE = {
 	type: 'ON_UPDATE';
-	values: IScene;
+	values: IUser;
 };
 export type ON_DELETE = {
 	type: 'ON_DELETE';

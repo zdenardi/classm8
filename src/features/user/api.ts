@@ -16,30 +16,30 @@ import {
 } from './events.ts';
 import { Input } from './types.ts';
 
-export const SCENE_API_CALLS = {
+export const USER_API_CALLS = {
 	get: async (): Promise<UsersResponseEvent> => {
-		return await getData(ROUTE_NAMES.scene);
+		return await getData(ROUTE_NAMES.user);
 	},
 	getOne: async ({ input }: Input<ON_GET_ONE>): Promise<UserResponseEvent> => {
-		return await getOneData(ROUTE_NAMES.scene, {
+		return await getOneData(ROUTE_NAMES.user, {
 			pathParams: {
 				id: input.event.payload.id.toString(),
 			},
 		});
 	},
 	create: async ({ input }: Input<ON_SUBMIT>): Promise<UserResponseEvent> => {
-		return await postData(ROUTE_NAMES.scene, {
+		return await postData(ROUTE_NAMES.user, {
 			data: input.event.values,
 		});
 	},
 	patch: async ({ input }: Input<ON_UPDATE>): Promise<UserResponseEvent> => {
-		return await patchData(ROUTE_NAMES.scene, {
+		return await patchData(ROUTE_NAMES.user, {
 			pathParams: { id: input.event.values.id.toString() },
 			data: input.event.values,
 		});
 	},
 	delete: async ({ input }: Input<ON_DELETE>) => {
-		return await deleteData(ROUTE_NAMES.scene, {
+		return await deleteData(ROUTE_NAMES.user, {
 			pathParams: { id: input.event.payload.id.toString() },
 		});
 	},

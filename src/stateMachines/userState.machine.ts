@@ -10,7 +10,7 @@ import {
 	ACTING_CLASS_STATE,
 	COURSES_STATE,
 	SCENES_STATE,
-} from '../constants/xstateSustem.ts';
+} from '../constants/xstateSystem.ts';
 import { AUTH_API_CALLS } from './api.ts';
 import { IUser } from '../types/user.ts';
 import { registrationMachine } from '../features/registration/registration.machine.ts';

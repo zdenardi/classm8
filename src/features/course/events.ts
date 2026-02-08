@@ -1,12 +1,17 @@
 import { type DoneActorEvent } from 'xstate';
 import { IScene } from '../../types/scene.ts';
 import { ICourseWithStudentsAndClasses } from '../../types/course.ts';
+import { UserResponseEvent } from '../user/events.ts';
 
 export type ON_LOAD = { type: 'ON_LOAD' };
 
 export type ON_GET_ONE = {
 	type: 'ON_GET_ONE';
 	payload: { id: number };
+};
+
+export type ON_GET_INSTRUCTORS = {
+	type: 'ON_GET_INSTRUCTORS';
 };
 
 export type ON_SUBMIT = {
@@ -29,6 +34,9 @@ export type CoursesResponseEvent = DoneActorEvent<
 >;
 export type CourseResponseEvent = DoneActorEvent<ICourseWithStudentsAndClasses>;
 
-export type RESPONSE_EVENTS = CoursesResponseEvent | CourseResponseEvent;
+export type RESPONSE_EVENTS =
+	| CoursesResponseEvent
+	| CourseResponseEvent
+	| UserResponseEvent;
 
-export type Events = CRUD_EVENTS | RESPONSE_EVENTS;
+export type Events = CRUD_EVENTS | RESPONSE_EVENTS | ON_GET_INSTRUCTORS;

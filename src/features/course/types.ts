@@ -1,6 +1,7 @@
 import { type ActionArgs } from 'xstate';
 import { type Events } from './events.ts';
 import { ICourseWithStudentsAndClasses } from '../../types/course.ts';
+import { OptionType } from '../../../types/common.ts';
 
 export interface Scope {
 	events: Events;
@@ -10,6 +11,7 @@ export interface Scope {
 export interface ICourseContext {
 	loading: boolean;
 	data: ICourseWithStudentsAndClasses[];
+	instructorOptions: OptionType[];
 }
 
 export interface XStateInput {

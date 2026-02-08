@@ -16,7 +16,6 @@ const AXIOS_INSTANCES = {
 
 apiAxiosV1.interceptors.request.use(async (config) => {
 	const token = await tokenGetter.getToken();
-	console.log(token);
 	config.headers.Authorization = `Bearer ${token}`;
 	if (!config.headers['Content-Type'] && config.method !== 'get') {
 		config.headers['Content-Type'] = 'application/json';

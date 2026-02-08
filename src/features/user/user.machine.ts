@@ -1,16 +1,17 @@
 import { assign, fromPromise, setup } from 'xstate';
 import { type Events } from './events.ts';
 import { type IUserContext } from './types.ts';
-import { SCENE_API_CALLS } from './api.ts';
 import { setData } from './actions.ts';
+import { USER_API_CALLS } from './api.ts';
+import { createBaseCrudMachine } from '../../stateMachines/base-crud/baseCrudMachine.ts';
+import { IUser } from '../../types/user.ts';
+
+const userCrudMachine = createBaseCrudMachine<IUser, IUser>({});
 
 export const usersMachine = setup({
 	actors: {
-		get: fromPromise(SCENE_API_CALLS.get),
-		getOne: fromPromise(SCENE_API_CALLS.getOne),
-		create: fromPromise(SCENE_API_CALLS.create),
-		delete: fromPromise(SCENE_API_CALLS.delete),
-		patch: fromPromise(SCENE_API_CALLS.patch),
+		get: fromPromise(USER_API_CALLS.get),
+		userCrudMachine: userCrudMachine,
 	},
 	types: {
 		context: {} as IUserContext,
@@ -24,6 +25,7 @@ export const usersMachine = setup({
 	context: () => ({
 		loading: false,
 		data: [],
+		crudMachine: userCrudMachine,
 	}),
 	initial: '$_IDLE',
 	states: {
@@ -38,7 +40,7 @@ export const usersMachine = setup({
 		},
 		$_GET: {
 			invoke: {
-				id: 'getScenes',
+				id: 'getUsers',
 				src: 'get',
 				input: (inputProps) => inputProps,
 				onDone: {

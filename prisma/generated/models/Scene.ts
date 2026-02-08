@@ -236,8 +236,8 @@ export type SceneWhereInput = {
   notes?: Prisma.StringNullableFilter<"Scene"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
-  performers?: Prisma.UsersAndScenesListRelationFilter
   classes?: Prisma.ScenesInClassesListRelationFilter
+  performers?: Prisma.UsersAndScenesListRelationFilter
 }
 
 export type SceneOrderByWithRelationInput = {
@@ -248,8 +248,8 @@ export type SceneOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  performers?: Prisma.UsersAndScenesOrderByRelationAggregateInput
   classes?: Prisma.ScenesInClassesOrderByRelationAggregateInput
+  performers?: Prisma.UsersAndScenesOrderByRelationAggregateInput
 }
 
 export type SceneWhereUniqueInput = Prisma.AtLeast<{
@@ -263,8 +263,8 @@ export type SceneWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Scene"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
-  performers?: Prisma.UsersAndScenesListRelationFilter
   classes?: Prisma.ScenesInClassesListRelationFilter
+  performers?: Prisma.UsersAndScenesListRelationFilter
 }, "id">
 
 export type SceneOrderByWithAggregationInput = {
@@ -302,8 +302,8 @@ export type SceneCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.UsersAndScenesCreateNestedManyWithoutSceneInput
   classes?: Prisma.ScenesInClassesCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesCreateNestedManyWithoutSceneInput
 }
 
 export type SceneUncheckedCreateInput = {
@@ -314,8 +314,8 @@ export type SceneUncheckedCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  performers?: Prisma.UsersAndScenesUncheckedCreateNestedManyWithoutSceneInput
   classes?: Prisma.ScenesInClassesUncheckedCreateNestedManyWithoutSceneInput
+  performers?: Prisma.UsersAndScenesUncheckedCreateNestedManyWithoutSceneInput
 }
 
 export type SceneUpdateInput = {
@@ -325,8 +325,8 @@ export type SceneUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.UsersAndScenesUpdateManyWithoutSceneNestedInput
   classes?: Prisma.ScenesInClassesUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUpdateManyWithoutSceneNestedInput
 }
 
 export type SceneUncheckedUpdateInput = {
@@ -337,8 +337,8 @@ export type SceneUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  performers?: Prisma.UsersAndScenesUncheckedUpdateManyWithoutSceneNestedInput
   classes?: Prisma.ScenesInClassesUncheckedUpdateManyWithoutSceneNestedInput
+  performers?: Prisma.UsersAndScenesUncheckedUpdateManyWithoutSceneNestedInput
 }
 
 export type SceneCreateManyInput = {
@@ -569,13 +569,13 @@ export type SceneUncheckedUpdateWithoutClassesInput = {
  */
 
 export type SceneCountOutputType = {
-  performers: number
   classes: number
+  performers: number
 }
 
 export type SceneCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  performers?: boolean | SceneCountOutputTypeCountPerformersArgs
   classes?: boolean | SceneCountOutputTypeCountClassesArgs
+  performers?: boolean | SceneCountOutputTypeCountPerformersArgs
 }
 
 /**
@@ -591,15 +591,15 @@ export type SceneCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * SceneCountOutputType without action
  */
-export type SceneCountOutputTypeCountPerformersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UsersAndScenesWhereInput
+export type SceneCountOutputTypeCountClassesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScenesInClassesWhereInput
 }
 
 /**
  * SceneCountOutputType without action
  */
-export type SceneCountOutputTypeCountClassesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ScenesInClassesWhereInput
+export type SceneCountOutputTypeCountPerformersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsersAndScenesWhereInput
 }
 
 
@@ -611,8 +611,8 @@ export type SceneSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  performers?: boolean | Prisma.Scene$performersArgs<ExtArgs>
   classes?: boolean | Prisma.Scene$classesArgs<ExtArgs>
+  performers?: boolean | Prisma.Scene$performersArgs<ExtArgs>
   _count?: boolean | Prisma.SceneCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scene"]>
 
@@ -648,8 +648,8 @@ export type SceneSelectScalar = {
 
 export type SceneOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "duration" | "title" | "type" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["scene"]>
 export type SceneInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  performers?: boolean | Prisma.Scene$performersArgs<ExtArgs>
   classes?: boolean | Prisma.Scene$classesArgs<ExtArgs>
+  performers?: boolean | Prisma.Scene$performersArgs<ExtArgs>
   _count?: boolean | Prisma.SceneCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SceneIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -658,8 +658,8 @@ export type SceneIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ScenePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Scene"
   objects: {
-    performers: Prisma.$UsersAndScenesPayload<ExtArgs>[]
     classes: Prisma.$ScenesInClassesPayload<ExtArgs>[]
+    performers: Prisma.$UsersAndScenesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1063,8 +1063,8 @@ readonly fields: SceneFieldRefs;
  */
 export interface Prisma__SceneClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  performers<T extends Prisma.Scene$performersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$performersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsersAndScenesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classes<T extends Prisma.Scene$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$classesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScenesInClassesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  performers<T extends Prisma.Scene$performersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$performersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsersAndScenesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1489,30 +1489,6 @@ export type SceneDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Scene.performers
- */
-export type Scene$performersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UsersAndScenes
-   */
-  select?: Prisma.UsersAndScenesSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the UsersAndScenes
-   */
-  omit?: Prisma.UsersAndScenesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UsersAndScenesInclude<ExtArgs> | null
-  where?: Prisma.UsersAndScenesWhereInput
-  orderBy?: Prisma.UsersAndScenesOrderByWithRelationInput | Prisma.UsersAndScenesOrderByWithRelationInput[]
-  cursor?: Prisma.UsersAndScenesWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.UsersAndScenesScalarFieldEnum | Prisma.UsersAndScenesScalarFieldEnum[]
-}
-
-/**
  * Scene.classes
  */
 export type Scene$classesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1534,6 +1510,30 @@ export type Scene$classesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.ScenesInClassesScalarFieldEnum | Prisma.ScenesInClassesScalarFieldEnum[]
+}
+
+/**
+ * Scene.performers
+ */
+export type Scene$performersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UsersAndScenes
+   */
+  select?: Prisma.UsersAndScenesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UsersAndScenes
+   */
+  omit?: Prisma.UsersAndScenesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsersAndScenesInclude<ExtArgs> | null
+  where?: Prisma.UsersAndScenesWhereInput
+  orderBy?: Prisma.UsersAndScenesOrderByWithRelationInput | Prisma.UsersAndScenesOrderByWithRelationInput[]
+  cursor?: Prisma.UsersAndScenesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsersAndScenesScalarFieldEnum | Prisma.UsersAndScenesScalarFieldEnum[]
 }
 
 /**

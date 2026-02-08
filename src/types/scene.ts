@@ -7,7 +7,7 @@ export interface IScene {
 	title: string;
 	type: SceneTypes;
 	classId: number;
-	sceneId: number;
+	performerIds: number[];
 }
 
 export type SceneTypes =

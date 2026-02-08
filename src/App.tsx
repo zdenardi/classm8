@@ -19,7 +19,7 @@ import { XStateRedirectListener } from "./components/XStateRedirectListener.tsx"
 const TokenGetter = () => {
   const { getToken } = useAuth();
   useEffect(() => {
-    tokenGetter.setTokenFunction(async () => getToken());
+    tokenGetter.setTokenFunction(() => getToken());
   }, [getToken]);
   return null;
 };

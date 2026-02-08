@@ -1,5 +1,6 @@
 import type { ColDef } from 'ag-grid-community';
 import { IUser } from '../../types/user.ts';
+import { UserFormValues } from './schema.ts';
 
 export const UsersColumns: ColDef<IUser>[] = [
 	{
@@ -19,3 +20,12 @@ export const UsersColumns: ColDef<IUser>[] = [
 		headerName: 'Email Address',
 	},
 ];
+
+export const USER_TYPES = ['STUDENT', 'MODERATOR', 'INSTRUCTOR'] as const;
+
+export const emptyForm: UserFormValues = {
+	email: '',
+	firstName: '',
+	lastName: '',
+	type: 'Student',
+};

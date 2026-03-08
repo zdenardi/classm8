@@ -10,16 +10,12 @@ sceneRouter.get('/scenes', clerkAuth, async (context) => {
 		include: {
 			performers: {
 				include: {
-					firstName: true,
-					lastName: true,
-					email: true,
+					user: true,
 				},
 			},
 			classes: {
 				include: {
-					startDate: true,
-					endDate: true,
-					location: true,
+					class: true,
 				},
 			},
 		},
@@ -37,16 +33,12 @@ sceneRouter.get('/scenes/:id', async (context) => {
 		include: {
 			performers: {
 				include: {
-					firstName: true,
-					lastName: true,
-					email: true,
+					user: true,
 				},
 			},
 			classes: {
 				include: {
-					startDate: true,
-					endDate: true,
-					location: true,
+					class: true,
 				},
 			},
 		},

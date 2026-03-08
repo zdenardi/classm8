@@ -49,14 +49,15 @@ model Class {
 
 model Scene {
   id         Int               @id @default(autoincrement())
-  duration   Int
-  title      String
-  type       SceneTypes
-  notes      String?
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
-  classes    ScenesInClasses[]
+  duration   Int
+  title      String
+  notes      String?
+  type       SceneTypes
   performers UsersAndScenes[]
+  classes    ScenesInClasses[]
+
 }
 
 model UsersInCourses {

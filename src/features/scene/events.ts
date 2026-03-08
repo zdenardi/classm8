@@ -1,5 +1,5 @@
 import { type DoneActorEvent } from 'xstate';
-import { IScene } from '../../types/scene.ts';
+import { IScene, ISceneWithClasses } from '../../types/scene.ts';
 
 export type ON_LOAD = { type: 'ON_LOAD' };
 
@@ -23,8 +23,8 @@ export type ON_DELETE = {
 
 export type CRUD_EVENTS = ON_LOAD | ON_SUBMIT | ON_UPDATE | ON_DELETE;
 
-export type ScenesResponseEvent = DoneActorEvent<IScene[]>;
-export type SceneResponseEvent = DoneActorEvent<IScene>;
+export type ScenesResponseEvent = DoneActorEvent<ISceneWithClasses[]>;
+export type SceneResponseEvent = DoneActorEvent<ISceneWithClasses>;
 
 export type RESPONSE_EVENTS = ScenesResponseEvent | SceneResponseEvent;
 

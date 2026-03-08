@@ -27,5 +27,5 @@ export const emptyForm: UserFormValues = {
 	email: '',
 	firstName: '',
 	lastName: '',
-	type: 'Student',
+	type: 'STUDENT',
 };

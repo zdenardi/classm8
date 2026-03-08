@@ -20,7 +20,6 @@ export interface GridProps {
   loading: boolean;
   colDefs: ColDef<any, any>[];
   pagination: boolean;
-  cyTag: string;
   rowSelection?: RowSelectionOptions;
   paginationPageSize?: number;
   paginationPageSizeSelector?: number[];
@@ -35,7 +34,6 @@ export const BasicGrid = ({
   rowSelection,
   paginationPageSize = 10,
   paginationPageSizeSelector = [10, 20, 50],
-  cyTag,
   enableFilterHandlers = true,
 }: GridProps) => {
   const defaultColDef = useMemo<ColDef>(() => {
@@ -58,7 +56,7 @@ export const BasicGrid = ({
   const gridRef = useRef<AgGridReact>(null);
 
   return (
-    <div className="h-full w-full p-0" data-cy={cyTag}>
+    <div className="h-full w-full p-0">
       <AgGridReact
         theme={theme}
         enableFilterHandlers={enableFilterHandlers}

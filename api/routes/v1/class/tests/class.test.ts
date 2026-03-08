@@ -1,6 +1,5 @@
 import { createApp } from '../../../../main.ts';
 import { cleanDatabase, seedTestData } from '@/test-utils';
-import { createClerkClient } from '@clerk/backend';
 import type { Class, Course } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { ClassWithCourseAndScenes } from '../../../../../types/class.ts';

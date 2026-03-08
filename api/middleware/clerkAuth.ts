@@ -6,6 +6,7 @@ export async function clerkAuth(ctx: Context, next: () => Promise<unknown>) {
 	if (!auth) {
 		ctx.response.status = 401;
 		ctx.response.body = { error: 'Unauthorized' };
+		return;
 	}
 
 	const session = await verifyClerkSession(auth as string);

@@ -74,10 +74,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <SidebarItem href="/">
                 <SidebarLabel>Home</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/events">
+              <SidebarItem href="/classes">
                 <SidebarLabel>Classes</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/orders">
+              <SidebarItem href="/scenes">
                 <SidebarLabel>Scenes</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/settings">

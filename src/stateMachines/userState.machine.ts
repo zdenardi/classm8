@@ -2,27 +2,32 @@ import {
 	type ActorRefFrom,
 	assign,
 	DoneActorEvent,
+	enqueueActions,
 	fromPromise,
+	sendTo,
 	setup,
 } from 'xstate';
-import { actingClassMachine } from '../features/class/class.machine.ts';
 import {
-	ACTING_CLASS_STATE,
-	COURSES_STATE,
-	SCENES_STATE,
+	CLASSES_PROVIDER,
+	SCENES_PROVIDER,
+	USERS_PROVIDER,
 } from '../constants/xstateSystem.ts';
 import { AUTH_API_CALLS } from './api.ts';
 import { IUser } from '../types/user.ts';
 import { registrationMachine } from '../features/registration/registration.machine.ts';
-import { scenesMachine } from '../features/scene/scene.machine.ts';
 import { coursesMachine } from '../features/course/course.machine.ts';
+import { IClassWithCourseAndScenes } from '../types/class.ts';
+import { classesProviderMachine } from './providers/classes.provider.machine.ts';
+import { scenesProviderMachine } from './providers/scenes.provider.machine.ts';
+import { ISceneWithClasses } from '../types/scene.ts';
+import { usersProviderMachine } from './providers/users.provider.machine.ts';
 
-export type UserContext = {
-	actingClassRef: ActorRefFrom<typeof actingClassMachine>;
-	sceneRef: ActorRefFrom<typeof scenesMachine>;
-	courseRef: ActorRefFrom<typeof coursesMachine>;
+export type Context = {
 	token: string | undefined;
 	loading: boolean;
+	roster: IUser[];
+	classes: IClassWithCourseAndScenes[];
+	scenes: ISceneWithClasses[];
 	profile: {
 		id: number;
 		firstName: string;
@@ -30,6 +35,9 @@ export type UserContext = {
 		email: string;
 		role: 'STUDENT' | 'ADMIN' | 'MODERATOR' | 'INSTRUCTOR';
 	} | undefined;
+	classesProvider: ActorRefFrom<typeof classesProviderMachine>;
+	scenesProvider: ActorRefFrom<typeof scenesProviderMachine>;
+	usersProvider: ActorRefFrom<typeof usersProviderMachine>;
 };
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -38,6 +46,10 @@ export type ON_USER_SIGNED_IN = {
 };
 export type ON_CHECK_REGISTRATION = {
 	type: 'ON_CHECK_REGISTRATION';
+};
+
+export type ON_USER_SIGNED_OUT = {
+	type: 'ON_USER_SIGNED_OUT';
 };
 export type RedirectResponse = {
 	redirect: string;
@@ -48,7 +60,29 @@ export type ClassesResponseEvent = DoneActorEvent<
 	IUser | RedirectResponse
 >;
 
-export type Events = ON_LOAD | ON_USER_SIGNED_IN | ON_CHECK_REGISTRATION;
+export type ON_CLASSES_LOADED = {
+	type: 'ON_CLASSES_LOADED';
+	data: IClassWithCourseAndScenes[];
+};
+
+export type ON_SCENES_LOADED = {
+	type: 'ON_SCENES_LOADED';
+	data: ISceneWithClasses[];
+};
+
+export type ON_ROSTER_LOADED = {
+	type: 'ON_ROSTER_LOADED';
+	data: IUser[];
+};
+
+export type Events =
+	| ON_LOAD
+	| ON_USER_SIGNED_IN
+	| ON_CHECK_REGISTRATION
+	| ON_CLASSES_LOADED
+	| ON_SCENES_LOADED
+	| ON_ROSTER_LOADED
+	| ON_USER_SIGNED_OUT;
 
 // Helper to emit redirect event
 export const emitRedirect = (path: string) => {
@@ -58,56 +92,41 @@ export const emitRedirect = (path: string) => {
 };
 
 export const userState = setup({
-	types: { context: {} as UserContext, events: {} as Events },
+	types: { context: {} as Context, events: {} as Events },
 	actors: {
-		actingClassRef: actingClassMachine,
-		sceneRef: scenesMachine,
 		courseRef: coursesMachine,
 		registrationRef: registrationMachine,
 		checkRegistration: fromPromise(AUTH_API_CALLS.get),
+		classesProvider: classesProviderMachine,
+		scenesProvider: scenesProviderMachine,
+		usersProvider: usersProviderMachine,
 	},
 }).createMachine({
 	context: ({ spawn }) => ({
-		actingClassRef: spawn('actingClassRef', {
-			id: ACTING_CLASS_STATE,
-			systemId: ACTING_CLASS_STATE,
-			input: undefined,
-		}),
-		sceneRef: spawn('sceneRef', {
-			id: SCENES_STATE,
-			systemId: SCENES_STATE,
-			input: undefined,
-		}),
-		courseRef: spawn('courseRef', {
-			id: COURSES_STATE,
-			systemId: COURSES_STATE,
-			input: undefined,
-		}),
-		registrationRef: registrationMachine,
+		classes: [],
+		scenes: [],
+		roster: [],
 		token: undefined,
 		loading: false,
 		profile: undefined,
+		classesProvider: spawn('classesProvider', { id: CLASSES_PROVIDER }),
+		scenesProvider: spawn('scenesProvider', { id: SCENES_PROVIDER }),
+		usersProvider: spawn('usersProvider', { id: USERS_PROVIDER }),
 	}),
-	initial: '$_IDLE',
+	initial: '$_UNAUTHENTICATED',
 	states: {
-		$_IDLE: {
+		$_UNAUTHENTICATED: {
 			on: {
 				ON_USER_SIGNED_IN: {
 					actions: [
 						assign({ loading: false }),
 					],
-					target: '$_LOAD_APP',
+					target: '$_AUTHENTICATED',
 				},
 				ON_CHECK_REGISTRATION: {
 					target: '$_CHECK_REGISTRATION',
 				},
 			},
-		},
-		$_LOAD_APP: {
-			entry: [
-				({ context }) => context.actingClassRef.send({ type: 'ON_LOAD' }),
-			],
-			target: '$_IDLE',
 		},
 		$_CHECK_REGISTRATION: {
 			invoke: {
@@ -132,12 +151,12 @@ export const userState = setup({
 						],
 					},
 					{
-						target: '$_LOAD_APP',
+						target: '$_AUTHENTICATED',
 						actions: [() => console.log('Load!')],
 					},
 				],
 				onError: {
-					target: '$_IDLE',
+					target: '$_UNAUTHENTICATED',
 					actions: [
 						(e) => console.log(e),
 					],
@@ -155,7 +174,7 @@ export const userState = setup({
 					email: context.profile?.email || '',
 				}),
 				onDone: {
-					target: '$_LOAD_APP',
+					target: '$_AUTHENTICATED',
 					actions: [
 						assign({
 							profile: ({ event }) => event.output,
@@ -168,8 +187,65 @@ export const userState = setup({
 					],
 				},
 				onError: {
-					target: '$_IDLE',
+					target: '$_UNAUTHENTICATED',
 					actions: [(e) => console.log('Registration error:', e)],
+				},
+			},
+		},
+
+		$_AUTHENTICATED: {
+			entry: [
+				enqueueActions(({ context, enqueue }) => {
+					if (context.classes.length === 0) {
+						enqueue(
+							sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),
+						);
+					}
+					if (context.scenes.length === 0) {
+						enqueue(sendTo(context.scenesProvider, { type: 'ON_GET_SCENES' }));
+					}
+					if (context.roster.length === 0) {
+						enqueue(sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }));
+					}
+				}),
+			],
+			on: {
+				ON_CLASSES_LOADED: {
+					actions: [
+						assign({
+							classes: ({ event }) => event.data,
+						}),
+					],
+				},
+				ON_SCENES_LOADED: {
+					actions: [
+						assign({
+							scenes: ({ event }) => event.data,
+						}),
+					],
+				},
+				ON_ROSTER_LOADED: {
+					actions: [
+						assign({
+							roster: ({ event }) => {
+								console.log(event);
+								return event.data.filter(
+									(user) => user.role === 'STUDENT',
+								);
+							},
+						}),
+					],
+				},
+				ON_USER_SIGNED_OUT: {
+					target: '$_UNAUTHENTICATED',
+					actions: [
+						assign({
+							classes: [],
+							scenes: [],
+							roster: [],
+							loading: false,
+						}),
+					],
 				},
 			},
 		},

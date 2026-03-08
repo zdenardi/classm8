@@ -1,0 +1,152 @@
+[
+  {
+    "firstName": "Nina",
+    "lastName": "Albano",
+    "email": "nina.bano@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Maayan",
+    "lastName": "Avital",
+    "email": "m.avital30@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Shalini",
+    "lastName": "Bathina",
+    "email": "shalinibathina@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Charles",
+    "lastName": "Gonzales",
+    "email": "charrgon@yahoo.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Caitlin",
+    "lastName": "Grace",
+    "email": "caitlin.grace.u@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Mark",
+    "lastName": "Haan",
+    "email": "markhaan@hotmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Rae",
+    "lastName": "Hamilton-Varga",
+    "email": "raehamiltonvargo@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Nick",
+    "lastName": "Howard",
+    "email": "nickhowardn7@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Kiera",
+    "lastName": "Jacob",
+    "email": "kiera.lpemail@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Allie",
+    "lastName": "Leslie",
+    "email": "alliej.leslie@yahoo.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Kevin",
+    "lastName": "Liam",
+    "email": "kevinmcliam@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Femi",
+    "lastName": "Longe",
+    "email": "longe.femi@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Lizzie",
+    "lastName": "Lucas",
+    "email": "lizzielucas65@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Sharayu",
+    "lastName": "Mahale",
+    "email": "sharayumahale@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Julianne",
+    "lastName": "McLane",
+    "email": "julesdance12@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Trevor",
+    "lastName": "Olsen",
+    "email": "trevorolsen02@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Andrew",
+    "lastName": "Rappo",
+    "email": "andrewevanrappo@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Micaleen",
+    "lastName": "Rogers",
+    "email": "micaleenrogeers@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Gus",
+    "lastName": "Schlanbusch",
+    "email": "goschlanbusch@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Kevin",
+    "lastName": "Schultz",
+    "email": "kevymetalvo@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Ali",
+    "lastName": "Shields",
+    "email": "alishields1@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Zeke",
+    "lastName": "Skovron",
+    "email": "zeke@zekeskovron.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Talon",
+    "lastName": "Warburton",
+    "email": "talon1992@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Allison",
+    "lastName": "Weiss",
+    "email": "ally.h.weiss@gmail.com",
+    "type": "STUDENT"
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Yavnieli",
+    "email": "info@myactingstudios.com",
+    "type": "INSTRUCTOR"
+  }
+]

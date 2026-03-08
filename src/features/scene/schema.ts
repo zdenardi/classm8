@@ -6,6 +6,7 @@ export const sceneFormSchema = z.object({
 	type: z.enum(SceneTypes),
 	duration: z.number(), // in minutes
 	performerIDs: z.array(z.number()).optional(), // Could be a monologue
+	classID: z.string(),
 	notes: z.string().optional(),
 });
 

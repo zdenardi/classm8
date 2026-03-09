@@ -14,7 +14,15 @@ classRouter.get('/classes', clerkAuth, async (context) => {
 				},
 			},
 			scenes: {
-				include: { scene: true },
+				include: {
+					scene: {
+						include: {
+							performers: {
+								include: { user: true },
+							},
+						},
+					},
+				},
 			},
 		},
 	});
@@ -35,7 +43,15 @@ classRouter.get('/classes/:id', async (context) => {
 				},
 			},
 			scenes: {
-				include: { scene: true },
+				include: {
+					scene: {
+						include: {
+							performers: {
+								include: { user: true },
+							},
+						},
+					},
+				},
 			},
 		},
 	});
@@ -66,7 +82,15 @@ classRouter.patch('/classes/:id', async (context) => {
 				},
 			},
 			scenes: {
-				include: { scene: true },
+				include: {
+					scene: {
+						include: {
+							performers: {
+								include: { user: true },
+							},
+						},
+					},
+				},
 			},
 		},
 	});

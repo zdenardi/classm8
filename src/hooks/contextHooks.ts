@@ -3,6 +3,10 @@ import { UserContext } from '../App.tsx';
 import { IClassWithCourseAndScenes } from '../types/class.ts';
 import { Context } from '../stateMachines/userState.machine.ts';
 import { IUser } from '../types/user.ts';
+import { IProfile } from '../../types/profile.ts';
+import { ISceneWithClasses } from '../types/scene.ts';
+import { ActorRefFrom } from 'npm:xstate@^5.25.0';
+import { scenesProviderMachine } from '../stateMachines/providers/scenes.provider.machine.ts';
 
 /**
  * Selects UserContext
@@ -15,6 +19,9 @@ export const selectUserContext = (state: { context: Context }) => {
 		loading: state.context.loading,
 		classesProvider: state.context.classesProvider,
 		usersProvider: state.context.usersProvider,
+		scenesProvider: state.context.scenesProvider,
+		profileProvider: state.context.profileProvider,
+		profile: state.context.profile,
 	};
 };
 
@@ -44,4 +51,33 @@ export const useRoster = (): RosterRefResult => {
 	);
 	const { loading } = useSelector(usersProvider, (state) => state.context);
 	return { loading, roster };
+};
+
+type ProfileRefResult = {
+	loading: boolean;
+	profile: IProfile | undefined;
+};
+
+export const useProfile = (): ProfileRefResult => {
+	const { profile, profileProvider } = useSelector(
+		UserContext.useActorRef(),
+		selectUserContext,
+	);
+	const { loading } = useSelector(profileProvider, (state) => state.context);
+	return { loading, profile };
+};
+
+type ScenesRefResult = {
+	loading: boolean;
+	scenes: ISceneWithClasses[];
+	scenesProvider: ActorRefFrom<typeof scenesProviderMachine>;
+};
+
+export const useScenes = (): ScenesRefResult => {
+	const { profile, scenesProvider } = useSelector(
+		UserContext.useActorRef(),
+		selectUserContext,
+	);
+	const { loading } = useSelector(scenesProvider, (state) => state.context);
+	return { loading, scenes: profile?.scenes || [], scenesProvider };
 };

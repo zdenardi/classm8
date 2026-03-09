@@ -16,7 +16,6 @@ export async function clerkAuth(ctx: Context, next: () => Promise<unknown>) {
 		ctx.response.body = { error: 'Unauthorized' };
 		return;
 	}
-
 	ctx.state.auth = session;
 	await next();
 }

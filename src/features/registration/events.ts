@@ -1,5 +1,5 @@
 import { type DoneActorEvent } from 'xstate';
-import { User } from '../../types/user.ts';
+import { IUser } from '../../types/user.ts';
 
 export type ON_OPEN = { type: 'ON_OPEN' };
 export type ON_CLOSE = { type: 'ON_CLOSE' };
@@ -9,7 +9,7 @@ export type SUBMIT_REGISTRATION = {
 };
 
 export type RegistrationResponseEvent = DoneActorEvent<
-	User
+	IUser
 >;
 
 export type RESPONSE_EVENTS = RegistrationResponseEvent;

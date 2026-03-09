@@ -15,17 +15,24 @@ import { SignedInWrapper } from "./features/SignedInWrapper.tsx";
 import { Route, Routes } from "react-router";
 import { RegistrationForm } from "./features/registration/RegistrationForm.tsx";
 import { XStateRedirectListener } from "./components/XStateRedirectListener.tsx";
+import { AddScene } from "./pages/AddScene.tsx";
+import { AddCourse } from "./pages/AddCourse.tsx";
+import { ClassPage } from "./pages/Class.tsx";
+import { USER_STATE } from "./constants/xstateSystem.ts";
+import { AuthStateMachine } from "./stateMachines/AuthStateMachine.tsx";
+import { Layout } from "./components/Layout.tsx";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
   useEffect(() => {
-    tokenGetter.setTokenFunction(async () => getToken());
+    tokenGetter.setTokenFunction(() => getToken());
   }, [getToken]);
   return null;
 };
+
 export const UserContext = createActorContext(userState, {
-  id: "userState",
-  systemId: "userState",
+  id: USER_STATE,
+  systemId: USER_STATE,
 });
 
 function App() {
@@ -39,12 +46,18 @@ function App() {
 
         <SignedIn>
           <TokenGetter />
+          <AuthStateMachine />
           <UserButton />
           <SignedInWrapper>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<RegistrationForm />} />
-            </Routes>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/classes" element={<ClassPage />} />
+                <Route path="/addScene" element={<AddScene />} />
+                <Route path="/addCourse" element={<AddCourse />} />
+              </Routes>
+            </Layout>
           </SignedInWrapper>
         </SignedIn>
       </UserContext.Provider>

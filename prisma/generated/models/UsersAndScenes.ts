@@ -196,15 +196,15 @@ export type UsersAndScenesWhereInput = {
   NOT?: Prisma.UsersAndScenesWhereInput | Prisma.UsersAndScenesWhereInput[]
   userId?: Prisma.IntFilter<"UsersAndScenes"> | number
   sceneId?: Prisma.IntFilter<"UsersAndScenes"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type UsersAndScenesOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   sceneId?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
   scene?: Prisma.SceneOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type UsersAndScenesWhereUniqueInput = Prisma.AtLeast<{
@@ -214,8 +214,8 @@ export type UsersAndScenesWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UsersAndScenesWhereInput | Prisma.UsersAndScenesWhereInput[]
   userId?: Prisma.IntFilter<"UsersAndScenes"> | number
   sceneId?: Prisma.IntFilter<"UsersAndScenes"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "userId_sceneId">
 
 export type UsersAndScenesOrderByWithAggregationInput = {
@@ -237,8 +237,8 @@ export type UsersAndScenesScalarWhereWithAggregatesInput = {
 }
 
 export type UsersAndScenesCreateInput = {
-  user: Prisma.UserCreateNestedOneWithoutScenesPerformedInput
   scene: Prisma.SceneCreateNestedOneWithoutPerformersInput
+  user: Prisma.UserCreateNestedOneWithoutScenesPerformedInput
 }
 
 export type UsersAndScenesUncheckedCreateInput = {
@@ -247,8 +247,8 @@ export type UsersAndScenesUncheckedCreateInput = {
 }
 
 export type UsersAndScenesUpdateInput = {
-  user?: Prisma.UserUpdateOneRequiredWithoutScenesPerformedNestedInput
   scene?: Prisma.SceneUpdateOneRequiredWithoutPerformersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutScenesPerformedNestedInput
 }
 
 export type UsersAndScenesUncheckedUpdateInput = {
@@ -507,22 +507,22 @@ export type UsersAndScenesUncheckedUpdateManyWithoutSceneInput = {
 export type UsersAndScenesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   sceneId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usersAndScenes"]>
 
 export type UsersAndScenesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   sceneId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usersAndScenes"]>
 
 export type UsersAndScenesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   sceneId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usersAndScenes"]>
 
 export type UsersAndScenesSelectScalar = {
@@ -532,23 +532,23 @@ export type UsersAndScenesSelectScalar = {
 
 export type UsersAndScenesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "sceneId", ExtArgs["result"]["usersAndScenes"]>
 export type UsersAndScenesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type UsersAndScenesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type UsersAndScenesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   scene?: boolean | Prisma.SceneDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $UsersAndScenesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UsersAndScenes"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
     scene: Prisma.$ScenePayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: number
@@ -947,8 +947,8 @@ readonly fields: UsersAndScenesFieldRefs;
  */
 export interface Prisma__UsersAndScenesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   scene<T extends Prisma.SceneDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SceneDefaultArgs<ExtArgs>>): Prisma.Prisma__SceneClient<runtime.Types.Result.GetResult<Prisma.$ScenePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

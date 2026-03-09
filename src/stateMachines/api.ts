@@ -1,4 +1,4 @@
-import { User } from '../types/user.ts';
+import { IUser } from '../types/user.ts';
 import { ROUTE_NAMES } from '../utils/routes.ts';
 import { getData, postData } from '../utils/service.ts';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -16,7 +16,7 @@ interface InputArgs {
 }
 export const AUTH_API_CALLS = {
 	get: async (): Promise<
-		{ data: User | RedirectResponse; statusCode: number }
+		{ data: IUser | RedirectResponse; statusCode: number }
 	> => {
 		try {
 			const response: AxiosResponse = await getData(ROUTE_NAMES.auth);
@@ -30,7 +30,7 @@ export const AUTH_API_CALLS = {
 			throw error;
 		}
 	},
-	create: async ({ input }: InputArgs): Promise<{ data: User }> => {
+	create: async ({ input }: InputArgs): Promise<{ data: IUser }> => {
 		const event = input.event as SUBMIT_REGISTRATION;
 		return await postData(ROUTE_NAMES.auth, {
 			data: {

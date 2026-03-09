@@ -1,8 +1,9 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../../prisma/generated/client.ts';
+import Roster from '../../data/class-roster.json' with { type: 'json' };
 
 const connectionString =
-	`postgresql://postgres:postgres@localhost:5433/classm8_test`;
+	`postgresql://postgres:postgres@localhost:5432/classm8`;
 const adapter = new PrismaPg({ connectionString });
 export const testDb = new PrismaClient({ adapter });
 
@@ -29,6 +30,15 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			role: 'INSTRUCTOR',
 			clerkId: 'instructorUser',
 		},
+	});
+	const students = await db.user.createMany({
+		data: Roster.map((user) => ({
+			email: user.email,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			role: user.role,
+			clerkId: user.email,
+		})),
 	});
 
 	const student1 = await db.user.create({

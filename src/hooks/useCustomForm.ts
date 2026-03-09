@@ -12,8 +12,8 @@ export function useCustomForm<
 	options?: UseFormProps<TFormValues>,
 ): UseFormReturn<TFormValues> {
 	const defaultOptions: UseFormProps<TFormValues> = {
-		mode: 'onBlur',
-		reValidateMode: 'onChange',
+		mode: 'onSubmit',
+		reValidateMode: 'onSubmit',
 		...options,
 	};
 

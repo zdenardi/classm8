@@ -16,7 +16,6 @@ const AXIOS_INSTANCES = {
 
 apiAxiosV1.interceptors.request.use(async (config) => {
 	const token = await tokenGetter.getToken();
-	console.log(token);
 	config.headers.Authorization = `Bearer ${token}`;
 	if (!config.headers['Content-Type'] && config.method !== 'get') {
 		config.headers['Content-Type'] = 'application/json';
@@ -76,10 +75,23 @@ export const handleServiceCall = async ({
 
 export const getData = async <T>(
 	route: keyof typeof ROUTES,
+	options?: Omit<ServiceCallParams, 'method' | 'route'>,
 ): Promise<T> => {
 	return await handleServiceCall({
 		method: 'get',
 		route: route,
+		...options,
+	});
+};
+
+export const getOneData = async <T>(
+	route: keyof typeof ROUTES,
+	options?: Omit<ServiceCallParams, 'method' | 'route'>,
+): Promise<T> => {
+	return await handleServiceCall({
+		method: 'get',
+		route: route,
+		...options,
 	});
 };
 
@@ -107,7 +119,7 @@ export const deleteData = async (
 	});
 };
 
-export const putData = async <T>(
+export const patchData = async <T>(
 	route: keyof typeof ROUTES,
 	options?: Omit<ServiceCallParams, 'method' | 'route'>,
 ) => {

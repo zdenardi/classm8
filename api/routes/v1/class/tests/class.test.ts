@@ -1,9 +1,9 @@
 import { createApp } from '../../../../main.ts';
-import { cleanDatabase, db, seedTestData } from '@/test-utils';
-
+import { cleanDatabase, seedTestData } from '@/test-utils';
 import type { Class, Course } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { ClassWithCourseAndScenes } from '../../../../../types/class.ts';
+import { db } from '@/db';
 
 let exampleClass: Class | undefined;
 let exampleCourse: Course | undefined;
@@ -17,7 +17,7 @@ Deno.test.beforeEach(async () => {
 });
 
 Deno.test.afterEach(async () => {
-	await db.$disconnect;
+	await db.$disconnect();
 });
 
 Deno.test('GET classes', async () => {

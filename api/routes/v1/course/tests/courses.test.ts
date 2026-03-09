@@ -1,9 +1,10 @@
 import { createApp } from '../../../../main.ts';
-import { cleanDatabase, db, seedTestData } from '@/test-utils';
+import { cleanDatabase, seedTestData } from '@/test-utils';
 
 import type { Course, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { CourseWithStudents } from '../../../../../types/course.ts';
+import { db } from '@/db';
 
 let exampleInstructor: User | undefined;
 let exampleCourse: Course | undefined;
@@ -13,6 +14,14 @@ Deno.test.beforeEach(async () => {
 	const { instructor, course } = await seedTestData();
 	exampleInstructor = instructor;
 	exampleCourse = course;
+});
+
+Deno.test.afterEach(async () => {
+	await db.$disconnect();
+});
+
+Deno.test.afterAll(async () => {
+	await db.$disconnect();
 });
 
 Deno.test('GET courses', async () => {
@@ -32,7 +41,6 @@ Deno.test('GET courses', async () => {
 	assertEquals(course.studentLimit, 10);
 	assertEquals(Array.isArray(course.students), true);
 	assertEquals(course.students.length, 2);
-	db.$disconnect();
 });
 
 Deno.test('GET course by ID', async () => {
@@ -55,7 +63,6 @@ Deno.test('GET course by ID', async () => {
 	assertEquals(Array.isArray(course.students), true);
 	assertEquals(course.students.length, 2);
 	console.log(course);
-	db.$disconnect();
 });
 
 Deno.test('POST courses', async () => {
@@ -65,6 +72,11 @@ Deno.test('POST courses', async () => {
 		title: 'Test Course',
 		studentLimit: 10,
 		instructorId: exampleInstructor.id,
+		startDate: '2026-01-15',
+		startTime: '18:00',
+		endTime: '21:00',
+		location: 'Studio A',
+		repeatNum: 4,
 	};
 	const request = new Request('http://localhost:8000/api/v1/courses', {
 		method: 'POST',
@@ -78,8 +90,8 @@ Deno.test('POST courses', async () => {
 	// Assertions
 	assertExists(response);
 	assertEquals(response.status, 200);
-
-	db.$disconnect();
+	const responseBody = await response.json();
+	assertEquals(responseBody.classes.length, 4);
 });
 
 Deno.test('PATCH course by id', async () => {
@@ -114,7 +126,6 @@ Deno.test('PATCH course by id', async () => {
 	assertEquals(course.studentLimit, editData.studentLimit);
 	assertEquals(Array.isArray(course.students), true);
 	assertEquals(course.students.length, 2);
-	db.$disconnect();
 });
 
 Deno.test('DELETE course by id', async () => {
@@ -132,6 +143,4 @@ Deno.test('DELETE course by id', async () => {
 	assertExists(response);
 	console.log(response);
 	assertEquals(response.status, 204);
-
-	db.$disconnect();
 });

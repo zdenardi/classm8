@@ -5,8 +5,12 @@ import process from 'node:process';
 import { cleanDatabase, seedTestData } from '@/test-utils';
 
 // Use environment variables or defaults
-const connectionString =
+const connectionStringTest =
 	`postgresql://postgres:postgres@localhost:5433/classm8_test`;
+
+const connectionString =
+	`postgresql://postgres:postgres@localhost:5432/classm8`;
+
 const adapter = new PrismaPg({ connectionString });
 
 const db = new PrismaClient({ adapter });

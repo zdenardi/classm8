@@ -1,4 +1,4 @@
-import { IClass } from './class.ts';
+import { IClassWithCourseAndScenes } from './class.ts';
 import { IUser } from './user.ts';
 
 export interface IScene {
@@ -19,6 +19,12 @@ export type SceneTypes =
 	| 'OTHER';
 
 export interface ISceneWithClasses extends IScene {
-	classes: IClass[];
+	classes: IClassWithCourseAndScenes[];
 	performers: IUser[];
+}
+
+export interface ISceneWithPerformers extends IScene {
+	performers: {
+		user: IUser;
+	}[];
 }

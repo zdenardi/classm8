@@ -1,5 +1,5 @@
 import { ICourse } from './course.ts';
-import { IScene } from './scene.ts';
+import { IScene, ISceneWithPerformers } from './scene.ts';
 import { IUser } from './user.ts';
 
 export interface IClass {
@@ -15,5 +15,10 @@ export interface IClass {
 
 export interface IClassWithCourseAndScenes extends IClass {
 	course: ICourse;
-	scenes: IScene[];
+	scenes: {
+		scene: ISceneWithPerformers;
+		approved: boolean;
+		order: number;
+	}[];
+	class: IClass;
 }

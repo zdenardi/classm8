@@ -9,6 +9,7 @@ import {
 } from 'xstate';
 import {
 	CLASSES_PROVIDER,
+	PROFILE_PROVIDER,
 	SCENES_PROVIDER,
 	USERS_PROVIDER,
 } from '../constants/xstateSystem.ts';
@@ -21,6 +22,9 @@ import { classesProviderMachine } from './providers/classes.provider.machine.ts'
 import { scenesProviderMachine } from './providers/scenes.provider.machine.ts';
 import { ISceneWithClasses } from '../types/scene.ts';
 import { usersProviderMachine } from './providers/users.provider.machine.ts';
+import { IProfile } from '../../types/profile.ts';
+import { profileProviderMachine } from './providers/profile.provider.machine.ts';
+import { ICourse } from '../types/course.ts';
 
 export type Context = {
 	token: string | undefined;
@@ -34,10 +38,14 @@ export type Context = {
 		lastName: string;
 		email: string;
 		role: 'STUDENT' | 'ADMIN' | 'MODERATOR' | 'INSTRUCTOR';
+		scenes: ISceneWithClasses[];
+		classes: IClassWithCourseAndScenes[];
+		courses: ICourse[];
 	} | undefined;
 	classesProvider: ActorRefFrom<typeof classesProviderMachine>;
 	scenesProvider: ActorRefFrom<typeof scenesProviderMachine>;
 	usersProvider: ActorRefFrom<typeof usersProviderMachine>;
+	profileProvider: ActorRefFrom<typeof profileProviderMachine>;
 };
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -75,6 +83,11 @@ export type ON_ROSTER_LOADED = {
 	data: IUser[];
 };
 
+export type ON_PROFILE_LOADED = {
+	type: 'ON_PROFILE_LOADED';
+	data: IProfile;
+};
+
 export type Events =
 	| ON_LOAD
 	| ON_USER_SIGNED_IN
@@ -82,6 +95,7 @@ export type Events =
 	| ON_CLASSES_LOADED
 	| ON_SCENES_LOADED
 	| ON_ROSTER_LOADED
+	| ON_PROFILE_LOADED
 	| ON_USER_SIGNED_OUT;
 
 // Helper to emit redirect event
@@ -100,6 +114,7 @@ export const userState = setup({
 		classesProvider: classesProviderMachine,
 		scenesProvider: scenesProviderMachine,
 		usersProvider: usersProviderMachine,
+		profileProvider: profileProviderMachine,
 	},
 }).createMachine({
 	context: ({ spawn }) => ({
@@ -112,6 +127,7 @@ export const userState = setup({
 		classesProvider: spawn('classesProvider', { id: CLASSES_PROVIDER }),
 		scenesProvider: spawn('scenesProvider', { id: SCENES_PROVIDER }),
 		usersProvider: spawn('usersProvider', { id: USERS_PROVIDER }),
+		profileProvider: spawn('profileProvider', { id: PROFILE_PROVIDER }),
 	}),
 	initial: '$_UNAUTHENTICATED',
 	states: {
@@ -121,7 +137,7 @@ export const userState = setup({
 					actions: [
 						assign({ loading: false }),
 					],
-					target: '$_AUTHENTICATED',
+					target: '$_CHECK_REGISTRATION',
 				},
 				ON_CHECK_REGISTRATION: {
 					target: '$_CHECK_REGISTRATION',
@@ -177,7 +193,12 @@ export const userState = setup({
 					target: '$_AUTHENTICATED',
 					actions: [
 						assign({
-							profile: ({ event }) => event.output,
+							profile: ({ event }) => ({
+								...event.output,
+								scenes: [],
+								classes: [],
+								courses: [],
+							}),
 						}),
 						() => {
 							console.log('Registration Complete');
@@ -207,6 +228,10 @@ export const userState = setup({
 					if (context.roster.length === 0) {
 						enqueue(sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }));
 					}
+
+					enqueue(
+						sendTo(context.profileProvider, { type: 'ON_GET_PROFILE' }),
+					);
 				}),
 			],
 			on: {
@@ -222,18 +247,31 @@ export const userState = setup({
 						assign({
 							scenes: ({ event }) => event.data,
 						}),
+						sendTo(({ context }) => context.profileProvider, { type: 'ON_GET_PROFILE' }),
 					],
 				},
 				ON_ROSTER_LOADED: {
 					actions: [
 						assign({
 							roster: ({ event }) => {
-								console.log(event);
 								return event.data.filter(
 									(user) => user.role === 'STUDENT',
 								);
 							},
 						}),
+					],
+				},
+				ON_PROFILE_LOADED: {
+					actions: [
+						assign({
+							profile: ({ context, event }) => ({
+								...context.profile!,
+								classes: event.data.classes,
+								courses: event.data.courses,
+								scenes: event.data.scenes,
+							}),
+						}),
+						({ event }) => console.log('PROFILE LOADED', event),
 					],
 				},
 				ON_USER_SIGNED_OUT: {

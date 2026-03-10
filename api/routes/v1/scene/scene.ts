@@ -46,11 +46,68 @@ sceneRouter.get('/scenes/:id', async (context) => {
 	context.response.body = foundScene;
 });
 
-sceneRouter.post('/scenes', async (context) => {
+sceneRouter.post('/scenes', clerkAuth, async (context) => {
 	const db = context.app.state.prisma;
-	const data: Omit<Scene, 'id' | 'createdAt' | 'updatedAt'> = await context
-		.request.body.json();
-	const createdScene = await db.class.create({ data });
+	const { userId } = context.state.auth;
+	const data: Omit<Scene, 'id' | 'createdAt' | 'updatedAt'> & {
+		performerIds?: number[];
+		classId?: number;
+	} = await context.request.body.json();
+
+	const { performerIds, classId, ...sceneData } = data;
+	console.log('sceneData:', data);
+
+	const user = await db.user.findUnique({
+		where: {
+			clerkId: userId,
+		},
+	});
+
+	const allPerformerIds = user?.id
+		? [...(performerIds || []), user.id]
+		: performerIds || [];
+
+	const nextOrder = classId
+		? await db.scenesInClasses.count({ where: { classId } })
+		: 0;
+
+	console.log({
+		nextOrder,
+	});
+
+	const createdScene = await db.scene.create({
+		data: {
+			...sceneData,
+			performers: {
+				create: allPerformerIds.map((performerId: number) => ({
+					user: {
+						connect: { id: performerId },
+					},
+				})),
+			},
+			...(classId && {
+				classes: {
+					create: {
+						classId: classId,
+						approved: false,
+						order: nextOrder + 1,
+					},
+				},
+			}),
+		},
+		include: {
+			performers: {
+				include: {
+					user: true,
+				},
+			},
+			classes: {
+				include: {
+					class: true,
+				},
+			},
+		},
+	});
 	context.response.body = createdScene;
 });
 

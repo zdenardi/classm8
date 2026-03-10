@@ -8,10 +8,11 @@ import {
   DialogBody,
 } from "../components/catalyst/dialog.tsx";
 import { SceneForm } from "../features/scene/SceneForm.tsx";
-import { useClasses, useRoster } from "../hooks/contextHooks.ts";
+import { useClasses, useRoster, useScenes } from "../hooks/contextHooks.ts";
 import { transformUsersToOptions } from "../utils/helperfunctions/users.ts";
 import { transformClassesToOptions } from "../utils/helperfunctions/classes.ts";
 import { SceneFormValues } from "../features/scene/schema.ts";
+import { transformSceneFormValuesToScene } from "../utils/helperfunctions/scenes.ts";
 
 export const ScenesCard = () => {
   const [state, send] = useMachine(dialogMachine, {
@@ -20,7 +21,7 @@ export const ScenesCard = () => {
   });
   const { roster } = useRoster();
   const { classes } = useClasses();
-
+  const { scenesProvider, scenes, loading } = useScenes();
   const { isOpen } = state.context;
 
   const handleOpenDialog = () => {
@@ -32,10 +33,15 @@ export const ScenesCard = () => {
   };
 
   const handleSubmit = (values: SceneFormValues) => {
-    console.log("Scene Form Values: ", values);
+    scenesProvider.send({
+      type: "ON_CREATE_SCENE",
+      values: transformSceneFormValuesToScene(values),
+    });
     handleCloseDialog();
   };
-
+  if (loading) {
+    return null;
+  }
   return (
     <>
       <Card className="col-span-2">
@@ -50,16 +56,19 @@ export const ScenesCard = () => {
           </h3>
         </div>
         <div className="max-h-64 overflow-y-auto">
-          <div className="flex gap-2">
-            <Badge color="blue">1/1</Badge>
-            <p>Hamlet - Monologue - 5 min</p>
-          </div>
-          <div className="flex gap-2">
-            <p>Hamlet - Monologue - 5 min</p>
-          </div>
-          <div className="flex gap-2">
-            <p>Hamlet - Monologue - 5 min</p>
-          </div>
+          {scenes.length === 0 && (
+            <p className="text-gray-500">No Scenes Found</p>
+          )}
+          {scenes.map((scene) => {
+            return (
+              <div key={scene.id} className="flex gap-2">
+                <Badge color="blue">1/1</Badge>
+                <p>
+                  {scene.title} - {scene.type}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </Card>
 

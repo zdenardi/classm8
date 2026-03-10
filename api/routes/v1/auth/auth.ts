@@ -29,6 +29,7 @@ authRouter.get('/auth', async (context) => {
 			context.response.status = 300;
 			return;
 		} else {
+			console.log('User found!', user);
 			context.response.body = {
 				user,
 			};
@@ -52,7 +53,6 @@ authRouter.post('/auth', async (context) => {
 		const data: Omit<User, 'id' | 'createdAt' | 'updatedAt'> = await context
 			.request
 			.body.json();
-		console.log(data);
 
 		const newUser = await db.user.create({
 			data: {

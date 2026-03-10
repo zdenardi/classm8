@@ -18,7 +18,6 @@ export async function verifyClerkSession(
 		const payload = await verifyToken(token, {
 			secretKey: Deno.env.get('CLERK_SECRET_KEY')!,
 		});
-		console.log(payload);
 
 		return {
 			userId: payload.sub,

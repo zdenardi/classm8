@@ -21,7 +21,7 @@ export const ScenesCard = () => {
   });
   const { roster } = useRoster();
   const { classes } = useClasses();
-  const { scenesProvider, scenes } = useScenes();
+  const { scenesProvider, scenes, loading } = useScenes();
   const { isOpen } = state.context;
 
   const handleOpenDialog = () => {
@@ -39,7 +39,9 @@ export const ScenesCard = () => {
     });
     handleCloseDialog();
   };
-
+  if (loading) {
+    return null;
+  }
   return (
     <>
       <Card className="col-span-2">

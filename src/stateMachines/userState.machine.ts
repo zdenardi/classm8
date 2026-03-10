@@ -247,6 +247,7 @@ export const userState = setup({
 						assign({
 							scenes: ({ event }) => event.data,
 						}),
+						sendTo(({ context }) => context.profileProvider, { type: 'ON_GET_PROFILE' }),
 					],
 				},
 				ON_ROSTER_LOADED: {

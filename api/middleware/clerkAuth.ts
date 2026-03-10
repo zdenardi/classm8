@@ -1,6 +1,10 @@
 import { Context } from '@oak/oak';
 import { verifyClerkSession } from '../util/auth.ts';
 
+export const authConfig = {
+	verify: verifyClerkSession,
+};
+
 export async function clerkAuth(ctx: Context, next: () => Promise<unknown>) {
 	const auth = ctx.request.headers.get('Authorization');
 	if (!auth) {
@@ -9,7 +13,7 @@ export async function clerkAuth(ctx: Context, next: () => Promise<unknown>) {
 		return;
 	}
 
-	const session = await verifyClerkSession(auth as string);
+	const session = await authConfig.verify(auth as string);
 
 	if (!session) {
 		ctx.response.status = 401;

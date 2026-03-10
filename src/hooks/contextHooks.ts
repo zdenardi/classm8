@@ -78,6 +78,7 @@ export const useScenes = (): ScenesRefResult => {
 		UserContext.useActorRef(),
 		selectUserContext,
 	);
+
 	const { loading } = useSelector(scenesProvider, (state) => state.context);
 	return { loading, scenes: profile?.scenes || [], scenesProvider };
 };

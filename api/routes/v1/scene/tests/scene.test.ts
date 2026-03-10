@@ -1,5 +1,6 @@
 import { createApp } from '../../../../main.ts';
 import { cleanDatabase, seedTestData } from '@/test-utils';
+import { authConfig } from '../../../../middleware/clerkAuth.ts';
 
 import type { Scene, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
@@ -8,9 +9,26 @@ import { db } from '@/db';
 let exampleScene: Scene | undefined;
 let student1: User | undefined;
 let student2: User | undefined;
+let originalVerify: typeof authConfig.verify;
+
+const mockVerify = () =>
+	Promise.resolve({
+		userId: 'student1',
+		sessionId: 'test-session',
+		orgId: undefined,
+	});
 
 Deno.test.beforeEach(async () => {
 	console.log('Setting up testing data');
+	originalVerify = authConfig.verify;
+
+	// Make the property configurable
+	Object.defineProperty(authConfig, 'verify', {
+		value: mockVerify,
+		writable: true,
+		configurable: true,
+	});
+
 	await cleanDatabase();
 	const seedData = await seedTestData();
 	exampleScene = seedData.scene;
@@ -22,6 +40,11 @@ Deno.test.beforeEach(async () => {
 });
 
 Deno.test.afterEach(async () => {
+	Object.defineProperty(authConfig, 'verify', {
+		value: originalVerify,
+		writable: true,
+		configurable: true,
+	});
 	await db.$disconnect();
 });
 
@@ -29,6 +52,7 @@ Deno.test('GET /scenes - should return all scenes', async () => {
 	const app = createApp(db);
 	const request = new Request('http://localhost:8000/api/v1/scenes', {
 		method: 'GET',
+		headers: { Authorization: 'Bearer fake-token' },
 	});
 	const response = await app.handle(request);
 
@@ -106,14 +130,17 @@ Deno.test('POST /scenes - should create a new scene', async () => {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
+			Authorization: 'Bearer fake-token',
 		},
 		body: JSON.stringify(newScene),
 	});
 
 	const response = await app.handle(request);
+	console.log(response);
 
 	// Assertions
 	assertExists(response);
+
 	assertEquals(response.status, 200);
 
 	const createdScene = await response.json();

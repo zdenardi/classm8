@@ -1,0 +1,1 @@
+deno test --allow-all --trace-leaks api/routes/v1/course/tests/courses.test.ts

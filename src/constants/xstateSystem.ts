@@ -8,5 +8,6 @@ export const CLASSES_PROVIDER = 'classesProvider';
 export const SCENES_PROVIDER = 'scenesProvider';
 export const USERS_PROVIDER = 'usersProvider';
 export const PROFILE_PROVIDER = 'profileProvider';
+export const COURSE_PROVIDER = 'courseProvider';
 
 export const USER_STATE = 'userState';

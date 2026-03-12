@@ -7,6 +7,8 @@ import { IProfile } from '../../types/profile.ts';
 import { ISceneWithClasses } from '../types/scene.ts';
 import { ActorRefFrom } from 'npm:xstate@^5.25.0';
 import { scenesProviderMachine } from '../stateMachines/providers/scenes.provider.machine.ts';
+import { ICourseWithStudentsAndClasses } from '../types/course.ts';
+import { courseProviderMachine } from '../stateMachines/providers/courses.provider.machine.ts';
 
 /**
  * Selects UserContext
@@ -21,6 +23,7 @@ export const selectUserContext = (state: { context: Context }) => {
 		usersProvider: state.context.usersProvider,
 		scenesProvider: state.context.scenesProvider,
 		profileProvider: state.context.profileProvider,
+		courseProvider: state.context.courseProvider,
 		profile: state.context.profile,
 	};
 };
@@ -81,4 +84,18 @@ export const useScenes = (): ScenesRefResult => {
 
 	const { loading } = useSelector(scenesProvider, (state) => state.context);
 	return { loading, scenes: profile?.scenes || [], scenesProvider };
+};
+
+type CourseRefResult = {
+	loading: boolean;
+	courseProvider: ActorRefFrom<typeof courseProviderMachine>;
+};
+
+export const useCourses = (): CourseRefResult => {
+	const { courseProvider } = useSelector(
+		UserContext.useActorRef(),
+		selectUserContext,
+	);
+	const { loading } = useSelector(courseProvider, (state) => state.context);
+	return { loading, courseProvider };
 };

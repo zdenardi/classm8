@@ -1,6 +1,6 @@
 import { type DoneActorEvent } from 'xstate';
 import { IScene } from '../../types/scene.ts';
-import { ICourseWithStudentsAndClasses } from '../../types/course.ts';
+import { ICourse, ICourseWithStudentsAndClasses } from '../../types/course.ts';
 import { UserResponseEvent } from '../user/events.ts';
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -16,11 +16,11 @@ export type ON_GET_INSTRUCTORS = {
 
 export type ON_SUBMIT = {
 	type: 'ON_SUBMIT';
-	values: Omit<IScene, 'id'>;
+	values: Omit<ICourse, 'id' | 'createdAt' | 'updatedAt' | 'instructor'>;
 };
 export type ON_UPDATE = {
 	type: 'ON_UPDATE';
-	values: IScene;
+	values: Omit<ICourse, 'id' | 'createdAt' | 'updatedAt' | 'instructor'>;
 };
 export type ON_DELETE = {
 	type: 'ON_DELETE';

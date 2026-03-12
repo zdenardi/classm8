@@ -83,11 +83,12 @@ model ScenesInClasses {
   classId  Int
   sceneId  Int
   approved Boolean @default(false)
-  order    Int     @unique
+  order    Int
   class    Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
   scene    Scene   @relation(fields: [sceneId], references: [id], onDelete: Cascade)
 
   @@id([classId, sceneId])
+  @@unique([classId, order])
 }
 
 enum Role {

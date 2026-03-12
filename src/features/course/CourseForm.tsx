@@ -8,14 +8,21 @@ import { courseFormSchema, CourseFormValues } from "./schema.ts";
 import { useMemo } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { useCustomForm } from "../../hooks/useCustomForm.ts";
+import { OptionType } from "../../../types/common.ts";
+import {
+  Combobox,
+  ComboboxLabel,
+  ComboboxOption,
+} from "../../components/catalyst/combobox.tsx";
 
 interface Props {
   sendValues: (values: CourseFormValues) => void;
   handleError: () => void;
+  instructors: OptionType[];
 }
 
 export const CourseForm = (props: Props) => {
-  const { sendValues, handleError } = props;
+  const { sendValues, handleError, instructors } = props;
 
   const methods = useCustomForm<CourseFormValues>({
     resolver: zodResolver(courseFormSchema),
@@ -44,7 +51,6 @@ export const CourseForm = (props: Props) => {
 
   const onSubmit = (data: CourseFormValues) => {
     sendValues(data);
-    console.log(data);
   };
 
   const onSubmitError = () => {
@@ -61,6 +67,33 @@ export const CourseForm = (props: Props) => {
         >
           <div className="flex flex-col pb-10 gap-5 items-left w-4/5 mx-auto">
             <Section componentsPerLine={2}>
+              <Row>
+                <Field className="text-start">
+                  <Label>Instructor</Label>
+                  <Controller
+                    name="instructorId"
+                    control={control}
+                    render={({ field }) => (
+                      <Combobox<OptionType | null>
+                        onChange={(value) => {
+                          if (value) {
+                            field.onChange(Number(value.value));
+                          }
+                        }}
+                        options={instructors}
+                        displayValue={(option) => option?.label || ""}
+                        placeholder="Select Instructor"
+                      >
+                        {(option: OptionType) => (
+                          <ComboboxOption value={option}>
+                            <ComboboxLabel>{option.label}</ComboboxLabel>
+                          </ComboboxOption>
+                        )}
+                      </Combobox>
+                    )}
+                  />
+                </Field>
+              </Row>
               <Row>
                 <Label>Title</Label>
                 <Controller

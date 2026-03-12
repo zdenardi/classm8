@@ -1,33 +1,48 @@
 import { createApp } from '../../../../main.ts';
-import { cleanDatabase, seedTestData } from '@/test-utils';
+import { cleanDatabase, seedTestData, testDb } from '@/test-utils';
 
 import type { Course, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { CourseWithStudents } from '../../../../../types/course.ts';
 import { db } from '@/db';
+import { authConfig } from '../../../../middleware/clerkAuth.ts';
 
 let exampleInstructor: User | undefined;
 let exampleCourse: Course | undefined;
+
 Deno.test.beforeEach(async () => {
 	console.log('Setting up testing data');
 	await cleanDatabase();
 	const { instructor, course } = await seedTestData();
+	authConfig.verify = () =>
+		Promise.resolve({
+			userId: 'test-user',
+			sessionId: 'test-session',
+			orgId: undefined,
+		});
+
 	exampleInstructor = instructor;
 	exampleCourse = course;
 });
 
 Deno.test.afterEach(async () => {
 	await db.$disconnect();
+	await testDb.$disconnect();
 });
 
 Deno.test.afterAll(async () => {
 	await db.$disconnect();
+	await testDb.$disconnect();
 });
 
-Deno.test('GET courses', async () => {
+const noSanitize = { sanitizeOps: false, sanitizeResources: false };
+const authHeaders = { 'Authorization': 'Bearer test-token' };
+
+Deno.test({ name: 'GET courses', ...noSanitize }, async () => {
 	const app = createApp(db);
 	const request = new Request('http://localhost:8000/api/v1/courses', {
 		method: 'GET',
+		headers: authHeaders,
 	});
 	const response = await app.handle(request);
 	// Assertions
@@ -43,13 +58,14 @@ Deno.test('GET courses', async () => {
 	assertEquals(course.students.length, 2);
 });
 
-Deno.test('GET course by ID', async () => {
+Deno.test({ name: 'GET course by ID', ...noSanitize }, async () => {
 	const app = createApp(db);
 	assertExists(exampleCourse);
 	const request = new Request(
 		`http://localhost:8000/api/v1/courses/${exampleCourse.id}`,
 		{
 			method: 'GET',
+			headers: authHeaders,
 		},
 	);
 	const response = await app.handle(request);
@@ -65,23 +81,23 @@ Deno.test('GET course by ID', async () => {
 	console.log(course);
 });
 
-Deno.test('POST courses', async () => {
+Deno.test({ name: 'POST courses', ...noSanitize }, async () => {
 	assertExists(exampleInstructor);
 	const app = createApp(db);
 	const createdCourse = {
-		title: 'Test Course',
-		studentLimit: 10,
-		instructorId: exampleInstructor.id,
-		startDate: '2026-01-15',
-		startTime: '18:00',
-		endTime: '21:00',
-		location: 'Studio A',
-		repeatNum: 4,
+		'title': 'March Scene Study',
+		'startDate': '2026-03-04',
+		'startTime': '19:00',
+		'endTime': '22:30',
+		'location': 'Zephyr',
+		'repeatNum': 4,
+		'instructorId': exampleInstructor.id,
 	};
 	const request = new Request('http://localhost:8000/api/v1/courses', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
+			...authHeaders,
 		},
 		body: JSON.stringify(createdCourse),
 	});
@@ -92,9 +108,10 @@ Deno.test('POST courses', async () => {
 	assertEquals(response.status, 200);
 	const responseBody = await response.json();
 	assertEquals(responseBody.classes.length, 4);
+	console.log(responseBody);
 });
 
-Deno.test('PATCH course by id', async () => {
+Deno.test({ name: 'PATCH course by id', ...noSanitize }, async () => {
 	const app = createApp(db);
 	assertExists(exampleCourse);
 	assertExists(exampleInstructor);
@@ -111,6 +128,7 @@ Deno.test('PATCH course by id', async () => {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
+				...authHeaders,
 			},
 			body: JSON.stringify(editData),
 		},
@@ -128,7 +146,7 @@ Deno.test('PATCH course by id', async () => {
 	assertEquals(course.students.length, 2);
 });
 
-Deno.test('DELETE course by id', async () => {
+Deno.test({ name: 'DELETE course by id', ...noSanitize }, async () => {
 	const app = createApp(db);
 	assertExists(exampleCourse);
 
@@ -136,6 +154,7 @@ Deno.test('DELETE course by id', async () => {
 		`http://localhost:8000/api/v1/courses/${exampleCourse.id}`,
 		{
 			method: 'DELETE',
+			headers: authHeaders,
 		},
 	);
 	const response = await app.handle(request);

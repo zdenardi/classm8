@@ -1,10 +1,11 @@
 import { Router } from '@oak/oak';
 import { Course, PrismaClient } from '@/prisma';
 import { CourseFormValues } from '../../../../src/features/course/schema.ts';
+import { clerkAuth } from '../../../middleware/clerkAuth.ts';
 
 const courseRouter = new Router();
 
-courseRouter.get('/courses', async (context) => {
+courseRouter.get('/courses', clerkAuth, async (context) => {
 	const db = context.app.state.prisma;
 	const courses = await db.course.findMany({
 		include: {
@@ -16,7 +17,7 @@ courseRouter.get('/courses', async (context) => {
 	context.response.body = courses;
 });
 
-courseRouter.get('/courses/:id', async (context) => {
+courseRouter.get('/courses/:id', clerkAuth, async (context) => {
 	const db = context.app.state.prisma;
 	const { id } = context.params;
 	const courses = await db.course.findUnique({
@@ -32,7 +33,7 @@ courseRouter.get('/courses/:id', async (context) => {
 	context.response.body = courses;
 });
 
-courseRouter.post('/courses', async (context) => {
+courseRouter.post('/courses', clerkAuth, async (context) => {
 	const data: CourseFormValues = await context
 		.request.body.json();
 	const db = context.app.state.prisma;
@@ -96,7 +97,7 @@ courseRouter.post('/courses', async (context) => {
 	context.response.body = courseWithClasses;
 });
 
-courseRouter.patch('/courses/:id', async (context) => {
+courseRouter.patch('/courses/:id', clerkAuth, async (context) => {
 	const id = await context.params.id;
 	const data: Course = await context.request.body.json();
 	const db: PrismaClient = context.app.state.prisma;
@@ -131,7 +132,7 @@ courseRouter.patch('/courses/:id', async (context) => {
 	return (context.response.body = updatedCourse);
 });
 
-courseRouter.delete('/courses/:id', async (context) => {
+courseRouter.delete('/courses/:id', clerkAuth, async (context) => {
 	const id = await context.params.id;
 	const db: PrismaClient = context.app.state.prisma;
 

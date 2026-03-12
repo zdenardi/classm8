@@ -1,7 +1,7 @@
 import { useMachine } from "@xstate/react";
 import { Card } from "../components/Card.tsx";
 import { Badge } from "../components/catalyst/badge.tsx";
-import { useClasses } from "../hooks/contextHooks.ts";
+import { useClasses, useCourses, useRoster } from "../hooks/contextHooks.ts";
 import { dialogMachine } from "../stateMachines/dialog.machine.ts";
 import { IClassWithCourseAndScenes } from "../types/class.ts";
 import { Button } from "../components/catalyst/button.tsx";
@@ -12,6 +12,9 @@ import {
 } from "../components/catalyst/dialog.tsx";
 import { BasicGrid } from "../components/agGrid/Grid.tsx";
 import type { ColDef } from "ag-grid-community";
+import { CourseForm } from "../features/course/CourseForm.tsx";
+import { transformUsersToOptions } from "../utils/helperfunctions/users.ts";
+import { CourseFormValues } from "../features/course/schema.ts";
 
 const sceneColDefs: ColDef[] = [
   { field: "title", headerName: "Title" },
@@ -93,9 +96,36 @@ export const ClassesDetails = ({
 };
 
 export const ClassesCard = () => {
+  const [state, send] = useMachine(dialogMachine, {
+    id: "addClassDialog",
+    input: { isOpen: false },
+  });
+  const { roster } = useRoster();
   const { classes } = useClasses();
+  const { isOpen } = state.context;
+  const { courseProvider } = useCourses();
+
+  const handleCloseDialog = () => {
+    send({ type: "ON_CLOSE" });
+  };
+  const handleOpenDialog = () => {
+    send({ type: "ON_OPEN" });
+  };
+  const handleSubmit = (values: CourseFormValues) => {
+    courseProvider.send({
+      type: "ON_CREATE_COURSE",
+      values,
+    });
+    handleCloseDialog();
+  };
+
   return (
     <Card className="col-span-4">
+      <div className="flex justify-end">
+        <Button primary size="small" onClick={handleOpenDialog}>
+          Add Course and Classes
+        </Button>
+      </div>
       <div className="border-l-4 border-blue-500 pl-4 mb-4">
         <h3 className="text-xl text-start font-bold text-gray-900 dark:text-white">
           Classes
@@ -103,6 +133,20 @@ export const ClassesCard = () => {
       </div>
       <div>
         <ClassesDetails classes={classes} />
+        <Dialog open={isOpen} onClose={handleCloseDialog} size="4xl">
+          <div className="p-4">
+            <DialogTitle>Class Itinerary</DialogTitle>
+            <DialogBody>
+              <CourseForm
+                sendValues={handleSubmit}
+                handleError={handleCloseDialog}
+                instructors={transformUsersToOptions(
+                  roster.filter((user) => user.role === "INSTRUCTOR"),
+                )}
+              />
+            </DialogBody>
+          </div>
+        </Dialog>
       </div>
     </Card>
   );

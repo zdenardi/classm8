@@ -91,6 +91,10 @@ export type ON_PROFILE_LOADED = {
 	data: IProfile;
 };
 
+export type ON_UPDATE_DATA = {
+	type: 'ON_UPDATE_DATA';
+};
+
 export type Events =
 	| ON_LOAD
 	| ON_USER_SIGNED_IN
@@ -288,6 +292,25 @@ export const userState = setup({
 							loading: false,
 						}),
 					],
+				},
+				ON_UPDATE_DATA: {
+					entry: [
+						enqueueActions(({ context, enqueue }) => {
+							enqueue(
+								sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),
+							);
+							enqueue(
+								sendTo(context.scenesProvider, { type: 'ON_GET_SCENES' }),
+							);
+							enqueue(
+								sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }),
+							);
+							enqueue(
+								sendTo(context.profileProvider, { type: 'ON_GET_PROFILE' }),
+							);
+						}),
+					],
+					target: '$_AUTHENTICATED',
 				},
 			},
 		},

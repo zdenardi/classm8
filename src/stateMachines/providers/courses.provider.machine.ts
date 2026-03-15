@@ -79,6 +79,16 @@ export const courseProviderMachine = setup({
 				},
 			},
 		},
+		$_TRIGGER_UPDATE: {
+			entry: [
+				assign({ loading: false }),
+				sendParent(() => ({
+					type: 'ON_UPDATE_DATA',
+				})),
+			],
+			exit: assign({ loading: false }),
+			target: '$_IDLE',
+		},
 		$_CREATE: {
 			invoke: {
 				id: 'createCourse',
@@ -95,7 +105,7 @@ export const courseProviderMachine = setup({
 					},
 				}),
 				onDone: {
-					target: '$_GET',
+					target: '$_TRIGGER_UPDATE',
 				},
 				onError: {
 					target: '$_IDLE',

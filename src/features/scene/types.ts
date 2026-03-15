@@ -10,6 +10,8 @@ export interface Scope {
 export interface ISceneContext {
 	loading: boolean;
 	data: IScene[];
+	_sceneId: number;
+	_classId: number;
 }
 
 export interface XStateInput {

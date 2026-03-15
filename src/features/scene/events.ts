@@ -14,7 +14,7 @@ export type ON_SUBMIT = {
 };
 export type ON_UPDATE = {
 	type: 'ON_UPDATE';
-	values: IScene;
+	payload: { id: number };
 };
 export type ON_DELETE = {
 	type: 'ON_DELETE';

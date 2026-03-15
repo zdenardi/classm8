@@ -39,9 +39,12 @@ export const ScenesCard = () => {
     });
     handleCloseDialog();
   };
+
   if (loading) {
+    console.log("Loading scenes show nothin!");
     return null;
   }
+
   return (
     <>
       <Card className="col-span-2">

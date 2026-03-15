@@ -28,7 +28,7 @@ export const setPathParams = (
 	params: { [key: string]: string },
 ) => {
 	return Object.entries(params).reduce((acc, [key, value]) => {
-		return acc.replace(`{${key}}`, value);
+		return acc.replace(`:${key}`, value);
 	}, url);
 };
 
@@ -119,12 +119,12 @@ export const deleteData = async (
 	});
 };
 
-export const patchData = async <T>(
+export const patchData = async (
 	route: keyof typeof ROUTES,
 	options?: Omit<ServiceCallParams, 'method' | 'route'>,
 ) => {
 	return handleServiceCall({
-		method: 'put',
+		method: 'patch',
 		route: route,
 		...options,
 	});

@@ -113,13 +113,23 @@ sceneRouter.post('/scenes', clerkAuth, async (context) => {
 
 sceneRouter.patch('/scenes/:id', async (context) => {
 	const db: PrismaClient = context.app.state.prisma;
-	const data: Partial<Scene> = await context.request.body.json();
+	const body = await context.request.body.json();
 	const { id } = context.params;
+	const { id: _id, createdAt: _ca, updatedAt: _ua, approved, ...sceneData } =
+		body;
+
+	if (approved !== undefined) {
+		await db.scenesInClasses.updateMany({
+			where: { sceneId: Number(id) },
+			data: { approved },
+		});
+	}
+
 	const updatedScene = await db.scene.update({
 		where: {
 			id: Number(id),
 		},
-		data,
+		data: sceneData,
 		include: {
 			performers: {
 				include: {

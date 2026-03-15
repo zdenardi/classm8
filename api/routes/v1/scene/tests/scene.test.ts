@@ -2,10 +2,9 @@ import { createApp } from '../../../../main.ts';
 import { cleanDatabase, seedTestData, testDb } from '@/test-utils';
 import { authConfig } from '../../../../middleware/clerkAuth.ts';
 
-import type { Class, Scene, User } from '@/prisma';
+import type { Class, Course, Scene, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { db } from '@/db';
-import { assert } from 'node:console';
 
 let exampleScene: Scene | undefined;
 let student1: User | undefined;
@@ -312,4 +311,32 @@ Deno.test('POST /scenes - should add a scene to a class when the class has no sc
 	assertEquals(createdScene.type, newScene.type);
 	assertEquals(createdScene.notes, newScene.notes);
 	assertEquals(createdScene.classes[0].order, expectedOrder);
+});
+
+Deno.test('PATCH /scenes/:id - should update a scene to approved', async () => {
+	assertExists(exampleScene);
+	const app = createApp(db);
+	const updateData = {
+		approved: true,
+	};
+
+	const request = new Request(
+		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
+		{
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(updateData),
+		},
+	);
+
+	const response = await app.handle(request);
+
+	// Assertions
+	assertExists(response);
+	assertEquals(response.status, 200);
+
+	const updatedScene = await response.json();
+	assertEquals(updatedScene.classes[0].approved, true);
 });

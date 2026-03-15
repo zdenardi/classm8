@@ -22,7 +22,6 @@ export const CoursesGrid = () => {
             data={data}
             loading={loading}
             colDefs={CourseColumns}
-            cyTag="course-grid"
             pagination
           />
         </div>

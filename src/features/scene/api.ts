@@ -34,13 +34,13 @@ export const SCENE_API_CALLS = {
 	},
 	patch: async ({ input }: Input<ON_UPDATE>): Promise<SceneResponseEvent> => {
 		return await patchData(ROUTE_NAMES.scene, {
-			pathParams: { id: input.event.values.id.toString() },
-			data: input.event.values,
+			pathParams: { id: input.context._sceneId.toString() },
+			data: { approved: true },
 		});
 	},
 	delete: async ({ input }: Input<ON_DELETE>) => {
 		return await deleteData(ROUTE_NAMES.scene, {
-			pathParams: { id: input.event.payload.id.toString() },
+			pathParams: { id: input.context._sceneId.toString() },
 		});
 	},
 };

@@ -9,6 +9,7 @@ import {
 import {
 	ON_DELETE,
 	ON_GET_ONE,
+	ON_REORDER_SCENES,
 	ON_SUBMIT,
 	ON_UPDATE,
 	SceneResponseEvent,
@@ -34,13 +35,19 @@ export const SCENE_API_CALLS = {
 	},
 	patch: async ({ input }: Input<ON_UPDATE>): Promise<SceneResponseEvent> => {
 		return await patchData(ROUTE_NAMES.scene, {
-			pathParams: { id: input.event.values.id.toString() },
-			data: input.event.values,
+			pathParams: { id: input.context._sceneId.toString() },
+			data: { approved: true },
 		});
 	},
 	delete: async ({ input }: Input<ON_DELETE>) => {
 		return await deleteData(ROUTE_NAMES.scene, {
-			pathParams: { id: input.event.payload.id.toString() },
+			pathParams: { id: input.context._sceneId.toString() },
+		});
+	},
+	reorder: async ({ input }: Input<ON_REORDER_SCENES>) => {
+		return await patchData(ROUTE_NAMES.scene, {
+			pathParams: { id: `reorder/${input.context._classId.toString()}` }, // this can be done better...but nice workaround for now
+			data: input.context._scenesToReorder,
 		});
 	},
 };

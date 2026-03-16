@@ -39,12 +39,14 @@ export const ScenesCard = () => {
     });
     handleCloseDialog();
   };
+
   if (loading) {
     return null;
   }
+
   return (
     <>
-      <Card className="col-span-2">
+      <Card className="sm:col-span-4 md:col-span-2">
         <div className="flex justify-end">
           <button type="button" onClick={handleOpenDialog}>
             Add A Scene
@@ -61,7 +63,7 @@ export const ScenesCard = () => {
           )}
           {scenes.map((scene) => {
             return (
-              <div key={scene.id} className="flex gap-2">
+              <div key={scene.id} className="flex gap-2 m-2">
                 <Badge color="blue">1/1</Badge>
                 <p>
                   {scene.title} - {scene.type}

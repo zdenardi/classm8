@@ -1,42 +1,42 @@
 import { createApp } from '../../../../main.ts';
-import { cleanDatabase, seedTestData } from '@/test-utils';
+import { cleanDatabase, seedTestData, testDb } from '@/test-utils';
 import { authConfig } from '../../../../middleware/clerkAuth.ts';
 
-import type { Scene, User } from '@/prisma';
+import type { Class, Course, Scene, User } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
 import { db } from '@/db';
 
 let exampleScene: Scene | undefined;
 let student1: User | undefined;
 let student2: User | undefined;
+let actingClass: Class | undefined;
+let course: Course | undefined;
 let originalVerify: typeof authConfig.verify;
-
-const mockVerify = () =>
-	Promise.resolve({
-		userId: 'student1',
-		sessionId: 'test-session',
-		orgId: undefined,
-	});
 
 Deno.test.beforeEach(async () => {
 	console.log('Setting up testing data');
 	originalVerify = authConfig.verify;
 
 	// Make the property configurable
-	Object.defineProperty(authConfig, 'verify', {
-		value: mockVerify,
-		writable: true,
-		configurable: true,
-	});
+	authConfig.verify = () =>
+		Promise.resolve({
+			userId: 'test-user',
+			sessionId: 'test-session',
+			orgId: undefined,
+		});
 
 	await cleanDatabase();
 	const seedData = await seedTestData();
 	exampleScene = seedData.scene;
 	student1 = seedData.student1;
 	student2 = seedData.student2;
+	actingClass = seedData.actingClass;
+	course = seedData.course;
 	assertExists(exampleScene);
 	assertExists(student1);
 	assertExists(student2);
+	assertExists(actingClass);
+	assertExists(course);
 });
 
 Deno.test.afterEach(async () => {
@@ -46,6 +46,12 @@ Deno.test.afterEach(async () => {
 		configurable: true,
 	});
 	await db.$disconnect();
+	await testDb.$disconnect();
+});
+
+Deno.test.afterAll(async () => {
+	await db.$disconnect();
+	await testDb.$disconnect();
 });
 
 Deno.test('GET /scenes - should return all scenes', async () => {
@@ -88,6 +94,7 @@ Deno.test('GET /scenes/:id - should return a specific scene by id', async () => 
 		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
 		{
 			method: 'GET',
+			headers: { Authorization: 'Bearer fake-token' },
 		},
 	);
 	const response = await app.handle(request);
@@ -167,6 +174,7 @@ Deno.test('PATCH /scenes/:id - should update a scene', async () => {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
 			},
 			body: JSON.stringify(updateData),
 		},
@@ -198,6 +206,9 @@ Deno.test('DELETE /scenes/:id - should delete a scene', async () => {
 	const request = new Request(
 		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
 		{
+			headers: {
+				Authorization: 'Bearer fake-token',
+			},
 			method: 'DELETE',
 		},
 	);
@@ -213,4 +224,211 @@ Deno.test('DELETE /scenes/:id - should delete a scene', async () => {
 		where: { id: exampleScene.id },
 	});
 	assertEquals(deletedScene, null);
+});
+
+Deno.test('POST /scenes - should add a scene to a class when the class already has a scene', async () => {
+	assertExists(student1);
+	assertExists(student2);
+	assertExists(actingClass);
+
+	const app = createApp(db);
+	const newScene = {
+		duration: 15,
+		title: 'New Test Scene',
+		type: 'FILM',
+		notes: 'A new scene for testing',
+		classId: actingClass.id,
+	};
+	const expectedOrder = 2;
+
+	const request = new Request('http://localhost:8000/api/v1/scenes', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer fake-token',
+		},
+		body: JSON.stringify(newScene),
+	});
+
+	const response = await app.handle(request);
+	console.log(response);
+
+	// Assertions
+	assertExists(response);
+
+	assertEquals(response.status, 200);
+
+	const createdScene = await response.json();
+	assertExists(createdScene.id);
+	assertEquals(createdScene.title, newScene.title);
+	assertEquals(createdScene.duration, newScene.duration);
+	assertEquals(createdScene.type, newScene.type);
+	assertEquals(createdScene.notes, newScene.notes);
+	assertEquals(createdScene.classes[0].order, expectedOrder);
+});
+
+Deno.test('POST /scenes - should add a scene to a class when the class has no scenes', async () => {
+	assertExists(student1);
+	assertExists(student2);
+	assertExists(course);
+
+	const app = createApp(db);
+	const actingClass = await db.class.create({
+		data: {
+			courseId: course.id,
+			location: 'Some place',
+			notes: 'Here are some notes',
+			startDate: new Date('2025-01-01T18:00:00'),
+			endDate: new Date('2025-01-01T21:00:00'),
+			streamingLink: '',
+		},
+	});
+	assertExists(actingClass);
+	const newScene = {
+		duration: 15,
+		title: 'New Test Scene',
+		type: 'FILM',
+		notes: 'A new scene for testing',
+		classId: actingClass.id,
+	};
+	const expectedOrder = 1;
+	const request = new Request('http://localhost:8000/api/v1/scenes', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer fake-token',
+		},
+		body: JSON.stringify(newScene),
+	});
+
+	const response = await app.handle(request);
+	console.log(response);
+
+	// Assertions
+	assertExists(response);
+
+	assertEquals(response.status, 200);
+
+	const createdScene = await response.json();
+	assertExists(createdScene.id);
+	assertEquals(createdScene.title, newScene.title);
+	assertEquals(createdScene.duration, newScene.duration);
+	assertEquals(createdScene.type, newScene.type);
+	assertEquals(createdScene.notes, newScene.notes);
+	assertEquals(createdScene.classes[0].order, expectedOrder);
+});
+
+Deno.test('PATCH /scenes/:id - should update a scene to approved', async () => {
+	assertExists(exampleScene);
+	const app = createApp(db);
+	const updateData = {
+		approved: true,
+	};
+
+	const request = new Request(
+		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
+		{
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
+			},
+			body: JSON.stringify(updateData),
+		},
+	);
+
+	const response = await app.handle(request);
+
+	// Assertions
+	assertExists(response);
+	assertEquals(response.status, 200);
+
+	const updatedScene = await response.json();
+	assertEquals(updatedScene.classes[0].approved, true);
+});
+
+Deno.test('PATCH /scenes/reorder - should add a scene and reorder scenes', async () => {
+	assertExists(exampleScene);
+	assertExists(actingClass);
+	assertExists(student1);
+	assertExists(student2);
+	const app = createApp(db);
+
+	const newScene = await db.scene.create({
+		data: {
+			duration: 10,
+			title: 'A Fake Scene',
+			type: 'PLAY',
+			notes: 'A fake play',
+			performers: {
+				create: [{ userId: student1.id }, { userId: student2.id }],
+			},
+			classes: {
+				create: {
+					classId: actingClass.id,
+					approved: false,
+					order: 2,
+				},
+			},
+		},
+	});
+	assertExists(newScene);
+	const updatedClass = await db.class.findUnique({
+		where: {
+			id: actingClass.id,
+		},
+		include: {
+			scenes: {
+				include: {
+					scene: true,
+				},
+			},
+		},
+	});
+	assertExists(updatedClass);
+	assertEquals(updatedClass.scenes[0].order, 1);
+
+	const updateData = [
+		{
+			sceneId: newScene.id,
+			order: 1,
+		},
+		{
+			sceneId: exampleScene.id,
+			order: 2,
+		},
+	];
+
+	const request = new Request(
+		`http://localhost:8000/api/v1/scenes/reorder/${actingClass.id}`,
+		{
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
+			},
+			body: JSON.stringify(updateData),
+		},
+	);
+
+	const response = await app.handle(request);
+
+	// Assertions
+	assertExists(response);
+	assertEquals(response.status, 204);
+	const finalClass = await db.class.findUnique({
+		where: {
+			id: actingClass.id,
+		},
+		include: {
+			scenes: {
+				include: {
+					scene: true,
+				},
+			},
+		},
+	});
+	assertExists(finalClass);
+	assertEquals(finalClass.scenes[0].order, 1);
+	assertEquals(finalClass.scenes[1].order, 2);
 });

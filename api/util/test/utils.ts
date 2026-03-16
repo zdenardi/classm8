@@ -1,5 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../../prisma/generated/client.ts';
+import type { Role } from '../../../prisma/generated/enums.ts';
 import Roster from '../../data/class-roster.json' with { type: 'json' };
 
 const connectionString =
@@ -31,8 +32,9 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			clerkId: 'instructorUser',
 		},
 	});
-	const students = await db.user.createMany({
-		data: Roster.map((user) => ({
+	type RosterEntry = { firstName: string; lastName: string; email: string; role: Role };
+	await db.user.createMany({
+		data: (Roster as unknown as RosterEntry[]).map((user) => ({
 			email: user.email,
 			firstName: user.firstName,
 			lastName: user.lastName,

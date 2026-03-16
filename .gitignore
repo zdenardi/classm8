@@ -29,3 +29,6 @@ dist-ssr
 
 *storybook.log
 storybook-static
+
+api/data/class-roster.json
+api/data/ROSTER.csv

@@ -9,6 +9,7 @@ import {
 } from 'xstate';
 import {
 	CLASSES_PROVIDER,
+	COURSE_PROVIDER,
 	PROFILE_PROVIDER,
 	SCENES_PROVIDER,
 	USERS_PROVIDER,
@@ -25,6 +26,7 @@ import { usersProviderMachine } from './providers/users.provider.machine.ts';
 import { IProfile } from '../../types/profile.ts';
 import { profileProviderMachine } from './providers/profile.provider.machine.ts';
 import { ICourse } from '../types/course.ts';
+import { courseProviderMachine } from './providers/courses.provider.machine.ts';
 
 export type Context = {
 	token: string | undefined;
@@ -46,6 +48,7 @@ export type Context = {
 	scenesProvider: ActorRefFrom<typeof scenesProviderMachine>;
 	usersProvider: ActorRefFrom<typeof usersProviderMachine>;
 	profileProvider: ActorRefFrom<typeof profileProviderMachine>;
+	courseProvider: ActorRefFrom<typeof courseProviderMachine>;
 };
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -88,6 +91,10 @@ export type ON_PROFILE_LOADED = {
 	data: IProfile;
 };
 
+export type ON_UPDATE_DATA = {
+	type: 'ON_UPDATE_DATA';
+};
+
 export type Events =
 	| ON_LOAD
 	| ON_USER_SIGNED_IN
@@ -115,6 +122,7 @@ export const userState = setup({
 		scenesProvider: scenesProviderMachine,
 		usersProvider: usersProviderMachine,
 		profileProvider: profileProviderMachine,
+		courseProvider: courseProviderMachine,
 	},
 }).createMachine({
 	context: ({ spawn }) => ({
@@ -128,6 +136,7 @@ export const userState = setup({
 		scenesProvider: spawn('scenesProvider', { id: SCENES_PROVIDER }),
 		usersProvider: spawn('usersProvider', { id: USERS_PROVIDER }),
 		profileProvider: spawn('profileProvider', { id: PROFILE_PROVIDER }),
+		courseProvider: spawn('courseProvider', { id: COURSE_PROVIDER }),
 	}),
 	initial: '$_UNAUTHENTICATED',
 	states: {
@@ -213,7 +222,6 @@ export const userState = setup({
 				},
 			},
 		},
-
 		$_AUTHENTICATED: {
 			entry: [
 				enqueueActions(({ context, enqueue }) => {
@@ -247,16 +255,16 @@ export const userState = setup({
 						assign({
 							scenes: ({ event }) => event.data,
 						}),
-						sendTo(({ context }) => context.profileProvider, { type: 'ON_GET_PROFILE' }),
+						sendTo(({ context }) => context.profileProvider, {
+							type: 'ON_GET_PROFILE',
+						}),
 					],
 				},
 				ON_ROSTER_LOADED: {
 					actions: [
 						assign({
 							roster: ({ event }) => {
-								return event.data.filter(
-									(user) => user.role === 'STUDENT',
-								);
+								return event.data;
 							},
 						}),
 					],
@@ -284,6 +292,25 @@ export const userState = setup({
 							loading: false,
 						}),
 					],
+				},
+				ON_UPDATE_DATA: {
+					actions: [
+						enqueueActions(({ context, enqueue }) => {
+							enqueue(
+								sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),
+							);
+							enqueue(
+								sendTo(context.scenesProvider, { type: 'ON_GET_SCENES' }),
+							);
+							enqueue(
+								sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }),
+							);
+							enqueue(
+								sendTo(context.profileProvider, { type: 'ON_GET_PROFILE' }),
+							);
+						}),
+					],
+					target: '$_AUTHENTICATED',
 				},
 			},
 		},

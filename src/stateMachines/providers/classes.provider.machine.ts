@@ -5,6 +5,7 @@ import { IClassWithCourseAndScenes } from '../../types/class.ts';
 export const classesProviderMachine = setup({
 	actors: {
 		getClasses: fromPromise(CLASS_API_CALLS.get),
+		patchClass: fromPromise(CLASS_API_CALLS.patch),
 	},
 	actions: {},
 	types: {

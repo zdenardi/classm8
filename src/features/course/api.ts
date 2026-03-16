@@ -5,8 +5,8 @@ import {
 	patchData,
 	postData,
 } from '../../utils/service.ts';
-import { SceneResponseEvent } from '../scene/events.ts';
 import {
+	CourseResponseEvent,
 	type CoursesResponseEvent,
 	ON_DELETE,
 	ON_SUBMIT,
@@ -18,12 +18,12 @@ export const COURSE_API_ROUTES = {
 	get: async (): Promise<CoursesResponseEvent> => {
 		return await getData(ROUTE_NAMES.course);
 	},
-	create: async ({ input }: Input<ON_SUBMIT>): Promise<SceneResponseEvent> => {
+	create: async ({ input }: Input<ON_SUBMIT>): Promise<CourseResponseEvent> => {
 		return await postData(ROUTE_NAMES.course, {
 			data: input.event.values,
 		});
 	},
-	patch: async ({ input }: Input<ON_UPDATE>): Promise<SceneResponseEvent> => {
+	patch: async ({ input }: Input<ON_UPDATE>): Promise<CourseResponseEvent> => {
 		return await patchData(ROUTE_NAMES.course, {
 			pathParams: { id: input.event.values.id.toString() },
 			data: input.event.values,

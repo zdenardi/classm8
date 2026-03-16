@@ -21,3 +21,15 @@ export type Args<TEvent extends Events> = ActionArgs<
 	TEvent,
 	Events
 >;
+
+export interface Input<T> {
+	input: {
+		context: IClassWithCourseAndScenes;
+		event: T;
+	};
+}
+
+export type ON_UPDATE = {
+	type: 'ON_UPDATE';
+	values: IClassWithCourseAndScenes;
+};

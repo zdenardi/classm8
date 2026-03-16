@@ -230,7 +230,7 @@ export type ScenesInClassesOrderByWithRelationInput = {
 }
 
 export type ScenesInClassesWhereUniqueInput = Prisma.AtLeast<{
-  order?: number
+  classId_order?: Prisma.ScenesInClassesClassIdOrderCompoundUniqueInput
   classId_sceneId?: Prisma.ScenesInClassesClassIdSceneIdCompoundUniqueInput
   AND?: Prisma.ScenesInClassesWhereInput | Prisma.ScenesInClassesWhereInput[]
   OR?: Prisma.ScenesInClassesWhereInput[]
@@ -238,9 +238,10 @@ export type ScenesInClassesWhereUniqueInput = Prisma.AtLeast<{
   classId?: Prisma.IntFilter<"ScenesInClasses"> | number
   sceneId?: Prisma.IntFilter<"ScenesInClasses"> | number
   approved?: Prisma.BoolFilter<"ScenesInClasses"> | boolean
+  order?: Prisma.IntFilter<"ScenesInClasses"> | number
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
   scene?: Prisma.XOR<Prisma.SceneScalarRelationFilter, Prisma.SceneWhereInput>
-}, "classId_sceneId" | "order">
+}, "classId_sceneId" | "classId_order">
 
 export type ScenesInClassesOrderByWithAggregationInput = {
   classId?: Prisma.SortOrder
@@ -319,6 +320,11 @@ export type ScenesInClassesListRelationFilter = {
 
 export type ScenesInClassesOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ScenesInClassesClassIdOrderCompoundUniqueInput = {
+  classId: number
+  order: number
 }
 
 export type ScenesInClassesClassIdSceneIdCompoundUniqueInput = {

@@ -14,11 +14,16 @@ export type ON_SUBMIT = {
 };
 export type ON_UPDATE = {
 	type: 'ON_UPDATE';
-	values: IScene;
+	payload: { id: number };
 };
 export type ON_DELETE = {
 	type: 'ON_DELETE';
 	payload: { id: number };
+};
+export type ON_REORDER_SCENES = {
+	type: 'ON_REORDER_SCENES';
+	classId: number;
+	scenes: { sceneId: number; order: number; classId: number }[];
 };
 
 export type CRUD_EVENTS = ON_LOAD | ON_SUBMIT | ON_UPDATE | ON_DELETE;

@@ -22,17 +22,25 @@ export type OnDeleteScene = {
 	sceneId: number;
 };
 
+export type OnReorderScenes = {
+	type: 'ON_REORDER_SCENES';
+	classId: number;
+	scenes: { sceneId: number; order: number; classId: number }[];
+};
+
 export type Events =
 	| OnGetScenes
 	| OnCreateScene
 	| OnApproveScene
-	| OnDeleteScene;
+	| OnDeleteScene
+	| OnReorderScenes;
 export const scenesProviderMachine = setup({
 	actors: {
 		getScenes: fromPromise(SCENE_API_CALLS.get),
 		createScene: fromPromise(SCENE_API_CALLS.create),
 		patchScene: fromPromise(SCENE_API_CALLS.patch),
 		deleteScene: fromPromise(SCENE_API_CALLS.delete),
+		reorderScenes: fromPromise(SCENE_API_CALLS.reorder),
 	},
 	actions: {},
 	types: {
@@ -42,6 +50,7 @@ export const scenesProviderMachine = setup({
 			pendingCreate: Omit<IScene, 'id' | 'createdAt' | 'updatedAt'> | null;
 			_sceneId: number;
 			_classId: number;
+			_scenesToReorder: { sceneId: number; order: number; classId: number }[];
 		},
 		events: {} as Events,
 		output: {} as {
@@ -55,6 +64,7 @@ export const scenesProviderMachine = setup({
 		pendingCreate: null,
 		_sceneId: -1,
 		_classId: -1,
+		_scenesToReorder: [],
 	}),
 	initial: '$_IDLE',
 	states: {
@@ -97,6 +107,17 @@ export const scenesProviderMachine = setup({
 							loading: true,
 							_sceneId: ({ event }) => event.sceneId,
 							_classId: ({ event }) => event.classId,
+						}),
+					],
+				},
+				ON_REORDER_SCENES: {
+					target: '$_REORDER',
+					actions: [
+						() => console.log('REORDERING SCENES'),
+						assign({
+							loading: true,
+							_classId: ({ event }) => event.classId,
+							_scenesToReorder: ({ event }) => event.scenes,
 						}),
 					],
 				},
@@ -191,6 +212,27 @@ export const scenesProviderMachine = setup({
 				onError: {
 					target: '$_IDLE',
 					actions: [() => console.log('There was an error DELETING a scene ')],
+				},
+			},
+		},
+		$_REORDER: {
+			invoke: {
+				id: 'reorderScenes',
+				src: 'reorderScenes',
+				input: ({ context }) => ({
+					context,
+					event: {
+						type: 'ON_REORDER_SCENES' as const,
+						classId: context._classId,
+						scenes: context._scenesToReorder,
+					},
+				}),
+				onDone: {
+					target: '$_TRIGGER_UPDATE',
+				},
+				onError: {
+					target: '$_IDLE',
+					actions: [() => console.log('There was an error REORDERING scenes ')],
 				},
 			},
 		},

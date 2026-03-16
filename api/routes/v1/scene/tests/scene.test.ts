@@ -94,6 +94,7 @@ Deno.test('GET /scenes/:id - should return a specific scene by id', async () => 
 		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
 		{
 			method: 'GET',
+			headers: { Authorization: 'Bearer fake-token' },
 		},
 	);
 	const response = await app.handle(request);
@@ -173,6 +174,7 @@ Deno.test('PATCH /scenes/:id - should update a scene', async () => {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
 			},
 			body: JSON.stringify(updateData),
 		},
@@ -204,6 +206,9 @@ Deno.test('DELETE /scenes/:id - should delete a scene', async () => {
 	const request = new Request(
 		`http://localhost:8000/api/v1/scenes/${exampleScene.id}`,
 		{
+			headers: {
+				Authorization: 'Bearer fake-token',
+			},
 			method: 'DELETE',
 		},
 	);
@@ -326,6 +331,7 @@ Deno.test('PATCH /scenes/:id - should update a scene to approved', async () => {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
 			},
 			body: JSON.stringify(updateData),
 		},
@@ -339,4 +345,90 @@ Deno.test('PATCH /scenes/:id - should update a scene to approved', async () => {
 
 	const updatedScene = await response.json();
 	assertEquals(updatedScene.classes[0].approved, true);
+});
+
+Deno.test('PATCH /scenes/reorder - should add a scene and reorder scenes', async () => {
+	assertExists(exampleScene);
+	assertExists(actingClass);
+	assertExists(student1);
+	assertExists(student2);
+	const app = createApp(db);
+
+	const newScene = await db.scene.create({
+		data: {
+			duration: 10,
+			title: 'A Fake Scene',
+			type: 'PLAY',
+			notes: 'A fake play',
+			performers: {
+				create: [{ userId: student1.id }, { userId: student2.id }],
+			},
+			classes: {
+				create: {
+					classId: actingClass.id,
+					approved: false,
+					order: 2,
+				},
+			},
+		},
+	});
+	assertExists(newScene);
+	const updatedClass = await db.class.findUnique({
+		where: {
+			id: actingClass.id,
+		},
+		include: {
+			scenes: {
+				include: {
+					scene: true,
+				},
+			},
+		},
+	});
+	assertExists(updatedClass);
+	assertEquals(updatedClass.scenes[0].order, 1);
+
+	const updateData = [
+		{
+			sceneId: newScene.id,
+			order: 1,
+		},
+		{
+			sceneId: exampleScene.id,
+			order: 2,
+		},
+	];
+
+	const request = new Request(
+		`http://localhost:8000/api/v1/scenes/reorder/${actingClass.id}`,
+		{
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer fake-token',
+			},
+			body: JSON.stringify(updateData),
+		},
+	);
+
+	const response = await app.handle(request);
+
+	// Assertions
+	assertExists(response);
+	assertEquals(response.status, 204);
+	const finalClass = await db.class.findUnique({
+		where: {
+			id: actingClass.id,
+		},
+		include: {
+			scenes: {
+				include: {
+					scene: true,
+				},
+			},
+		},
+	});
+	assertExists(finalClass);
+	assertEquals(finalClass.scenes[0].order, 1);
+	assertEquals(finalClass.scenes[1].order, 2);
 });

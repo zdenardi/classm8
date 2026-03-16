@@ -184,7 +184,8 @@ export const CourseForm = (props: Props) => {
             {calculatedEndDate && (
               <div className="text-center p-4  rounded">
                 <p className="text-lg font-semibold">
-                  Course runs from {new Date(startDate).toLocaleDateString()} to{" "}
+                  Course runs from{" "}
+                  {new Date(startDate + "T00:00").toLocaleDateString()} to{" "}
                   {calculatedEndDate.toLocaleDateString()}
                 </p>
                 <p className="text-sm text-gray-600">

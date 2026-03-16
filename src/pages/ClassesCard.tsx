@@ -24,7 +24,13 @@ import { CourseFormValues } from "../features/course/schema.ts";
 import { useState } from "react";
 
 const sceneColDefs: ColDef[] = [
-  { field: "title", headerName: "Title", pinned: "left" },
+  {
+    field: "title",
+    headerName: "Title",
+    pinned: "left",
+    rowDrag: true,
+    suppressHeaderMenuButton: true,
+  },
   {
     headerName: "Performers",
     valueGetter: (p) =>
@@ -73,9 +79,20 @@ const ClassDetailItem = ({
     });
   };
 
+  const handleReorder = (event: RowDragEndEvent) => {
+    const reorderedScenes: { sceneId: number; order: number }[] = [];
+    event.api.forEachNodeAfterFilterAndSort((node, index) => {
+      reorderedScenes.push({ sceneId: node.data.id, order: index });
+    });
+    scenesProvider.send({
+      type: "ON_REORDER_SCENES",
+      classId: classObj.id,
+      scenes: reorderedScenes,
+    });
+  };
+
   const unconfirmedSceneColDefs: ColDef[] = [
     ...sceneColDefs,
-    { field: "order", headerName: "Order", flex: 0, width: 120 },
     {
       headerName: "Actions",
       pinned: "right",
@@ -130,10 +147,13 @@ const ClassDetailItem = ({
               <BasicGrid
                 data={classObj.scenes
                   .filter((s) => s.approved)
+                  .sort((a, b) => a.order - b.order)
                   .map((s) => s.scene)}
                 loading={loading}
                 colDefs={sceneColDefs}
                 pagination={false}
+                rowDragManaged={true}
+                onRowDragEnd={handleReorder}
               />
             </div>
             <div>

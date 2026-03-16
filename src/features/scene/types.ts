@@ -12,6 +12,7 @@ export interface ISceneContext {
 	data: IScene[];
 	_sceneId: number;
 	_classId: number;
+	_scenesToReorder: { sceneId: number; order: number; classId: number }[];
 }
 
 export interface XStateInput {

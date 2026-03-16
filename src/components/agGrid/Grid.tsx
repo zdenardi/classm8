@@ -1,4 +1,8 @@
-import type { ColDef, RowSelectionOptions } from "ag-grid-community";
+import type {
+  ColDef,
+  RowDragEndEvent,
+  RowSelectionOptions,
+} from "ag-grid-community";
 import {
   AllCommunityModule,
   colorSchemeLightCold,
@@ -24,6 +28,8 @@ export interface GridProps {
   paginationPageSize?: number;
   paginationPageSizeSelector?: number[];
   enableFilterHandlers?: boolean;
+  rowDragManaged?: boolean;
+  onRowDragEnd?: (event: RowDragEndEvent) => void;
 }
 
 export const BasicGrid = ({
@@ -35,6 +41,8 @@ export const BasicGrid = ({
   paginationPageSize = 10,
   paginationPageSizeSelector = [10, 20, 50],
   enableFilterHandlers = true,
+  rowDragManaged = false,
+  onRowDragEnd,
 }: GridProps) => {
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -72,6 +80,8 @@ export const BasicGrid = ({
         loadingOverlayComponent={() => <p>Loading...</p>}
         ref={gridRef}
         domLayout="autoHeight"
+        rowDragManaged={rowDragManaged}
+        onRowDragEnd={onRowDragEnd}
       />
     </div>
   );

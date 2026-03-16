@@ -23,7 +23,7 @@ sceneRouter.get('/scenes', clerkAuth, async (context) => {
 	context.response.body = scenes;
 });
 
-sceneRouter.get('/scenes/:id', async (context) => {
+sceneRouter.get('/scenes/:id', clerkAuth, async (context) => {
 	const db = context.app.state.prisma;
 	const { id } = context.params;
 	const foundScene = await db.scene.findUnique({
@@ -111,7 +111,7 @@ sceneRouter.post('/scenes', clerkAuth, async (context) => {
 	context.response.body = createdScene;
 });
 
-sceneRouter.patch('/scenes/:id', async (context) => {
+sceneRouter.patch('/scenes/:id', clerkAuth, async (context) => {
 	const db: PrismaClient = context.app.state.prisma;
 	const body = await context.request.body.json();
 	const { id } = context.params;
@@ -146,7 +146,7 @@ sceneRouter.patch('/scenes/:id', async (context) => {
 	context.response.body = updatedScene;
 });
 
-sceneRouter.delete('/scenes/:id', async (context) => {
+sceneRouter.delete('/scenes/:id', clerkAuth, async (context) => {
 	const db: PrismaClient = context.app.state.prisma;
 	const { id } = context.params;
 	await db.scene.delete({
@@ -154,6 +154,47 @@ sceneRouter.delete('/scenes/:id', async (context) => {
 			id: Number(id),
 		},
 	});
+	context.response.status = 204;
+});
+
+sceneRouter.patch('/scenes/reorder/:classId', clerkAuth, async (context) => {
+	const db: PrismaClient = context.app.state.prisma;
+	const { classId } = context.params;
+	const body: { sceneId: number; order: number }[] = await context.request.body
+		.json();
+
+	await db.$transaction(async (tx) => {
+		// Step 1: Set all orders to negative values to avoid conflicts
+		for (const item of body) {
+			await tx.scenesInClasses.update({
+				where: {
+					classId_sceneId: {
+						classId: Number(classId),
+						sceneId: item.sceneId,
+					},
+				},
+				data: {
+					order: -item.sceneId, // Temporary negative value
+				},
+			});
+		}
+
+		// Step 2: Set the actual order values
+		for (const item of body) {
+			await tx.scenesInClasses.update({
+				where: {
+					classId_sceneId: {
+						classId: Number(classId),
+						sceneId: item.sceneId,
+					},
+				},
+				data: {
+					order: item.order,
+				},
+			});
+		}
+	});
+
 	context.response.status = 204;
 });
 

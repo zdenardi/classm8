@@ -50,6 +50,7 @@ export const BasicGrid = ({
       flex: 1,
       autoHeight: true,
       wrapText: true,
+      minWidth: 120,
     };
   }, []);
 

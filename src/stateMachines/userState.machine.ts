@@ -294,7 +294,7 @@ export const userState = setup({
 					],
 				},
 				ON_UPDATE_DATA: {
-					entry: [
+					actions: [
 						enqueueActions(({ context, enqueue }) => {
 							enqueue(
 								sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),

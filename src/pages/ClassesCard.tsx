@@ -21,9 +21,10 @@ import type { ColDef } from "ag-grid-community";
 import { CourseForm } from "../features/course/CourseForm.tsx";
 import { transformUsersToOptions } from "../utils/helperfunctions/users.ts";
 import { CourseFormValues } from "../features/course/schema.ts";
+import { useState } from "react";
 
 const sceneColDefs: ColDef[] = [
-  { field: "title", headerName: "Title" },
+  { field: "title", headerName: "Title", pinned: "left" },
   {
     headerName: "Performers",
     valueGetter: (p) =>
@@ -45,7 +46,8 @@ const ClassDetailItem = ({
     input: { isOpen: false },
   });
   const { isOpen } = state.context;
-  const { scenesProvider } = useScenes();
+  const { scenesProvider, loading } = useScenes();
+  const { classesProvider } = useClasses();
 
   const handleOpenDialog = () => {
     send({ type: "ON_OPEN" });
@@ -76,6 +78,7 @@ const ClassDetailItem = ({
     { field: "order", headerName: "Order", flex: 0, width: 120 },
     {
       headerName: "Actions",
+      pinned: "right",
       cellRenderer: (p) => {
         return (
           <div className="flex gap-2">
@@ -91,7 +94,7 @@ const ClassDetailItem = ({
               type="button"
               variant="destructive"
               onClick={() => {
-                handleDeleteScene;
+                handleDeleteScene(p.data.id);
               }}
             >
               <XCircleIcon className="h-5 w-5 text-red-500" />
@@ -103,9 +106,9 @@ const ClassDetailItem = ({
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center m-2">
       <Button plain type="button" onClick={handleOpenDialog} className="w-full">
-        <div className="flex gap-2">
+        <div className="flex gap-2 ">
           <Badge>
             {" "}
             {new Date(classObj.startDate).toLocaleDateString("en-US", {
@@ -128,7 +131,7 @@ const ClassDetailItem = ({
                 data={classObj.scenes
                   .filter((s) => s.approved)
                   .map((s) => s.scene)}
-                loading={false}
+                loading={loading}
                 colDefs={sceneColDefs}
                 pagination={false}
               />
@@ -139,7 +142,7 @@ const ClassDetailItem = ({
                 data={classObj.scenes
                   .filter((s) => !s.approved)
                   .map((s) => s.scene)}
-                loading={false}
+                loading={loading}
                 colDefs={unconfirmedSceneColDefs}
                 pagination={false}
               />
@@ -173,7 +176,7 @@ export const ClassesCard = () => {
   const { roster } = useRoster();
   const { classes } = useClasses();
   const { isOpen } = state.context;
-  const { courseProvider } = useCourses();
+  const { courseProvider, loading } = useCourses();
 
   const handleCloseDialog = () => {
     send({ type: "ON_CLOSE" });
@@ -181,6 +184,7 @@ export const ClassesCard = () => {
   const handleOpenDialog = () => {
     send({ type: "ON_OPEN" });
   };
+
   const handleSubmit = (values: CourseFormValues) => {
     courseProvider.send({
       type: "ON_CREATE_COURSE",
@@ -188,6 +192,10 @@ export const ClassesCard = () => {
     });
     handleCloseDialog();
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <Card className="col-span-4">

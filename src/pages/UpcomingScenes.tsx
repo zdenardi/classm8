@@ -12,7 +12,7 @@ export const UpcomingScenes = () => {
     });
   });
   return (
-    <Card className="col-span-2">
+    <Card className="sm:col-span-4 md:col-span-2">
       <div className="border-l-4 border-blue-500 pl-4 mb-4">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           Your Upcoming Scenes

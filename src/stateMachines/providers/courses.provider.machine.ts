@@ -86,8 +86,7 @@ export const courseProviderMachine = setup({
 					type: 'ON_UPDATE_DATA',
 				})),
 			],
-			exit: assign({ loading: false }),
-			target: '$_IDLE',
+			always: '$_IDLE',
 		},
 		$_CREATE: {
 			invoke: {

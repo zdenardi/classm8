@@ -125,13 +125,11 @@ export const scenesProviderMachine = setup({
 		},
 		$_TRIGGER_UPDATE: {
 			entry: [
-				assign({ loading: false }),
 				sendParent(() => ({
 					type: 'ON_UPDATE_DATA',
 				})),
 			],
-			exit: assign({ loading: false }),
-			target: '$_IDLE',
+			always: { target: '$_IDLE' },
 		},
 		$_GET: {
 			invoke: {

@@ -32,6 +32,14 @@ export const registrationMachine = setup({
 			on: {
 				SUBMIT: {
 					target: '$_SUBMIT_USER',
+					actions: [
+						({ event }) => console.log(event.payload),
+						assign({
+							firstName: ({ event }) => event.payload.firstName,
+							lastName: ({ event }) => event.payload.lastName,
+							email: ({ event }) => event.payload.email,
+						}),
+					],
 				},
 			},
 		},
@@ -39,16 +47,16 @@ export const registrationMachine = setup({
 			invoke: {
 				id: 'submitUser',
 				src: 'createUser',
-				input: (inputArgs) => inputArgs,
+				input: ({ context }) => {
+					console.log(context.firstName);
+					return {
+						firstName: context.firstName,
+						lastName: context.lastName,
+						email: context.email,
+					};
+				},
 				onDone: {
 					target: '$_SUCCESS',
-					actions: [
-						assign({
-							firstName: ({ event }) => event.output.data.firstName,
-							lastName: ({ event }) => event.output.data.lastName,
-							email: ({ event }) => event.output.data.email,
-						}),
-					],
 				},
 				onError: {
 					target: '$_IDLE',
@@ -59,9 +67,11 @@ export const registrationMachine = setup({
 			},
 		},
 		$_SUCCESS: {
+			entry: [() => console.log('Registration Complete')],
 			type: 'final',
 			output: ({ event }) => {
 				const { output } = event as RegistrationResponseEvent;
+				console.log({ event });
 				return {
 					id: output.id,
 					firstName: output.firstName,

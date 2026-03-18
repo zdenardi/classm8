@@ -105,13 +105,6 @@ export type Events =
 	| ON_PROFILE_LOADED
 	| ON_USER_SIGNED_OUT;
 
-// Helper to emit redirect event
-export const emitRedirect = (path: string) => {
-	globalThis.dispatchEvent(
-		new CustomEvent('xstate-redirect', { detail: { path } }),
-	);
-};
-
 export const userState = setup({
 	types: { context: {} as Context, events: {} as Events },
 	actors: {
@@ -171,7 +164,6 @@ export const userState = setup({
 								console.log('Redirect needed:', data.redirect);
 								console.log('Message:', data.message);
 								// Emit redirect event
-								emitRedirect('/register');
 							},
 						],
 					},
@@ -201,6 +193,7 @@ export const userState = setup({
 				onDone: {
 					target: '$_AUTHENTICATED',
 					actions: [
+						({ event }) => console.log('REGISTRATION COMPLETE', event),
 						assign({
 							profile: ({ event }) => ({
 								...event.output,
@@ -211,8 +204,6 @@ export const userState = setup({
 						}),
 						() => {
 							console.log('Registration Complete');
-							// Redirect back to home after successful registration
-							// emitRedirect('/');
 						},
 					],
 				},
@@ -225,17 +216,13 @@ export const userState = setup({
 		$_AUTHENTICATED: {
 			entry: [
 				enqueueActions(({ context, enqueue }) => {
-					if (context.classes.length === 0) {
-						enqueue(
-							sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),
-						);
-					}
-					if (context.scenes.length === 0) {
-						enqueue(sendTo(context.scenesProvider, { type: 'ON_GET_SCENES' }));
-					}
-					if (context.roster.length === 0) {
-						enqueue(sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }));
-					}
+					enqueue(
+						sendTo(context.classesProvider, { type: 'ON_GET_CLASSES' }),
+					);
+
+					enqueue(sendTo(context.scenesProvider, { type: 'ON_GET_SCENES' }));
+
+					enqueue(sendTo(context.usersProvider, { type: 'ON_GET_ROSTER' }));
 
 					enqueue(
 						sendTo(context.profileProvider, { type: 'ON_GET_PROFILE' }),

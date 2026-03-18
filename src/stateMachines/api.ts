@@ -30,14 +30,22 @@ export const AUTH_API_CALLS = {
 			throw error;
 		}
 	},
-	create: async ({ input }: InputArgs): Promise<{ data: IUser }> => {
-		const event = input.event as SUBMIT_REGISTRATION;
-		return await postData(ROUTE_NAMES.auth, {
+	create: async ({ input: { firstName, lastName, email } }: {
+		input: {
+			firstName: string;
+			lastName: string;
+			email: string;
+		};
+	}): Promise<IUser> => {
+		console.log({ firstName, lastName, email });
+
+		const result = await postData<IUser>(ROUTE_NAMES.auth, {
 			data: {
-				firstName: event.payload.firstName,
-				lastName: event.payload.lastName,
-				email: event.payload.email,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
 			},
 		});
+		return result;
 	},
 };

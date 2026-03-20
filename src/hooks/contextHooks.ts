@@ -99,3 +99,18 @@ export const useCourses = (): CourseRefResult => {
 	const { loading } = useSelector(courseProvider, (state) => state.context);
 	return { loading, courseProvider };
 };
+
+export const useAuthState = () => {
+	const userRef = UserContext.useActorRef();
+	const state = useSelector(userRef, (snapshot) => snapshot.value);
+	const { token } = useSelector(userRef, (snapshot) => snapshot.context);
+
+	return {
+		state,
+		isAuthenticated: state === '$_AUTHENTICATED',
+		isUnauthenticated: state === '$_UNAUTHENTICATED',
+		isCheckingRegistration: state === '$_CHECK_REGISTRATION',
+		isRegistering: state === '$_REGISTRATION',
+		token,
+	};
+};

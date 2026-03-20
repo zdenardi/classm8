@@ -21,6 +21,7 @@ import { ClassPage } from "./pages/Class.tsx";
 import { USER_STATE } from "./constants/xstateSystem.ts";
 import { AuthStateMachine } from "./stateMachines/AuthStateMachine.tsx";
 import { Layout } from "./components/Layout.tsx";
+import { StateLogger } from "./utils/utils.ts";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -39,6 +40,7 @@ function App() {
   return (
     <header>
       <UserContext.Provider>
+        <StateLogger />
         <XStateRedirectListener />
         <SignedOut>
           <SignInButton />

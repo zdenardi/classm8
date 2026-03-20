@@ -8,21 +8,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { ActorRefFrom } from "xstate";
 import type { registrationMachine } from "./registration.machine.ts";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthState } from "../../hooks/contextHooks.ts";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export const RegistrationForm = () => {
   const userRef = UserContext.useActorRef();
-  const snapshot = userRef.getSnapshot();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthState();
   const { user } = useUser();
-
-  const registrationRef = snapshot.children.registrationMachine as
-    | ActorRefFrom<typeof registrationMachine>
-    | undefined;
-
   const { profile } = useSelector(userRef, (state) => state.context);
 
-  const loading = registrationRef
-    ? useSelector(registrationRef, (state) => state.context.loading)
-    : false;
+  const registrationRef = useSelector(userRef, (state) => {
+    return state.children.registrationMachine as
+      | ActorRefFrom<typeof registrationMachine>
+      | undefined;
+  });
+
+  const loading = registrationRef?.getSnapshot()?.context.loading ?? false;
 
   const methods = useCustomForm<RegistrationFormValues>({
     resolver: zodResolver(registrationFormSchema),
@@ -36,11 +39,8 @@ export const RegistrationForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = (data: RegistrationFormValues) => {
+    console.log({ data });
     try {
-      console.group("Submit ");
-      console.log(data);
-      console.groupEnd();
-
       if (registrationRef) {
         registrationRef.send({
           type: "SUBMIT",
@@ -59,6 +59,11 @@ export const RegistrationForm = () => {
   const onSubmitError = (err: unknown) =>
     console.log("SUBMIT ERROR TRIGGERED: ", err);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
   return (
     <FormProvider {...methods}>
       <form

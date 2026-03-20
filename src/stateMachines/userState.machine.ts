@@ -163,7 +163,6 @@ export const userState = setup({
 								const data = event.output.data as RedirectResponse;
 								console.log('Redirect needed:', data.redirect);
 								console.log('Message:', data.message);
-								// Emit redirect event
 							},
 						],
 					},
@@ -175,7 +174,7 @@ export const userState = setup({
 				onError: {
 					target: '$_UNAUTHENTICATED',
 					actions: [
-						(e) => console.log(e),
+						(e) => console.log({ e }),
 					],
 				},
 			},

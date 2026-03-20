@@ -8,12 +8,7 @@ import {
 	Events,
 	SUBMIT_REGISTRATION,
 } from '../features/registration/events.ts';
-interface InputArgs {
-	input: {
-		context: Context;
-		event: Events;
-	};
-}
+
 export const AUTH_API_CALLS = {
 	get: async (): Promise<
 		{ data: IUser | RedirectResponse; statusCode: number }

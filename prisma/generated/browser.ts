@@ -52,3 +52,8 @@ export type UsersAndScenes = Prisma.UsersAndScenesModel
  * 
  */
 export type ScenesInClasses = Prisma.ScenesInClassesModel
+/**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel

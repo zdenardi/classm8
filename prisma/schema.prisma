@@ -21,6 +21,7 @@ model User {
   coursesInstructed Course[]
   scenesPerformed   UsersAndScenes[]
   enrollments       UsersInCourses[]
+  attendances       Attendance[]
 }
 
 model Course {
@@ -45,6 +46,7 @@ model Class {
   endDate       DateTime
   course        Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   scenes        ScenesInClasses[]
+  attendances   Attendance[]
 }
 
 model Scene {
@@ -91,6 +93,17 @@ model ScenesInClasses {
   @@unique([classId, order])
 }
 
+model Attendance{
+  userId    Int 
+  classId   Int 
+  status    AttendanceStatus @default(ABSENT)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  @@unique([userId, classId])
+  @@id([userId, classId])
+}
+
 enum Role {
   ADMIN
   STUDENT
@@ -105,4 +118,10 @@ enum SceneTypes {
   SONG
   TELEVISION
   OTHER
+}
+
+enum AttendanceStatus {
+  ATTENDED
+  ABSENT
+  EXCUSED
 }

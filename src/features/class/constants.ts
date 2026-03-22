@@ -18,4 +18,20 @@ export const ActingClassColumns: ColDef<IClassWithCourseAndScenes>[] = [
 		field: 'course.title',
 		headerName: 'Instructor',
 	},
+	{
+		field: 'startDate',
+		headerName: 'Date',
+		valueGetter: (p) => {
+			if (!p || !p.data?.startDate) return null;
+			return new Date(p.data.startDate).toLocaleDateString('en-US', {
+				month: '2-digit',
+				day: '2-digit',
+			});
+		},
+		cellStyle: {
+			display: 'flex',
+			alignItems: 'center',
+		},
+		flex: 0.5,
+	},
 ];

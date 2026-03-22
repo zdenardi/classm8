@@ -16,12 +16,12 @@ import { Route, Routes } from "react-router";
 import { RegistrationForm } from "./features/registration/RegistrationForm.tsx";
 import { XStateRedirectListener } from "./components/XStateRedirectListener.tsx";
 import { AddScene } from "./pages/AddScene.tsx";
-import { AddCourse } from "./pages/AddCourse.tsx";
 import { ClassPage } from "./pages/Class.tsx";
 import { USER_STATE } from "./constants/xstateSystem.ts";
 import { AuthStateMachine } from "./stateMachines/AuthStateMachine.tsx";
 import { Layout } from "./components/Layout.tsx";
 import { StateLogger } from "./utils/utils.ts";
+import { ModeratorView } from "./pages/ModeratorView.tsx";
 
 const TokenGetter = () => {
   const { getToken } = useAuth();
@@ -55,9 +55,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/moderator" element={<ModeratorView />} />
                 <Route path="/classes" element={<ClassPage />} />
                 <Route path="/addScene" element={<AddScene />} />
-                <Route path="/addCourse" element={<AddCourse />} />
               </Routes>
             </Layout>
           </SignedInWrapper>

@@ -1,6 +1,6 @@
 import { assign, fromPromise, sendParent, setup } from 'xstate';
 import { CLASS_API_CALLS } from '../../features/class/api.ts';
-import { IClassWithCourseAndScenes } from '../../types/class.ts';
+import { IClassWithCourseAndScenesAndAttendance } from '../../types/class.ts';
 
 export const classesProviderMachine = setup({
 	actors: {
@@ -10,11 +10,11 @@ export const classesProviderMachine = setup({
 	actions: {},
 	types: {
 		context: {} as {
-			data: IClassWithCourseAndScenes[];
+			data: IClassWithCourseAndScenesAndAttendance[];
 			loading: boolean;
 		},
 		output: {} as {
-			data: IClassWithCourseAndScenes[];
+			data: IClassWithCourseAndScenesAndAttendance[];
 		},
 	},
 }).createMachine({

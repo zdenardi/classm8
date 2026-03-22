@@ -8,6 +8,7 @@ import {
 	setup,
 } from 'xstate';
 import {
+	ATTENDANCE_PROVIDER,
 	CLASSES_PROVIDER,
 	COURSE_PROVIDER,
 	PROFILE_PROVIDER,
@@ -18,7 +19,7 @@ import { AUTH_API_CALLS } from './api.ts';
 import { IUser } from '../types/user.ts';
 import { registrationMachine } from '../features/registration/registration.machine.ts';
 import { coursesMachine } from '../features/course/course.machine.ts';
-import { IClassWithCourseAndScenes } from '../types/class.ts';
+import { IClassWithCourseAndScenesAndAttendance } from '../types/class.ts';
 import { classesProviderMachine } from './providers/classes.provider.machine.ts';
 import { scenesProviderMachine } from './providers/scenes.provider.machine.ts';
 import { ISceneWithClasses } from '../types/scene.ts';
@@ -27,12 +28,13 @@ import { IProfile } from '../../types/profile.ts';
 import { profileProviderMachine } from './providers/profile.provider.machine.ts';
 import { ICourse } from '../types/course.ts';
 import { courseProviderMachine } from './providers/courses.provider.machine.ts';
+import { attendanceProviderMachine } from './providers/attendance.provider.machine.ts';
 
 export type Context = {
 	token: string | undefined;
 	loading: boolean;
 	roster: IUser[];
-	classes: IClassWithCourseAndScenes[];
+	classes: IClassWithCourseAndScenesAndAttendance[];
 	scenes: ISceneWithClasses[];
 	profile: {
 		id: number;
@@ -41,7 +43,7 @@ export type Context = {
 		email: string;
 		role: 'STUDENT' | 'ADMIN' | 'MODERATOR' | 'INSTRUCTOR';
 		scenes: ISceneWithClasses[];
-		classes: IClassWithCourseAndScenes[];
+		classes: IClassWithCourseAndScenesAndAttendance[];
 		courses: ICourse[];
 	} | undefined;
 	classesProvider: ActorRefFrom<typeof classesProviderMachine>;
@@ -49,6 +51,8 @@ export type Context = {
 	usersProvider: ActorRefFrom<typeof usersProviderMachine>;
 	profileProvider: ActorRefFrom<typeof profileProviderMachine>;
 	courseProvider: ActorRefFrom<typeof courseProviderMachine>;
+	attendanceProvider: ActorRefFrom<typeof attendanceProviderMachine>;
+	_class: IClassWithCourseAndScenesAndAttendance | null;
 };
 
 export type ON_LOAD = { type: 'ON_LOAD' };
@@ -73,7 +77,7 @@ export type ClassesResponseEvent = DoneActorEvent<
 
 export type ON_CLASSES_LOADED = {
 	type: 'ON_CLASSES_LOADED';
-	data: IClassWithCourseAndScenes[];
+	data: IClassWithCourseAndScenesAndAttendance[];
 };
 
 export type ON_SCENES_LOADED = {
@@ -95,6 +99,11 @@ export type ON_UPDATE_DATA = {
 	type: 'ON_UPDATE_DATA';
 };
 
+export type ON_CLASS_CLICKED = {
+	type: 'ON_CLASS_CLICKED';
+	data: IClassWithCourseAndScenesAndAttendance;
+};
+
 export type Events =
 	| ON_LOAD
 	| ON_USER_SIGNED_IN
@@ -103,7 +112,9 @@ export type Events =
 	| ON_SCENES_LOADED
 	| ON_ROSTER_LOADED
 	| ON_PROFILE_LOADED
-	| ON_USER_SIGNED_OUT;
+	| ON_USER_SIGNED_OUT
+	| ON_CLASS_CLICKED
+	| ON_UPDATE_DATA;
 
 export const userState = setup({
 	types: { context: {} as Context, events: {} as Events },
@@ -116,6 +127,7 @@ export const userState = setup({
 		usersProvider: usersProviderMachine,
 		profileProvider: profileProviderMachine,
 		courseProvider: courseProviderMachine,
+		attendanceProvider: attendanceProviderMachine,
 	},
 }).createMachine({
 	context: ({ spawn }) => ({
@@ -125,11 +137,15 @@ export const userState = setup({
 		token: undefined,
 		loading: false,
 		profile: undefined,
+		_class: null,
 		classesProvider: spawn('classesProvider', { id: CLASSES_PROVIDER }),
 		scenesProvider: spawn('scenesProvider', { id: SCENES_PROVIDER }),
 		usersProvider: spawn('usersProvider', { id: USERS_PROVIDER }),
 		profileProvider: spawn('profileProvider', { id: PROFILE_PROVIDER }),
 		courseProvider: spawn('courseProvider', { id: COURSE_PROVIDER }),
+		attendanceProvider: spawn('attendanceProvider', {
+			id: ATTENDANCE_PROVIDER,
+		}),
 	}),
 	initial: '$_UNAUTHENTICATED',
 	states: {
@@ -297,6 +313,13 @@ export const userState = setup({
 						}),
 					],
 					target: '$_AUTHENTICATED',
+				},
+				ON_CLASS_CLICKED: {
+					actions: [
+						assign({
+							_class: ({ event }) => event.data,
+						}),
+					],
 				},
 			},
 		},

@@ -3,11 +3,6 @@ import { ROUTE_NAMES } from '../utils/routes.ts';
 import { getData, postData } from '../utils/service.ts';
 import { AxiosError, AxiosResponse } from 'axios';
 import { RedirectResponse } from './userState.machine.ts';
-import { Context } from '../features/registration/types.ts';
-import {
-	Events,
-	SUBMIT_REGISTRATION,
-} from '../features/registration/events.ts';
 
 export const AUTH_API_CALLS = {
 	get: async (): Promise<

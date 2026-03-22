@@ -196,6 +196,12 @@ export const CourseForm = (props: Props) => {
             <Section componentsPerLine={1}>
               <Row>
                 <p>Classes</p>
+                {!numOfRepeat && (
+                  <p className="italic ">
+                    Please enter a valid number of weeks to see the potential
+                    classes that will be created
+                  </p>
+                )}
                 <div className="text-start grid grid-cols-2">
                   {numOfRepeat &&
                     Array.from({ length: numOfRepeat }, (_, index) => {

@@ -24,6 +24,18 @@ classRouter.get('/classes', clerkAuth, async (context) => {
 					},
 				},
 			},
+			attendances: {
+				select: {
+					userId: true,
+					status: true,
+					user: {
+						select: {
+							firstName: true,
+							lastName: true,
+						},
+					},
+				},
+			},
 		},
 	});
 	context.response.body = classes;
@@ -40,6 +52,12 @@ classRouter.get('/classes/:id', async (context) => {
 			course: {
 				include: {
 					instructor: true,
+				},
+			},
+			attendances: {
+				select: {
+					userId: true,
+					status: true,
 				},
 			},
 			scenes: {
@@ -63,6 +81,22 @@ classRouter.post('/classes', async (context) => {
 	const data: Omit<Class, 'id' | 'createdAt' | 'updatedAt'> = await context
 		.request.body.json();
 	const createdClass = await db.class.create({ data });
+
+	const enrolledStudents = await db.usersInCourses.findMany({
+		where: { courseId: createdClass.courseId },
+		select: { userId: true },
+	});
+
+	if (enrolledStudents.length > 0) {
+		await db.attendance.createMany({
+			data: enrolledStudents.map((student: { userId: number }) => ({
+				userId: student.userId,
+				classId: createdClass.id,
+				status: 'ABSENT',
+			})),
+		});
+	}
+
 	context.response.body = createdClass;
 });
 

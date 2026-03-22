@@ -40,9 +40,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 <DropdownItem href="/my-profile">
                   <DropdownLabel>My profile</DropdownLabel>
                 </DropdownItem>
-                <DropdownItem href="/settings">
-                  <DropdownLabel>Settings</DropdownLabel>
-                </DropdownItem>
                 <DropdownDivider />
                 <DropdownItem href="/privacy-policy">
                   <DropdownLabel>Privacy policy</DropdownLabel>
@@ -76,6 +73,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               </SidebarItem>
               <SidebarItem href="/classes">
                 <SidebarLabel>Classes</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/moderator">
+                <SidebarLabel>Moderator</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/scenes">
                 <SidebarLabel>Scenes</SidebarLabel>

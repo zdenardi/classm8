@@ -8,7 +8,6 @@ import {
   useScenes,
 } from "../hooks/contextHooks.ts";
 import { dialogMachine } from "../stateMachines/dialog.machine.ts";
-import { IClassWithCourseAndScenes } from "../types/class.ts";
 import { Button } from "../components/catalyst/button.tsx";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import {
@@ -17,11 +16,13 @@ import {
   DialogBody,
 } from "../components/catalyst/dialog.tsx";
 import { BasicGrid } from "../components/agGrid/Grid.tsx";
-import type { ColDef } from "ag-grid-community";
+import type { ColDef, RowDragEndEvent } from "ag-grid-community";
 import { CourseForm } from "../features/course/CourseForm.tsx";
 import { transformUsersToOptions } from "../utils/helperfunctions/users.ts";
 import { CourseFormValues } from "../features/course/schema.ts";
-import { useState } from "react";
+import { IClassWithCourseAndScenesAndAttendance } from "../types/class.ts";
+import { IScene } from "../types/scene.ts";
+import { CustomCellRendererProps } from "ag-grid-react";
 
 const sceneColDefs: ColDef[] = [
   {
@@ -45,7 +46,7 @@ const sceneColDefs: ColDef[] = [
 const ClassDetailItem = ({
   classObj,
 }: {
-  classObj: IClassWithCourseAndScenes;
+  classObj: IClassWithCourseAndScenesAndAttendance;
 }) => {
   const [state, send] = useMachine(dialogMachine, {
     id: `classDetailDialog-${classObj.id}`,
@@ -53,7 +54,6 @@ const ClassDetailItem = ({
   });
   const { isOpen } = state.context;
   const { scenesProvider, loading } = useScenes();
-  const { classesProvider } = useClasses();
 
   const handleOpenDialog = () => {
     send({ type: "ON_OPEN" });
@@ -80,9 +80,17 @@ const ClassDetailItem = ({
   };
 
   const handleReorder = (event: RowDragEndEvent) => {
-    const reorderedScenes: { sceneId: number; order: number }[] = [];
+    const reorderedScenes: {
+      sceneId: number;
+      order: number;
+      classId: number;
+    }[] = [];
     event.api.forEachNodeAfterFilterAndSort((node, index) => {
-      reorderedScenes.push({ sceneId: node.data.id, order: index });
+      reorderedScenes.push({
+        sceneId: node.data.id,
+        order: index,
+        classId: classObj.id,
+      });
     });
     scenesProvider.send({
       type: "ON_REORDER_SCENES",
@@ -91,17 +99,18 @@ const ClassDetailItem = ({
     });
   };
 
-  const unconfirmedSceneColDefs: ColDef[] = [
+  const unconfirmedSceneColDefs: ColDef<IScene>[] = [
     ...sceneColDefs,
     {
       headerName: "Actions",
       pinned: "right",
-      cellRenderer: (p) => {
+      cellRenderer: (p: CustomCellRendererProps<IScene>) => {
         return (
           <div className="flex gap-2">
             <Button
               type="button"
               onClick={() => {
+                if (!p.data) return;
                 handleApproveScene(p.data.id);
               }}
             >
@@ -111,6 +120,7 @@ const ClassDetailItem = ({
               type="button"
               variant="destructive"
               onClick={() => {
+                if (!p.data) return;
                 handleDeleteScene(p.data.id);
               }}
             >
@@ -152,7 +162,7 @@ const ClassDetailItem = ({
                 loading={loading}
                 colDefs={sceneColDefs}
                 pagination={false}
-                rowDragManaged={true}
+                rowDragManaged
                 onRowDragEnd={handleReorder}
               />
             </div>
@@ -177,7 +187,7 @@ const ClassDetailItem = ({
 export const ClassesDetails = ({
   classes,
 }: {
-  classes: IClassWithCourseAndScenes[];
+  classes: IClassWithCourseAndScenesAndAttendance[];
 }) => {
   return (
     <div>

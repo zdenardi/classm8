@@ -31,10 +31,8 @@
     "npm:@heroicons/react@^2.2.0": "2.2.0_react@19.2.3",
     "npm:@hookform/error-message@^2.0.1": "2.0.1_react@19.2.3_react-dom@19.2.3__react@19.2.3_react-hook-form@7.71.2__react@19.2.3",
     "npm:@hookform/resolvers@^3.10.0": "3.10.0_react-hook-form@7.71.2__react@19.2.3_react@19.2.3",
-    "npm:@prisma/adapter-pg@7.2.0": "7.2.0",
-    "npm:@prisma/adapter-pg@^7.2.0": "7.2.0",
-    "npm:@prisma/client@7.2.0": "7.2.0_prisma@7.5.0__typescript@5.9.3__@types+react@19.2.14__react@19.2.3__react-dom@19.2.3___react@19.2.3_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3",
-    "npm:@prisma/client@^7.2.0": "7.2.0_prisma@7.5.0__typescript@5.9.3__@types+react@19.2.14__react@19.2.3__react-dom@19.2.3___react@19.2.3_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3",
+    "npm:@prisma/adapter-pg@7.5.0": "7.5.0",
+    "npm:@prisma/client@7.5.0": "7.5.0_prisma@7.5.0__typescript@5.9.3__@types+react@19.2.14__react@19.2.3__react-dom@19.2.3___react@19.2.3_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3",
     "npm:@storybook/addon-a11y@^10.1.11": "10.2.19_storybook@10.2.19__@testing-library+dom@10.4.1__react@19.2.3__react-dom@19.2.3___react@19.2.3_@testing-library+dom@10.4.1_react@19.2.3_react-dom@19.2.3__react@19.2.3",
     "npm:@storybook/addon-docs@^10.1.11": "10.2.19_storybook@10.2.19__@testing-library+dom@10.4.1__react@19.2.3__react-dom@19.2.3___react@19.2.3_@testing-library+dom@10.4.1_@types+react@19.2.14_esbuild@0.25.12_vite@5.4.21__@types+node@24.12.0",
     "npm:@storybook/addon-onboarding@^10.1.11": "10.2.19_storybook@10.2.19__@testing-library+dom@10.4.1__react@19.2.3__react-dom@19.2.3___react@19.2.3_@testing-library+dom@10.4.1_react@19.2.3_react-dom@19.2.3__react@19.2.3",
@@ -67,7 +65,7 @@
     "npm:pg@^8.16.3": "8.20.0",
     "npm:playwright@^1.57.0": "1.58.2",
     "npm:postcss@^8.5.6": "8.5.8",
-    "npm:prisma@^7.2.0": "7.5.0_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3",
+    "npm:prisma@7.5.0": "7.5.0_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3",
     "npm:react-dom@19.2.3": "19.2.3_react@19.2.3",
     "npm:react-dom@^19.2.3": "19.2.3_react@19.2.3",
     "npm:react-hook-form@^7.71.0": "7.71.2_react@19.2.3",
@@ -948,19 +946,20 @@
     "@polka/url@1.0.0-next.29": {
       "integrity": "sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww=="
     },
-    "@prisma/adapter-pg@7.2.0": {
-      "integrity": "sha512-euIdQ13cRB2wZ3jPsnDnFhINquo1PYFPCg6yVL8b2rp3EdinQHsX9EDdCtRr489D5uhphcRk463OdQAFlsCr0w==",
+    "@prisma/adapter-pg@7.5.0": {
+      "integrity": "sha512-EJx7OLULahcC3IjJgdx2qRDNCT+ToY2v66UkeETMCLhNOTgqVzRzYvOEphY7Zp0eHyzfkC33Edd/qqeadf9R4A==",
       "dependencies": [
         "@prisma/driver-adapter-utils",
+        "@types/pg",
         "pg",
         "postgres-array@3.0.4"
       ]
     },
-    "@prisma/client-runtime-utils@7.2.0": {
-      "integrity": "sha512-dn7oB53v0tqkB0wBdMuTNFNPdEbfICEUe82Tn9FoKAhJCUkDH+fmyEp0ClciGh+9Hp2Tuu2K52kth2MTLstvmA=="
+    "@prisma/client-runtime-utils@7.5.0": {
+      "integrity": "sha512-KnJ2b4Si/pcWEtK68uM+h0h1oh80CZt2suhLTVuLaSKg4n58Q9jBF/A42Kw6Ma+aThy1yAhfDeTC0JvEmeZnFQ=="
     },
-    "@prisma/client@7.2.0_prisma@7.5.0__typescript@5.9.3__@types+react@19.2.14__react@19.2.3__react-dom@19.2.3___react@19.2.3_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3": {
-      "integrity": "sha512-JdLF8lWZ+LjKGKpBqyAlenxd/kXjd1Abf/xK+6vUA7R7L2Suo6AFTHFRpPSdAKCan9wzdFApsUpSa/F6+t1AtA==",
+    "@prisma/client@7.5.0_prisma@7.5.0__typescript@5.9.3__@types+react@19.2.14__react@19.2.3__react-dom@19.2.3___react@19.2.3_typescript@5.9.3_@types+react@19.2.14_react@19.2.3_react-dom@19.2.3__react@19.2.3": {
+      "integrity": "sha512-h4hF9ctp+kSRs7ENHGsFQmHAgHcfkOCxbYt6Ti9Xi8x7D+kP4tTi9x51UKmiTH/OqdyJAO+8V+r+JA5AWdav7w==",
       "dependencies": [
         "@prisma/client-runtime-utils",
         "prisma",
@@ -986,7 +985,7 @@
     "@prisma/debug@7.5.0": {
       "integrity": "sha512-163+nffny0JoPEkDhfNco0vcuT3ymIJc9+WX7MHSQhfkeKUmKe9/wqvGk5SjppT93DtBjVwr5HPJYlXbzm6qtg=="
     },
-    "@prisma/dev@0.20.0_typescript@5.9.3": {
+    "@prisma/dev@0.20.0_@electric-sql+pglite@0.3.15_hono@4.11.4_typescript@5.9.3": {
       "integrity": "sha512-ovlBYwWor0OzG+yH4J3Ot+AneD818BttLA+Ii7wjbcLHUrnC4tbUPVGyNd3c/+71KETPKZfjhkTSpdS15dmXNQ==",
       "dependencies": [
         "@electric-sql/pglite",
@@ -1008,10 +1007,10 @@
         "zeptomatch"
       ]
     },
-    "@prisma/driver-adapter-utils@7.2.0": {
-      "integrity": "sha512-gzrUcbI9VmHS24Uf+0+7DNzdIw7keglJsD5m/MHxQOU68OhGVzlphQRobLiDMn8CHNA2XN8uugwKjudVtnfMVQ==",
+    "@prisma/driver-adapter-utils@7.5.0": {
+      "integrity": "sha512-B79N/amgV677mFesFDBAdrW0OIaqawap9E0sjgLBtzIz2R3hIMS1QB8mLZuUEiS4q5Y8Oh3I25Kw4SLxMypk9Q==",
       "dependencies": [
-        "@prisma/debug@7.2.0"
+        "@prisma/debug@7.5.0"
       ]
     },
     "@prisma/engines-version@7.5.0-15.280c870be64f457428992c43c1f6d557fab6e29e": {
@@ -1482,6 +1481,14 @@
       "integrity": "sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==",
       "dependencies": [
         "undici-types"
+      ]
+    },
+    "@types/pg@8.11.11": {
+      "integrity": "sha512-kGT1qKM8wJQ5qlawUrEkXgvMSXoV213KfMGXcwfDwUIfUHXqXYXOfS1nE1LINRJVVVx5wCm70XnFlMHaIcQAfw==",
+      "dependencies": [
+        "@types/node",
+        "pg-protocol",
+        "pg-types@4.1.0"
       ]
     },
     "@types/react-dom@19.2.3_@types+react@19.2.14": {
@@ -3874,6 +3881,9 @@
     "object-inspect@1.13.4": {
       "integrity": "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew=="
     },
+    "obuf@1.1.2": {
+      "integrity": "sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg=="
+    },
     "obug@2.1.1": {
       "integrity": "sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ=="
     },
@@ -4009,6 +4019,9 @@
     "pg-int8@1.0.1": {
       "integrity": "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="
     },
+    "pg-numeric@1.0.2": {
+      "integrity": "sha512-BM/Thnrw5jm2kKLE5uJkXqqExRUY/toLHda65XgFTBTFYZyopbKjBe29Ii3RbkvlsMoFwD+tHeGaCjjv0gHlyw=="
+    },
     "pg-pool@3.13.0_pg@8.20.0": {
       "integrity": "sha512-gB+R+Xud1gLFuRD/QgOIgGOBE2KCQPaPwkzBBGC9oG69pHTkhQeIuejVIk3/cnDyX39av2AxomQiyPT13WKHQA==",
       "dependencies": [
@@ -4023,9 +4036,21 @@
       "dependencies": [
         "pg-int8",
         "postgres-array@2.0.0",
-        "postgres-bytea",
-        "postgres-date",
-        "postgres-interval"
+        "postgres-bytea@1.0.1",
+        "postgres-date@1.0.7",
+        "postgres-interval@1.2.0"
+      ]
+    },
+    "pg-types@4.1.0": {
+      "integrity": "sha512-o2XFanIMy/3+mThw69O8d4n1E5zsLhdO+OPqswezu7Z5ekP4hYDqlDjlmOpYMbzY2Br0ufCwJLdDIXeNVwcWFg==",
+      "dependencies": [
+        "pg-int8",
+        "pg-numeric",
+        "postgres-array@3.0.4",
+        "postgres-bytea@3.0.0",
+        "postgres-date@2.1.0",
+        "postgres-interval@3.0.0",
+        "postgres-range"
       ]
     },
     "pg@8.20.0": {
@@ -4034,7 +4059,7 @@
         "pg-connection-string",
         "pg-pool",
         "pg-protocol",
-        "pg-types",
+        "pg-types@2.2.0",
         "pgpass"
       ],
       "optionalDependencies": [
@@ -4149,14 +4174,29 @@
     "postgres-bytea@1.0.1": {
       "integrity": "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ=="
     },
+    "postgres-bytea@3.0.0": {
+      "integrity": "sha512-CNd4jim9RFPkObHSjVHlVrxoVQXz7quwNFpz7RY1okNNme49+sVyiTvTRobiLV548Hx/hb1BG+iE7h9493WzFw==",
+      "dependencies": [
+        "obuf"
+      ]
+    },
     "postgres-date@1.0.7": {
       "integrity": "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q=="
+    },
+    "postgres-date@2.1.0": {
+      "integrity": "sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA=="
     },
     "postgres-interval@1.2.0": {
       "integrity": "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==",
       "dependencies": [
         "xtend"
       ]
+    },
+    "postgres-interval@3.0.0": {
+      "integrity": "sha512-BSNDnbyZCXSxgA+1f5UU2GmwhoI0aU5yMxRGO8CdFEcY2BQF9xm/7MqKnYoM1nJDk8nONNWDk9WeSmePFhQdlw=="
+    },
+    "postgres-range@1.1.4": {
+      "integrity": "sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w=="
     },
     "postgres@3.4.7": {
       "integrity": "sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw=="
@@ -5267,8 +5307,8 @@
       "npm:@clerk/backend@^1.34.0",
       "npm:@deno/vite-plugin@^1.0.6",
       "npm:@hookform/resolvers@^3.10.0",
-      "npm:@prisma/adapter-pg@7.2.0",
-      "npm:@prisma/client@7.2.0",
+      "npm:@prisma/adapter-pg@7.5.0",
+      "npm:@prisma/client@7.5.0",
       "npm:@types/react@^19.2.7",
       "npm:@vitejs/plugin-react@^5.1.2",
       "npm:axios@^1.7.9",
@@ -5291,8 +5331,8 @@
         "npm:@heroicons/react@^2.2.0",
         "npm:@hookform/error-message@^2.0.1",
         "npm:@hookform/resolvers@^3.10.0",
-        "npm:@prisma/adapter-pg@^7.2.0",
-        "npm:@prisma/client@^7.2.0",
+        "npm:@prisma/adapter-pg@7.5.0",
+        "npm:@prisma/client@7.5.0",
         "npm:@storybook/addon-a11y@^10.1.11",
         "npm:@storybook/addon-docs@^10.1.11",
         "npm:@storybook/addon-onboarding@^10.1.11",
@@ -5323,7 +5363,7 @@
         "npm:pg@^8.16.3",
         "npm:playwright@^1.57.0",
         "npm:postcss@^8.5.6",
-        "npm:prisma@^7.2.0",
+        "npm:prisma@7.5.0",
         "npm:react-dom@^19.2.3",
         "npm:react-hook-form@^7.71.0",
         "npm:react-router@^7.12.0",

@@ -5,6 +5,7 @@ import authRouter from './auth/auth.ts';
 import userRouter from './user/user.ts';
 import sceneRouter from './scene/scene.ts';
 import profileRouter from './profile/profile.ts';
+import attendanceRouter from './attendance/attendance.ts';
 
 const router = new Router({ prefix: '/api/v1' });
 const ROUTERS = [
@@ -14,6 +15,7 @@ const ROUTERS = [
 	userRouter,
 	sceneRouter,
 	profileRouter,
+	attendanceRouter,
 ];
 
 ROUTERS.forEach((r) => {

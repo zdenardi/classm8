@@ -29,3 +29,12 @@ export const SceneTypes = {
 } as const
 
 export type SceneTypes = (typeof SceneTypes)[keyof typeof SceneTypes]
+
+
+export const AttendanceStatus = {
+  ATTENDED: 'ATTENDED',
+  ABSENT: 'ABSENT',
+  EXCUSED: 'EXCUSED'
+} as const
+
+export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]

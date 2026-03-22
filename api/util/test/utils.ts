@@ -32,7 +32,12 @@ export async function seedTestData(db: PrismaClient = testDb) {
 			clerkId: 'instructorUser',
 		},
 	});
-	type RosterEntry = { firstName: string; lastName: string; email: string; role: Role };
+	type RosterEntry = {
+		firstName: string;
+		lastName: string;
+		email: string;
+		role: Role;
+	};
 	await db.user.createMany({
 		data: (Roster as unknown as RosterEntry[]).map((user) => ({
 			email: user.email,
@@ -98,6 +103,21 @@ export async function seedTestData(db: PrismaClient = testDb) {
 				create: { sceneId: scene.id, order: 1 },
 			},
 		},
+	});
+
+	const attendance = await db.attendance.createMany({
+		data: [
+			{
+				userId: student1.id,
+				classId: actingClass.id,
+				status: 'ATTENDED',
+			},
+			{
+				userId: student2.id,
+				classId: actingClass.id,
+				status: 'ABSENT',
+			},
+		],
 	});
 
 	return { instructor, course, actingClass, student1, student2, scene };

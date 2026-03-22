@@ -185,7 +185,6 @@ export const SceneForm = (props: Props) => {
                         onChange={(value) => {
                           if (value) {
                             setPerformers([...performers, value]);
-
                             field.onChange(
                               [...performers, value].map((p) =>
                                 Number(p.value),

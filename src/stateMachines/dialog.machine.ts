@@ -1,4 +1,5 @@
 import { assign, fromPromise, setup } from 'xstate';
+import { useMachine } from '@xstate/react';
 
 export type Context = {
 	isOpen: boolean;
@@ -45,3 +46,23 @@ export const dialogMachine = setup({
 		},
 	},
 });
+
+export const useDialogMachine = (id: string) => {
+	const [state, send] = useMachine(dialogMachine, {
+		id: id,
+		input: { isOpen: false },
+	});
+	const handleOpenDialog = () => {
+		send({ type: 'ON_OPEN' });
+	};
+
+	const handleCloseDialog = () => {
+		send({ type: 'ON_CLOSE' });
+	};
+
+	return {
+		isOpen: state.context.isOpen,
+		handleOpenDialog,
+		handleCloseDialog,
+	};
+};

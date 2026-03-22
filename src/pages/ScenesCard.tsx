@@ -1,7 +1,10 @@
 import { useMachine } from "@xstate/react";
 import { Card } from "../components/Card.tsx";
 import { Badge } from "../components/catalyst/badge.tsx";
-import { dialogMachine } from "../stateMachines/dialog.machine.ts";
+import {
+  dialogMachine,
+  useDialogMachine,
+} from "../stateMachines/dialog.machine.ts";
 import {
   Dialog,
   DialogTitle,
@@ -15,22 +18,12 @@ import { SceneFormValues } from "../features/scene/schema.ts";
 import { transformSceneFormValuesToScene } from "../utils/helperfunctions/scenes.ts";
 
 export const ScenesCard = () => {
-  const [state, send] = useMachine(dialogMachine, {
-    id: "scenesCardDialog",
-    input: { isOpen: false },
-  });
+  const { isOpen, handleOpenDialog, handleCloseDialog } =
+    useDialogMachine("scenesCardDialog");
+
   const { roster } = useRoster();
   const { classes } = useClasses();
   const { scenesProvider, scenes, loading } = useScenes();
-  const { isOpen } = state.context;
-
-  const handleOpenDialog = () => {
-    send({ type: "ON_OPEN" });
-  };
-
-  const handleCloseDialog = () => {
-    send({ type: "ON_CLOSE" });
-  };
 
   const handleSubmit = (values: SceneFormValues) => {
     scenesProvider.send({

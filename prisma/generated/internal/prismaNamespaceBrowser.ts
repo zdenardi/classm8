@@ -57,7 +57,8 @@ export const ModelName = {
   Scene: 'Scene',
   UsersInCourses: 'UsersInCourses',
   UsersAndScenes: 'UsersAndScenes',
-  ScenesInClasses: 'ScenesInClasses'
+  ScenesInClasses: 'ScenesInClasses',
+  Attendance: 'Attendance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -66,12 +67,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -153,6 +154,16 @@ export const ScenesInClassesScalarFieldEnum = {
 } as const
 
 export type ScenesInClassesScalarFieldEnum = (typeof ScenesInClassesScalarFieldEnum)[keyof typeof ScenesInClassesScalarFieldEnum]
+
+
+export const AttendanceScalarFieldEnum = {
+  userId: 'userId',
+  classId: 'classId',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
 
 
 export const SortOrder = {

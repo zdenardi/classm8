@@ -1,5 +1,6 @@
 import { ICourse } from './course.ts';
 import { IScene, ISceneWithPerformers } from './scene.ts';
+import { IAttendance } from '../../types/attendance.ts';
 import { IUser } from './user.ts';
 
 export interface IClass {
@@ -13,12 +14,13 @@ export interface IClass {
 	instructor: IUser;
 }
 
-export interface IClassWithCourseAndScenes extends IClass {
+export interface IClassWithCourseAndScenesAndAttendance extends IClass {
 	course: ICourse;
 	scenes: {
 		scene: ISceneWithPerformers;
 		approved: boolean;
 		order: number;
 	}[];
+	attendances: IAttendance[];
 	class: IClass;
 }

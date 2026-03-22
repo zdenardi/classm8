@@ -1,5 +1,5 @@
 import { Router } from '@oak/oak';
-import { Course, PrismaClient } from '@/prisma';
+import { Class, Course, PrismaClient } from '@/prisma';
 import { CourseFormValues } from '../../../../src/features/course/schema.ts';
 import { clerkAuth } from '../../../middleware/clerkAuth.ts';
 

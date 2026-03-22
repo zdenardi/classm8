@@ -2,7 +2,9 @@ import { createApp } from '../../../../main.ts';
 import { cleanDatabase, seedTestData, testDb } from '@/test-utils';
 import type { Class, Course } from '@/prisma';
 import { assertEquals, assertExists } from '@std/assert';
-import { ClassWithCourseAndScenes } from '../../../../../types/class.ts';
+import {
+	ClassWithCourseAndScenesAndAttendance,
+} from '../../../../../types/class.ts';
 import { db } from '@/db';
 import { authConfig } from '../../../../middleware/clerkAuth.ts';
 
@@ -51,7 +53,7 @@ Deno.test('GET classes', async () => {
 
 	const body = await response.json();
 	assertEquals(Array.isArray(body), true);
-	const actingClass: ClassWithCourseAndScenes = body[0];
+	const actingClass: ClassWithCourseAndScenesAndAttendance = body[0];
 
 	assertEquals(actingClass.id, exampleClass.id);
 });
@@ -71,7 +73,8 @@ Deno.test('GET class by id', async () => {
 	assertExists(exampleClass);
 	assertEquals(response.status, 200);
 
-	const actingClass: ClassWithCourseAndScenes = await response.json();
+	const actingClass: ClassWithCourseAndScenesAndAttendance = await response
+		.json();
 	assertEquals(actingClass.id, exampleClass.id);
 	console.log(actingClass);
 

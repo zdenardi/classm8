@@ -9,6 +9,7 @@ export const ROUTE_NAMES = {
 	scene: 'scenes',
 	user: 'users',
 	profile: 'profile',
+	attendance: 'attendance',
 } as const;
 
 export const CLASSES_ROUTES = {
@@ -48,6 +49,11 @@ export const SCENES_ROUTES = {
 	delete: 'scenes/:id',
 };
 
+export const ATTENDANCE_ROUTES = {
+	get: 'attendance',
+	patch: 'attendance/:id',
+};
+
 export const AUTH_ROUTES = {
 	get: '/auth',
 	post: '/auth',
@@ -60,6 +66,7 @@ export const ROUTES = {
 	scenes: SCENES_ROUTES,
 	users: USERS_ROUTES,
 	profile: PROFILE_ROUTES,
+	attendance: ATTENDANCE_ROUTES,
 };
 
 export type ProfileResponseEvent = DoneActorEvent<

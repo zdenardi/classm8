@@ -1,14 +1,15 @@
 import { useSelector } from '@xstate/react';
 import { UserContext } from '../App.tsx';
-import { IClassWithCourseAndScenes } from '../types/class.ts';
 import { Context } from '../stateMachines/userState.machine.ts';
 import { IUser } from '../types/user.ts';
 import { IProfile } from '../../types/profile.ts';
 import { ISceneWithClasses } from '../types/scene.ts';
 import { ActorRefFrom } from 'npm:xstate@^5.25.0';
 import { scenesProviderMachine } from '../stateMachines/providers/scenes.provider.machine.ts';
-import { ICourseWithStudentsAndClasses } from '../types/course.ts';
 import { courseProviderMachine } from '../stateMachines/providers/courses.provider.machine.ts';
+import { IClassWithCourseAndScenesAndAttendance } from '../types/class.ts';
+import { attendanceProviderMachine } from '../stateMachines/providers/attendance.provider.machine.ts';
+import { IAttendance } from '../../types/attendance.ts';
 
 /**
  * Selects UserContext
@@ -24,13 +25,15 @@ export const selectUserContext = (state: { context: Context }) => {
 		scenesProvider: state.context.scenesProvider,
 		profileProvider: state.context.profileProvider,
 		courseProvider: state.context.courseProvider,
+		attendanceProvider: state.context.attendanceProvider,
 		profile: state.context.profile,
+		_class: state.context._class,
 	};
 };
 
 type ClassRefResult = {
 	loading: boolean;
-	classes: IClassWithCourseAndScenes[];
+	classes: IClassWithCourseAndScenesAndAttendance[];
 };
 
 export const useClasses = (): ClassRefResult => {
@@ -113,4 +116,40 @@ export const useAuthState = () => {
 		isRegistering: state === '$_REGISTRATION',
 		token,
 	};
+};
+
+type ModeratorViewResult = {
+	_class: IClassWithCourseAndScenesAndAttendance | null;
+	sendClassClicked: (classObj: IClassWithCourseAndScenesAndAttendance) => void;
+	sendUpdateAttendance: (values: IAttendance[]) => void;
+};
+
+export const useModeratorView = (): ModeratorViewResult => {
+	const { _class, attendanceProvider } = useSelector(
+		UserContext.useActorRef(),
+		(state) => state.context,
+	);
+	const userRef = UserContext.useActorRef();
+	if (!userRef) {
+		throw new Error('userRef not found');
+	}
+	const sendClassClicked = (
+		classObj: IClassWithCourseAndScenesAndAttendance,
+	) => {
+		userRef.send({
+			type: 'ON_CLASS_CLICKED',
+			data: classObj,
+		});
+	};
+	const sendUpdateAttendance = (values: IAttendance[]) => {
+		attendanceProvider.send({
+			type: 'ON_UPDATE_ATTENDANCE',
+			classId: _class!.id,
+			values: values.map((item) => ({
+				userId: item.userId,
+				status: item.status,
+			})),
+		});
+	};
+	return { _class, sendClassClicked, sendUpdateAttendance };
 };

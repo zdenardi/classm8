@@ -1,5 +1,6 @@
 import type {
   ColDef,
+  RowClickedEvent,
   RowDragEndEvent,
   RowSelectionOptions,
 } from "ag-grid-community";
@@ -10,7 +11,7 @@ import {
   themeQuartz,
 } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useRef } from "react";
+import { type RefObject, useMemo, useRef } from "react";
 import { GRID_HEIGHT } from "./constants.tsx";
 import { BASE_GRID_STYLE } from "../../constants/grid.ts";
 
@@ -30,6 +31,8 @@ export interface GridProps {
   enableFilterHandlers?: boolean;
   rowDragManaged?: boolean;
   onRowDragEnd?: (event: RowDragEndEvent) => void;
+  onRowClicked?: (event: RowClickedEvent) => void;
+  gridRef?: RefObject<AgGridReact | null>;
 }
 
 export const BasicGrid = ({
@@ -43,6 +46,8 @@ export const BasicGrid = ({
   enableFilterHandlers = true,
   rowDragManaged = false,
   onRowDragEnd,
+  onRowClicked,
+  gridRef: externalRef,
 }: GridProps) => {
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -62,7 +67,8 @@ export const BasicGrid = ({
     };
   }, []);
 
-  const gridRef = useRef<AgGridReact>(null);
+  const internalRef = useRef<AgGridReact>(null);
+  const gridRef = externalRef ?? internalRef;
 
   return (
     <div className="h-full w-full p-0">
@@ -82,6 +88,7 @@ export const BasicGrid = ({
         domLayout="autoHeight"
         rowDragManaged={rowDragManaged}
         onRowDragEnd={onRowDragEnd}
+        onRowClicked={onRowClicked}
       />
     </div>
   );

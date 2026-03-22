@@ -55,7 +55,6 @@ sceneRouter.post('/scenes', clerkAuth, async (context) => {
 	} = await context.request.body.json();
 
 	const { performerIds, classId, ...sceneData } = data;
-	console.log('sceneData:', data);
 
 	const user = await db.user.findUnique({
 		where: {
@@ -70,10 +69,6 @@ sceneRouter.post('/scenes', clerkAuth, async (context) => {
 	const nextOrder = classId
 		? await db.scenesInClasses.count({ where: { classId } })
 		: 0;
-
-	console.log({
-		nextOrder,
-	});
 
 	const createdScene = await db.scene.create({
 		data: {

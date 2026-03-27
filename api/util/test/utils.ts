@@ -120,7 +120,15 @@ export async function seedTestData(db: PrismaClient = testDb) {
 		],
 	});
 
-	return { instructor, course, actingClass, student1, student2, scene };
+	return {
+		instructor,
+		course,
+		actingClass,
+		student1,
+		student2,
+		scene,
+		attendance,
+	};
 }
 
 export function createTestApp() {}

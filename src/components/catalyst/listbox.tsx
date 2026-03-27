@@ -70,8 +70,7 @@ export function Listbox<T>({
             aria-hidden="true"
             fill="none"
           >
-            <path d="M5.75 10.75L8 13L10.25 10.75" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5.75 6.75L8 9.25L10.25 6.75" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       </Headless.ListboxButton>

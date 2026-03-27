@@ -1,5 +1,6 @@
 import type {
   ColDef,
+  GridReadyEvent,
   RowClickedEvent,
   RowDragEndEvent,
   RowSelectionOptions,
@@ -32,6 +33,7 @@ export interface GridProps {
   rowDragManaged?: boolean;
   onRowDragEnd?: (event: RowDragEndEvent) => void;
   onRowClicked?: (event: RowClickedEvent) => void;
+  onGridReady?: (event: GridReadyEvent) => void;
   gridRef?: RefObject<AgGridReact | null>;
 }
 
@@ -47,6 +49,7 @@ export const BasicGrid = ({
   rowDragManaged = false,
   onRowDragEnd,
   onRowClicked,
+  onGridReady,
   gridRef: externalRef,
 }: GridProps) => {
   const defaultColDef = useMemo<ColDef>(() => {
@@ -89,6 +92,7 @@ export const BasicGrid = ({
         rowDragManaged={rowDragManaged}
         onRowDragEnd={onRowDragEnd}
         onRowClicked={onRowClicked}
+        onGridReady={onGridReady}
       />
     </div>
   );

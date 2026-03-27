@@ -5,7 +5,7 @@ import { Field } from "../../components/catalyst/fieldset.tsx";
 import { Label } from "../../components/catalyst/fieldset.tsx";
 import { Input } from "../../components/catalyst/input.tsx";
 import { courseFormSchema, CourseFormValues } from "./schema.ts";
-import { useMemo } from "react";
+import { RefObject, useMemo, useRef } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { useCustomForm } from "../../hooks/useCustomForm.ts";
 import { OptionType } from "../../../types/common.ts";
@@ -14,15 +14,20 @@ import {
   ComboboxLabel,
   ComboboxOption,
 } from "../../components/catalyst/combobox.tsx";
+import { BasicGrid } from "../../components/agGrid/Grid.tsx";
+import classNames from "classnames/index.js";
+import { RosterColumns } from "./constants.tsx";
+import { AgGridReact } from "ag-grid-react";
 
 interface Props {
   sendValues: (values: CourseFormValues) => void;
   handleError: () => void;
   instructors: OptionType[];
+  roster: OptionType[];
 }
 
 export const CourseForm = (props: Props) => {
-  const { sendValues, handleError, instructors } = props;
+  const { sendValues, handleError, instructors, roster } = props;
 
   const methods = useCustomForm<CourseFormValues>({
     resolver: zodResolver(courseFormSchema),
@@ -49,7 +54,15 @@ export const CourseForm = (props: Props) => {
     return endDate;
   }, [startDate, numOfRepeat]);
 
+  const rosterRef = useRef<AgGridReact | null>(null);
+
   const onSubmit = (data: CourseFormValues) => {
+    const selectedRows = rosterRef.current?.api.getSelectedRows();
+
+    const studentIds = selectedRows?.map((row: OptionType) =>
+      Number(row.value),
+    );
+    data.studentIds = studentIds;
     sendValues(data);
   };
 
@@ -223,6 +236,30 @@ export const CourseForm = (props: Props) => {
                         </Field>
                       );
                     })}
+                </div>
+              </Row>
+            </Section>
+            <Section componentsPerLine={1}>
+              <Row>
+                <div className={classNames("w-full", "border-2")}>
+                  <div className="p-4 space-y-4 mx-auto ">
+                    <h1 className="text-2xl font-semibold text-left">Roster</h1>
+                    <p>Check the box to add the student to the course</p>
+                    <div className="border border-gray-200 rounded-lg overflow-hidden w-full">
+                      <BasicGrid
+                        loading={false}
+                        data={roster}
+                        colDefs={RosterColumns}
+                        pagination
+                        gridRef={rosterRef}
+                        rowSelection={{
+                          mode: "multiRow",
+                          copySelectedRows: true,
+                          checkboxes: true,
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </Row>
             </Section>

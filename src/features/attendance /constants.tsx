@@ -22,14 +22,22 @@ function AttendanceCell(params: ICellRendererParams<IAttendance>) {
     params.node.setDataValue("status", value);
   };
   return (
-    <div className="w-full">
-      <Listbox value={status} onChange={handleChange} className="w-full">
+    <div className="w-full h-full flex items-center justify-center">
+      <Listbox value={status} onChange={handleChange} className="w-auto">
         {attendanceOptions.map((opt) => (
-          <ListboxOption key={opt.value} value={opt.value}>
-            <ListboxLabel>
-              <Badge color={opt.color}>{opt.label}</Badge>
-            </ListboxLabel>
-          </ListboxOption>
+          <>
+            <ListboxOption
+              key={opt.value}
+              value={opt.value}
+              className="w-full flex justify-center"
+            >
+              <Badge color={opt.color}>
+                <div className="flex items-center justify-center">
+                  <p className="text-center">{opt.label}</p>
+                </div>
+              </Badge>
+            </ListboxOption>
+          </>
         ))}
       </Listbox>
     </div>
@@ -44,16 +52,36 @@ export const AttendanceColumns: ColDef<IAttendance>[] = [
   {
     field: "user.firstName",
     headerName: "First Name",
+    cellStyle: {
+      padding: 0,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
   },
   {
     field: "user.lastName",
     headerName: "Last Name",
+    cellStyle: {
+      padding: 0,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
   },
   {
     field: "status",
     headerName: "Attendance",
     cellRenderer: AttendanceCell,
-    minWidth: 250,
     flex: 1,
+    cellStyle: {
+      padding: 0,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "200px",
+    },
   },
 ];

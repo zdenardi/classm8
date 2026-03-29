@@ -76,7 +76,7 @@ export function Listbox<T>({
       </Headless.ListboxButton>
       <Headless.ListboxOptions
         transition
-        anchor="selection start"
+        anchor="selection"
         className={clsx(
           // Anchor positioning
           '[--anchor-offset:-1.625rem] [--anchor-padding:--spacing(4)] sm:[--anchor-offset:-1.375rem]',

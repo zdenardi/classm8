@@ -43,7 +43,7 @@ function AttendanceCell(params: ICellRendererParams<IAttendance>) {
         </ListboxButton>
         <ListboxOptions
           anchor="bottom"
-          className="bg-primary rounded-xl border shadow-lg ring-1 ring-zinc-950/10 p-1 z-50 backdrop-blur-xl"
+          className="bg-primary rounded-xl shadow-lg ring-1 ring-zinc-950/10 p-1 z-50 backdrop-blur-xl flex flex-col items-center"
         >
           {attendanceOptions.map((option) => (
             <ListboxOption
@@ -80,7 +80,7 @@ export const AttendanceColumns: ColDef<IAttendance>[] = [
     cellStyle: {
       padding: 0,
       display: "flex",
-      alignItems: "center",
+      alignItems: "left",
       width: "100%",
     },
   },
@@ -90,8 +90,8 @@ export const AttendanceColumns: ColDef<IAttendance>[] = [
     cellStyle: {
       padding: 0,
       display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: "left",
+      alignItems: "left",
       width: "100%",
     },
   },

@@ -39,8 +39,15 @@ courseRouter.post('/courses', clerkAuth, async (context) => {
 	const db = context.app.state.prisma;
 
 	// Extract repeatNum and other fields
-	const { repeatNum, startDate, startTime, endTime, location, ...courseData } =
-		data;
+	const {
+		repeatNum,
+		startDate,
+		startTime,
+		endTime,
+		location,
+		studentIds,
+		...courseData
+	} = data;
 
 	// Create the course first
 	const createdCourse = await db.course.create({
@@ -93,6 +100,21 @@ courseRouter.post('/courses', clerkAuth, async (context) => {
 			instructor: true,
 		},
 	});
+	if (studentIds) {
+		// Create attendance records for each student in each class
+		const classesIds: number[] = courseWithClasses.classes.map((c: Class) =>
+			c.id
+		);
+		classesIds.forEach(async (classId) => {
+			await db.attendance.createMany({
+				data: studentIds.map((studentId) => ({
+					userId: studentId,
+					classId: classId,
+					status: 'ABSENT',
+				})),
+			});
+		});
+	}
 
 	context.response.body = courseWithClasses;
 });

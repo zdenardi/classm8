@@ -92,6 +92,7 @@ Deno.test({ name: 'POST courses', ...noSanitize }, async () => {
 		'location': 'Zephyr',
 		'repeatNum': 4,
 		'instructorId': exampleInstructor.id,
+		'studentIds': [1, 2],
 	};
 	const request = new Request('http://localhost:8000/api/v1/courses', {
 		method: 'POST',
@@ -108,7 +109,6 @@ Deno.test({ name: 'POST courses', ...noSanitize }, async () => {
 	assertEquals(response.status, 200);
 	const responseBody = await response.json();
 	assertEquals(responseBody.classes.length, 4);
-	console.log(responseBody);
 });
 
 Deno.test({ name: 'PATCH course by id', ...noSanitize }, async () => {

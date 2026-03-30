@@ -9,6 +9,7 @@ export const courseFormSchema = z.object({
 	repeatNum: z.number(),
 	instructorId: z.number(),
 	studentLimit: z.number().optional(),
+	studentIds: z.array(z.number()).optional(),
 });
 
 export type CourseFormValues = z.infer<typeof courseFormSchema>;

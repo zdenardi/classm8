@@ -251,6 +251,9 @@ export const ClassesCard = () => {
                 instructors={transformUsersToOptions(
                   roster.filter((user) => user.role === "INSTRUCTOR"),
                 )}
+                roster={transformUsersToOptions(
+                  roster.filter((user) => user.role === "STUDENT"),
+                )}
               />
             </DialogBody>
           </div>

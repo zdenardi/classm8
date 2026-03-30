@@ -21,7 +21,6 @@ export const UsersGrid = (props: Props) => {
             data={data}
             colDefs={UsersColumns}
             pagination
-            cyTag="user-grid"
           />
         </div>
       </div>

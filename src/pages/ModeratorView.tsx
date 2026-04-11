@@ -8,6 +8,8 @@ import { useModeratorView } from "../hooks/contextHooks.ts";
 import { useRef } from "react";
 import { IAttendance } from "../../types/attendance.ts";
 import { AgGridReact } from "ag-grid-react";
+import { Button } from "../components/catalyst/button.tsx";
+import { AttendanceGridDialog } from "../components/dialogs/AttendanceGridDialog.tsx";
 
 export const ModeratorView = () => {
   const { isOpen, handleOpenDialog, handleCloseDialog } = useDialogMachine(
@@ -15,7 +17,6 @@ export const ModeratorView = () => {
   );
   const { sendClassClicked, sendUpdateAttendance, _class } = useModeratorView();
 
-  const gridRef = useRef<AgGridReact | null>(null);
   const handleRowClick = (
     event: RowClickedEvent<IClassWithCourseAndScenesAndAttendance>,
   ) => {
@@ -26,19 +27,8 @@ export const ModeratorView = () => {
 
     handleOpenDialog();
   };
-  const handleClose = () => {
-    const rows: IAttendance[] = [];
-    gridRef.current?.api.forEachNode((node) => rows.push(node.data));
-    if (
-      _class?.attendances &&
-      rows.length === _class.attendances.length &&
-      rows.every(
-        (item, index) => item.status === _class.attendances[index].status,
-      )
-    ) {
-      handleCloseDialog();
-      return;
-    }
+
+  const handleClose = (rows: IAttendance[]) => {
     sendUpdateAttendance(rows);
     handleCloseDialog();
   };
@@ -48,11 +38,11 @@ export const ModeratorView = () => {
       <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         <ClassesGrid onRowClicked={handleRowClick} />
       </div>
-      <Dialog open={isOpen} onClose={handleClose} size="4xl">
-        <DialogBody>
-          <AttendanceGrid gridRef={gridRef} />
-        </DialogBody>
-      </Dialog>
+      <AttendanceGridDialog
+        handleClose={handleClose}
+        isOpen={isOpen}
+        _class={_class}
+      />
     </>
   );
 };

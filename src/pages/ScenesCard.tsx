@@ -1,10 +1,6 @@
-import { useMachine } from "@xstate/react";
 import { Card } from "../components/Card.tsx";
 import { Badge } from "../components/catalyst/badge.tsx";
-import {
-  dialogMachine,
-  useDialogMachine,
-} from "../stateMachines/dialog.machine.ts";
+import { useDialogMachine } from "../stateMachines/dialog.machine.ts";
 import {
   Dialog,
   DialogTitle,

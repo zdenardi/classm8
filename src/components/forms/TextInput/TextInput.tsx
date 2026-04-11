@@ -23,7 +23,7 @@ export const TextInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: Props<TFieldValues, TName>
+  props: Props<TFieldValues, TName>,
 ) => {
   const {
     name,
@@ -65,7 +65,7 @@ export const TextInput = <
                 autoComplete={autoComplete}
                 className={classNames(
                   createFormFieldStyles(flagged, disabled),
-                  className
+                  className,
                 )}
                 onChange={(e) => {
                   field.onChange(e);

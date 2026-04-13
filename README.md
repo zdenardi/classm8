@@ -1,6 +1,5 @@
 # Classm8
 
-(https://badgen.net/#badge/status/In%20Progress/yellow)
 
 - A Deno based Acting Studio management application, complete with PostGres
   docker image as well as a React Front End that has Clerk Authentication.
